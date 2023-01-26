@@ -1,6 +1,6 @@
-# Web App Template
+# study-guide-wiki
 
-A template for a Dockerized NodeJS and PostgreSQL web app.
+A web app to make studying easier. It helps make study guides in a wiki format.
 
 ## Setup
 
