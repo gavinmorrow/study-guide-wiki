@@ -1,0 +1,42 @@
+version: "3"
+services:
+    app:
+        restart: on-failure
+        healthcheck:
+            test: ["curl", "localhost:8080/now"]
+            timeout: 10s
+            interval: 30s
+            retries: 5
+        build: .
+        depends_on:
+            - postgres
+        environment:
+            DB_URL: postgres://app:password@postgres:5432/app_db
+            NODE_ENV: development
+            PORT: 3000
+        ports:
+            - "8080:8080"
+        command: npm run dev
+        volumes:
+            - .:/app/
+            - /app/node_modules
+
+    postgres:
+        image: postgres:11
+        restart: on-failure
+        healthcheck:
+            test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root"]
+            timeout: 45s
+            interval: 10s
+            retries: 5
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: db
+
+            # db name, db user name, db user password are all in db/setup/init.sql
+        volumes:
+            - ./db/setup/init.sh:/docker-entrypoint-initdb.d/01-init.sh
+            - ./db/setup/init.sql:/init.sql
