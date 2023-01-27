@@ -36,6 +36,17 @@ const db = {
 
             return new User(user.id, user.password);
         },
+
+        /**
+         * Adds a user to the database.
+         * @param {User} user The user to add.
+         */
+        async add(user) {
+            await db.raw.none(
+                "INSERT INTO users (id, password) VALUES ($1, $2)",
+                [user.id, user.password]
+            );
+        },
     },
 };
 
