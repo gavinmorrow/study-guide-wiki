@@ -5,7 +5,7 @@ const crypto = require("crypto");
  * The refresh token families that have been used.
  * @type {Set<string>} UUIDs
  */
-let usedFamilies = Set();
+let usedFamilies = new Set();
 
 /**
  * Creates a refresh token for a user.

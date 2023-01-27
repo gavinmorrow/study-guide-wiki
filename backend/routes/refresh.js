@@ -7,10 +7,10 @@ const generateRefreshToken = require("../authentication/generateRefreshToken");
 // Each family is represented by a UUID
 
 /** @type {Set<string>} Raw refresh tokens (JWTs) */
-let usedTokens = Set();
+let usedTokens = new Set();
 
 /** @type {Set<string>} UUIDs */
-let invalidFamilies = Set();
+let invalidFamilies = new Set();
 
 /** A route to refresh a JWT. It takes a refresh token and returns a new access token and refresh token. */
 const refresh = async (req, res) => {
