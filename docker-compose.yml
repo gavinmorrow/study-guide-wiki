@@ -1,7 +1,7 @@
 version: "3"
 services:
     app:
-        restart: on-failure
+        restart: always
         healthcheck:
             test: ["curl", "localhost:8080"]
             timeout: 10s
@@ -17,12 +17,12 @@ services:
             - "8080:8080"
         command: npm run docker
         volumes:
-            - ./backend:/app/
-            - ./package.json:/app/package.json
+            - .:/app/
+            - /app/node_modules
 
     postgres:
         image: postgres
-        restart: on-failure
+        restart: always
         healthcheck:
             test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root"]
             timeout: 45s
