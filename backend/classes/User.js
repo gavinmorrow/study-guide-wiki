@@ -34,6 +34,17 @@ class User {
         this.#id = id;
         this.#password = password;
     }
+
+    /**
+     * Returns a JSON representation of the user.
+     * @returns { { id: string, password: string } } The JSON representation of the user.
+     */
+    toJSON() {
+        return {
+            id: this.id,
+            password: this.password,
+        };
+    }
 }
 
 module.exports = User;
