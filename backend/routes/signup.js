@@ -1,5 +1,8 @@
 const generateAccessToken = require("../authentication/generateAccessToken");
 const db = require("../db/db");
+const User = require("../classes/User");
+
+const bcrypt = require("bcrypt");
 
 /** A route to create a new user. */
 const signup = async (req, res) => {
@@ -7,6 +10,13 @@ const signup = async (req, res) => {
 
     // Ensure that the password is valid
     if (password == null) res.status(400).send("Password is required");
+
+    // Hash the password
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(password, saltRounds).catch(err => {
+        res.sendStatus(500);
+        throw err;
+    });
 
     // Generate a random ID for the user
     /**
@@ -21,7 +31,7 @@ const signup = async (req, res) => {
     } while ((await db.users.get(id)) != null);
 
     // Create the user
-    const user = new User(id, password);
+    const user = new User(id, passwordHash);
     await db.users.add(user);
 
     // Generate a JWT token
