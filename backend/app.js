@@ -7,6 +7,7 @@ const crypto = require("crypto");
 const secret = crypto.randomBytes(64).toString("hex");
 process.env.ACCESS_TOKEN_SECRET = secret;
 
+// Routes
 app.get("/", (_req, res) => res.send("Hello World!"));
 app.post("/login", require("./routes/login"));
 app.post("/signup", require("./routes/signup"));
