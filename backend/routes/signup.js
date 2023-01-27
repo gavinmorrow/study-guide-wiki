@@ -30,7 +30,7 @@ const signup = async (req, res) => {
         id = crypto.randomUUID();
     } while ((await db.users.get(id)) != null);
 
-    // Create the user
+    // Create the user and add it to the database
     const user = new User(id, passwordHash);
     await db.users.add(user);
 
