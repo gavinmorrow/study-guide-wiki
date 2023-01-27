@@ -1,4 +1,5 @@
 const db = require("../db/db");
+const authenticate = require("./authenticate");
 
 /** A route to get all the info of a user.  */
 const user = (req, res) => {
@@ -16,4 +17,4 @@ const user = (req, res) => {
     res.json(user);
 };
 
-module.exports = user;
+module.exports = [authenticate, user];

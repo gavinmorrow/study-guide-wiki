@@ -17,6 +17,7 @@ app.get("/", (_req, res) => res.send("Hello World!"));
 app.post("/login", require("./routes/login"));
 app.post("/signup", require("./routes/signup"));
 app.post("/refresh", require("./routes/refresh"));
+app.get("/user", require("./routes/user"));
 app.get("/protected", require("./routes/authenticate"), (_req, res) => {
     res.send("You are authenticated!");
 });
