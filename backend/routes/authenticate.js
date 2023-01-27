@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 /**
  * A route to authenticate a user.
  */
@@ -12,7 +14,10 @@ const authenticate = (req, res, next) => {
 
     // Verify the token is valid
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userId) => {
-        if (err) return res.sendStatus(403);
+        if (err) {
+            console.error(err);
+            return res.sendStatus(403);
+        }
 
         req.userId = userId;
         next();
