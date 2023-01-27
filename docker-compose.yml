@@ -15,10 +15,10 @@ services:
             NODE_ENV: development
         ports:
             - "8080:8080"
-        command: npm run dev
+        command: npm run docker
         volumes:
             - ./backend:/app/
-            - /app/node_modules
+            - ./package.json:/app/package.json
 
     postgres:
         image: postgres
