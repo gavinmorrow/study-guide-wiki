@@ -54,6 +54,15 @@ class User {
             password: this.password,
         };
     }
+
+    /**
+     * Converts an object to a user class.
+     * @param { { id: string, password: string, displayName: string } } user The user object to convert.
+     * @returns {User}
+     */
+    static fromObject(user) {
+        return new User(user.id, user.password, user.displayName);
+    }
 }
 
 module.exports = User;
