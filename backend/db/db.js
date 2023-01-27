@@ -16,8 +16,8 @@ const db = {
          * @returns {Promise<User[]>}
          */
         async getAll() {
-            return (await db.raw.any("SELECT * FROM users")).map(
-                user => new User(user.id, user.password, user.displayName)
+            return (await db.raw.any("SELECT * FROM users")).map(user =>
+                User.fromObject(user)
             );
         },
 
@@ -36,7 +36,7 @@ const db = {
 
             if (user == null) return null;
 
-            return new User(user.id, user.password, user.displayName);
+            return User.fromObject(user);
         },
 
         /**
@@ -46,7 +46,7 @@ const db = {
         async add(user) {
             await db.raw.none(
                 "INSERT INTO users (id, password, displayName) VALUES ($1, $2, $3)",
-                [user.id, user.password, displayName]
+                [user.id, user.password, user.displayName]
             );
         },
     },
