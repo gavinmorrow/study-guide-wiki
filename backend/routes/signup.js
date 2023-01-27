@@ -13,10 +13,16 @@ const crypto = require("crypto");
  * @param {import("express").Response} res The response.
  */
 const signup = async (req, res) => {
-    const { password } = req.body;
+    const { password, displayName } = req.body;
 
-    // Ensure that the password is valid
+    // Ensure that the password and display name are valid
     if (password == null) res.status(400).send("Password is required");
+    if (displayName == null || displayName.length < 1)
+        res.status(400).send("Display name is required");
+
+    // Ensure that the display name is unique
+    if (await db.users.displayNameIsUsed(displayName))
+        res.status(400).send("Display name is already in use");
 
     // Hash the password
     const saltRounds = 10;
@@ -38,10 +44,11 @@ const signup = async (req, res) => {
     } while ((await db.users.get(id)) != null);
 
     // Create the user and add it to the database
-    const user = new User(id, passwordHash);
+    const user = new User(id, passwordHash, displayName);
     await db.users.add(user);
 
-    res.json({ id, password });
+    // Do NOT use `user.toJSON()` because that will include the *hashed* password.
+    res.json({ id, password, displayName });
 };
 
 module.exports = signup;
