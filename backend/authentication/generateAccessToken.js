@@ -12,7 +12,8 @@ const generateAccessToken = id => {
     }
 
     const token = jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "15m",
+        // FIXME: change to 15m in production build
+        expiresIn: "15s",
     });
     return token;
 };
