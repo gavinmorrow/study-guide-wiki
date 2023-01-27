@@ -40,6 +40,19 @@ const db = {
         },
 
         /**
+         * Checks if a display name is used.
+         * @param {string} displayName The display name to check.
+         * @returns {Promise<boolean>}
+         */
+        async displayNameIsUsed(displayName) {
+            const user = await db.raw.oneOrNone(
+                "SELECT * FROM users WHERE displayName = $1",
+                [displayName]
+            );
+            return user == null;
+        },
+
+        /**
          * Adds a user to the database.
          * @param {User} user The user to add.
          */
