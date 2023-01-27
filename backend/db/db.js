@@ -49,7 +49,7 @@ const db = {
                 "SELECT * FROM users WHERE displayName = $1",
                 [displayName]
             );
-            return user == null;
+            return user != null;
         },
 
         /**
