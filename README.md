@@ -6,6 +6,8 @@ A web app to make studying easier. It helps make study guides in a wiki format.
 
 1. Install [Docker][install-docker].
 2. Clone this repository and run `docker compose up`.
+    - The first time you run it (or after clearing the volumes) you have to wait
+      for the database to be initialized and npm to install the dependencies.
 
 ## Making changes
 
@@ -25,6 +27,6 @@ A web app to make studying easier. It helps make study guides in a wiki format.
 | Node.js REST API setup with Docker Compose, Express and Postgres | https://kundan-9343.medium.com/node-js-rest-api-setup-with-docker-compose-express-and-postgres-d53fb0c77da7 |
 | ECONNREFUSED for Postgres on nodeJS with dockers                 | https://stackoverflow.com/questions/33357567/econnrefused-for-postgres-on-nodejs-with-dockers               |
 | docker-entrypoint-initdb.d bad interpreter: Permission denied    | https://stackoverflow.com/questions/68476734/docker-entrypoint-initdb-d-bad-interpreter-permission-denied   |
-| What is the `<<-EOSQL` code block in Bash when running SQL?      | https://stackoverflow.com/questions/38800277/what-is-the-eosql-code-block-in-bash-when-running-sql          |
+| What Are Refresh Tokens and How to Use Them Securely             | https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/                                   |
 
 [install-docker]: https://docs.docker.com/get-docker/
