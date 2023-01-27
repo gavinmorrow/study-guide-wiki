@@ -46,7 +46,7 @@ const refresh = async (req, res) => {
 
     // Check if the refresh token family has been invalidated
     if (invalidFamilies.has(family)) {
-        res.status(401).send("Invalid refresh token");
+        return res.status(401).send("Invalid refresh token");
     }
 
     // If the token has been used before, invalidate the entire family
