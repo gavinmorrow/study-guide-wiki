@@ -13,12 +13,12 @@ const authenticate = (req, res, next) => {
     if (token == null) return res.sendStatus(401);
 
     // Verify the token is valid
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userId) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if (err) {
             return res.sendStatus(403);
         }
 
-        req.userId = userId;
+        req.userId = decoded.id;
         next();
     });
 };
