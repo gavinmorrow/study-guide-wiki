@@ -3,11 +3,17 @@ const db = require("../db/db");
 const User = require("../classes/User");
 
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 // TODO: Refactor (split into multiple functions/files)
 
-/** A route to create a new user. */
+/**
+ * A route to create a new user.
+ * @param {import("express").Request} req The request.
+ * @param {import("express").Response} res The response.
+ */
 const signup = async (req, res) => {
+    console.log(req.body, req.headers);
     const { password } = req.body;
 
     // Ensure that the password is valid
@@ -36,11 +42,7 @@ const signup = async (req, res) => {
     const user = new User(id, passwordHash);
     await db.users.add(user);
 
-    // Generate a JWT token
-    const token = generateAccessToken(user.id);
-
-    // Send the token to the user
-    res.send(token);
+    res.json({ id, password });
 };
 
 module.exports = signup;
