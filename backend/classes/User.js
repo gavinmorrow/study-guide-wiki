@@ -33,6 +33,11 @@ class User {
     }
     #displayName;
 
+    /**
+     * @param {string} id The id of the user. This is a UUID.
+     * @param {string} password The password of the user. This is hashed with bcrypt.
+     * @param {string} displayName The user's display name.
+     */
     constructor(id, password, displayName) {
         this.#id = id;
         this.#password = password;
