@@ -27,9 +27,11 @@ const db = {
          * @returns {Promise<User?>}
          */
         async get(id) {
+            if (id == null) return null;
+
             const user = await db.raw.oneOrNone(
                 "SELECT * FROM users WHERE id = $1",
-                id
+                [id]
             );
 
             if (user == null) return null;
