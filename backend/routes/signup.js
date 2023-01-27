@@ -13,7 +13,6 @@ const crypto = require("crypto");
  * @param {import("express").Response} res The response.
  */
 const signup = async (req, res) => {
-    console.log(req.body, req.headers);
     const { password } = req.body;
 
     // Ensure that the password is valid

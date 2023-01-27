@@ -1,5 +1,6 @@
 const credentialsAreValid = require("../authentication/credentialsAreValid");
 const generateAccessToken = require("../authentication/generateAccessToken");
+const generateRefreshToken = require("../authentication/generateRefreshToken");
 
 /** A route to login a user and return a JWT. */
 const login = async (req, res) => {
@@ -14,11 +15,14 @@ const login = async (req, res) => {
         return res.status(401).send("Invalid credentials");
     }
 
-    // Generate a JWT token with the id as the payload
-    const token = generateAccessToken(id);
+    // Generate an access token with the id as the payload
+    const accessToken = generateAccessToken(id);
+
+    // Generate a refresh token with the id as the payload
+    const refreshToken = generateRefreshToken(id);
 
     // Return the token to the user
-    res.send(token);
+    res.json({ accessToken, refreshToken });
 };
 
 module.exports = login;
