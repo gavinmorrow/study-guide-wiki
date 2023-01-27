@@ -4,6 +4,8 @@ const User = require("../classes/User");
 
 const bcrypt = require("bcrypt");
 
+// TODO: Refactor (split into multiple functions/files)
+
 /** A route to create a new user. */
 const signup = async (req, res) => {
     const { password } = req.body;
