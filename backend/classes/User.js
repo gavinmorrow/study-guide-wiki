@@ -3,24 +3,13 @@
  */
 class User {
     /**
-     * Same as {@linkcode id}
-     * @type {string}
-     */
-    #id;
-
-    /**
      * The id (UUID) of the user. This is private to prevent setting.
      * @type {string}
      */
     get id() {
         return this.#id;
     }
-
-    /**
-     * Same as {@linkcode password}
-     * @type {string}
-     */
-    #password;
+    #id;
 
     /**
      * The password of the user. This is hashed with bcrypt.
@@ -29,10 +18,25 @@ class User {
     get password() {
         return this.#password;
     }
+    #password;
 
-    constructor(id, password) {
+    /**
+     * The user's display name.
+     *
+     * This is unqiue, but NOT what should be used to identify them,
+     * as it can change at any time.
+     *
+     * @type {string}
+     */
+    get displayName() {
+        return this.#displayName;
+    }
+    #displayName;
+
+    constructor(id, password, displayName) {
         this.#id = id;
         this.#password = password;
+        this.#displayName = displayName;
     }
 
     /**
