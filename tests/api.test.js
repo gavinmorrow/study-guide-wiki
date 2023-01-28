@@ -45,17 +45,23 @@
         //=================================================================\\
 
         // Signup
+        const password = "123456";
         const signupRes = await fetch(`${host}/signup`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ password: "12345" }),
+            body: JSON.stringify({
+                password: password,
+                displayName: "Example123",
+            }),
         });
 
         if (!signupRes.ok) {
-            throw new Error(`Signup failed. HTTP status code: ${res.status}`);
+            throw new Error(
+                `Signup failed. HTTP status code: ${signupRes.status}`
+            );
         }
 
-        const { id, password } = await signupRes.json();
+        const { id } = await signupRes.json();
 
         //=================================================================\\
 
