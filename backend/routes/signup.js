@@ -38,17 +38,24 @@ const signup = async (req, res) => {
      */
     let id;
 
-    // Ensure that the id is unique
+    // Ensure that the id is unique.
+    // This is very unlikely to happen, but it's still possible.
+    // (https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions)
     do {
         id = crypto.randomUUID();
     } while ((await db.users.get(id)) != null);
 
-    // Create the user and add it to the database
-    const user = new User(id, passwordHash, displayName);
-    await db.users.add(user);
+    try {
+        // Create the user and add it to the database
+        const user = new User(id, passwordHash, displayName);
+        await db.users.add(user);
+    } catch (err) {
+        res.sendStatus(500);
+        console.error(err);
+        return;
+    }
 
-    // Do NOT use `user.toJSON()` because that will include the *hashed* password.
-    res.json({ id, password, displayName });
+    res.json({ id });
 };
 
 module.exports = signup;
