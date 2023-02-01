@@ -37,5 +37,4 @@ services:
 
             # db name, db user name, db user password are all in db/setup/init.sql
         volumes:
-            # - ./backend/db/setup/init.sh:/docker-entrypoint-initdb.d/01-init.sh
             - ./backend/db/setup/init.sql:/docker-entrypoint-initdb.d/01-init.sql
