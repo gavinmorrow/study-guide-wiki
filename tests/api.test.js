@@ -2,10 +2,11 @@
     const host = "http://localhost:8080";
     const sleep = sec =>
         new Promise(resolve => setTimeout(resolve, sec * 1000));
+    const { exec, spawn } = require("child_process");
 
     // Spawn the server
     console.log("Spawning server…");
-    const { exec, spawn } = require("child_process");
+    didStartUp = true;
 
     // Shut down old containers if they exist, and clear the data
     await exec("docker compose down -v");
@@ -45,17 +46,23 @@
         //=================================================================\\
 
         // Signup
+        const password = "123456";
         const signupRes = await fetch(`${host}/signup`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ password: "12345" }),
+            body: JSON.stringify({
+                password: password,
+                displayName: "Example123",
+            }),
         });
 
         if (!signupRes.ok) {
-            throw new Error(`Signup failed. HTTP status code: ${res.status}`);
+            throw new Error(
+                `Signup failed. HTTP status code: ${signupRes.status}`
+            );
         }
 
-        const { id, password } = await signupRes.json();
+        const { id } = await signupRes.json();
 
         //=================================================================\\
 

@@ -16,8 +16,8 @@ const db = {
          * @returns {Promise<User[]>}
          */
         async getAll() {
-            return (await db.raw.any("SELECT * FROM users")).map(
-                user => new User(user.id, user.password)
+            return (await db.raw.any("SELECT * FROM users")).map(user =>
+                User.fromObject(user)
             );
         },
 
@@ -36,7 +36,20 @@ const db = {
 
             if (user == null) return null;
 
-            return new User(user.id, user.password);
+            return User.fromObject(user);
+        },
+
+        /**
+         * Checks if a display name is used.
+         * @param {string} displayName The display name to check.
+         * @returns {Promise<boolean>}
+         */
+        async displayNameIsUsed(displayName) {
+            const user = await db.raw.oneOrNone(
+                "SELECT * FROM users WHERE displayName = $1",
+                [displayName]
+            );
+            return user != null;
         },
 
         /**
@@ -45,8 +58,8 @@ const db = {
          */
         async add(user) {
             await db.raw.none(
-                "INSERT INTO users (id, password) VALUES ($1, $2)",
-                [user.id, user.password]
+                "INSERT INTO users (id, password, displayName) VALUES ($1, $2, $3)",
+                [user.id, user.password, user.displayName]
             );
         },
     },

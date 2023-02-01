@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
  */
 const authenticate = (req, res, next) => {
     // Get the auth header value
-    const authHeader = req.headers["authorization"];
+    const authHeader = req.headers.authorization;
     if (authHeader == null) return res.sendStatus(401);
 
     // Extract the token from the header

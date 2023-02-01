@@ -13,10 +13,16 @@ const crypto = require("crypto");
  * @param {import("express").Response} res The response.
  */
 const signup = async (req, res) => {
-    const { password } = req.body;
+    const { password, displayName } = req.body;
 
-    // Ensure that the password is valid
+    // Ensure that the password and display name are valid
     if (password == null) res.status(400).send("Password is required");
+    if (displayName == null || displayName.length < 1)
+        res.status(400).send("Display name is required");
+
+    // Ensure that the display name is unique
+    if (await db.users.displayNameIsUsed(displayName))
+        res.status(400).send("Display name is already in use");
 
     // Hash the password
     const saltRounds = 10;
@@ -32,16 +38,24 @@ const signup = async (req, res) => {
      */
     let id;
 
-    // Ensure that the id is unique
+    // Ensure that the id is unique.
+    // This is very unlikely to happen, but it's still possible.
+    // (https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions)
     do {
         id = crypto.randomUUID();
     } while ((await db.users.get(id)) != null);
 
-    // Create the user and add it to the database
-    const user = new User(id, passwordHash);
-    await db.users.add(user);
+    try {
+        // Create the user and add it to the database
+        const user = new User(id, passwordHash, displayName);
+        await db.users.add(user);
+    } catch (err) {
+        res.sendStatus(500);
+        console.error(err);
+        return;
+    }
 
-    res.json({ id, password });
+    res.json({ id });
 };
 
 module.exports = signup;

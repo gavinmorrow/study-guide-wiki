@@ -2,20 +2,103 @@
 
 A web app to make studying easier. It helps make study guides in a wiki format.
 
-## Setup
+# API
+
+| Endpoint | Method | Description                         |
+| -------- | ------ | ----------------------------------- |
+| /signup  | POST   | Creates a new user                  |
+| /login   | POST   | Logs in a user                      |
+| /refresh | POST   | Refreshes a user's access token     |
+| /user    | GET    | Gets the current user's information |
+
+## Reading the API docs
+
+-   The `Params` table lists the parameters that you have to send in the request body.
+-   The `Response` table lists the response that you will get from the server, in JSON.
+-   The `Type` column lists the type of the parameter or response.
+    -   `string` is a string of text.
+    -   `uuid` is a [version 4 universally unique identifier][uuidv4], stored as a string.
+    -   `jwt` is a JSON Web Token, stored as a string.
+
+[uuidv4]: https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)
+
+## POST /signup
+
+Creates a new user.
+
+### Params
+
+| Name        | Type   | Description             |
+| ----------- | ------ | ----------------------- |
+| password    | string | The user's password     |
+| displayName | string | The user's display name |
+
+### Response
+
+| Name | Type | Description   |
+| ---- | ---- | ------------- |
+| id   | uuid | The user's id |
+
+## POST /login
+
+Logs in a user.
+
+### Params
+
+| Name     | Type   | Description         |
+| -------- | ------ | ------------------- |
+| id       | uuid   | The user's UUID     |
+| password | string | The user's password |
+
+### Response
+
+| Name         | Type | Description              |
+| ------------ | ---- | ------------------------ |
+| accessToken  | jwt  | The user's access token  |
+| refreshToken | jwt  | The user's refresh token |
+
+## POST /refresh
+
+Refreshes a user's access token.
+
+### Params
+
+| Name         | Type | Description                  |
+| ------------ | ---- | ---------------------------- |
+| refreshToken | jwt  | The user's old refresh token |
+
+### Response
+
+| Name         | Type | Description                  |
+| ------------ | ---- | ---------------------------- |
+| accessToken  | jwt  | The user's new access token  |
+| refreshToken | jwt  | The user's new refresh token |
+
+## GET /user
+
+Gets the current user's information. Requires authentication.
+
+### Response
+
+| Name        | Type   | Description             |
+| ----------- | ------ | ----------------------- |
+| id          | uuid   | The user's id           |
+| displayName | string | The user's display name |
+
+# Setup
 
 1. Install [Docker][install-docker].
 2. Clone this repository and run `docker compose up`.
     - The first time you run it (or after clearing the volumes) you have to wait
       for the database to be initialized and npm to install the dependencies.
 
-## Making changes
+# Making changes
 
 -   It will automatically restart whenever you make changes to a `.js` file.
 -   If you make changes to any other file, press `CTRL+C` in the terminal and then run `docker compose up`.
 -   If you make any changes to the database, you have to run `docker compose down -v` to stop it, then run `docker compose up`.
 
-## Resources
+# Resources
 
 | Name                                                             | URL                                                                                                         |
 | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
