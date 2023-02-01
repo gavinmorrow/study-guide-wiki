@@ -2,10 +2,11 @@
     const host = "http://localhost:8080";
     const sleep = sec =>
         new Promise(resolve => setTimeout(resolve, sec * 1000));
+    const { exec, spawn } = require("child_process");
 
     // Spawn the server
     console.log("Spawning server…");
-    const { exec, spawn } = require("child_process");
+    didStartUp = true;
 
     // Shut down old containers if they exist, and clear the data
     await exec("docker compose down -v");
