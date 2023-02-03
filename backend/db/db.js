@@ -7,14 +7,14 @@ const Guide = require("../classes/Guide");
 
 const getAll = async user => {
     const tableName = user ? "users" : "guides";
-    const Type = user ? User : Guide;
+    /** @type {User|Guide} */ const Type = user ? User : Guide;
     const data = await db.raw.any(`SELECT * FROM ${tableName}`);
     return data.map(Type.fromObject);
 };
 
 const get = async (id, user) => {
     const tableName = user ? "users" : "guides";
-    const Type = user ? User : Guide;
+    /** @type {User|Guide} */ const Type = user ? User : Guide;
 
     if (id == null) return null;
 
