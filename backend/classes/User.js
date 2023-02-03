@@ -3,7 +3,7 @@
  */
 class User {
     /**
-     * The id (UUID) of the user. This is private to prevent setting.
+     * The id (UUID) of the user.
      * @type {string}
      */
     get id() {
