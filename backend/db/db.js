@@ -5,16 +5,14 @@ const database = pgp(process.env.DB_URL);
 const User = require("../classes/User");
 const Guide = require("../classes/Guide");
 
-const getAll = async user => {
+const getAll = async Tyoe => {
     const tableName = user ? "users" : "guides";
-    /** @type {User|Guide} */ const Type = user ? User : Guide;
     const data = await db.raw.any(`SELECT * FROM ${tableName}`);
     return data.map(Type.fromObject);
 };
 
-const get = async (id, user) => {
+const get = async (Type, id) => {
     const tableName = user ? "users" : "guides";
-    /** @type {User|Guide} */ const Type = user ? User : Guide;
 
     if (id == null) return null;
 
@@ -37,20 +35,16 @@ const db = {
     users: {
         /**
          * Gets all users from the database.
-         * @returns {Promise<User[]>}
+         * @returns {Promise<User[]>} An array of users.
          */
-        async getAll() {
-            return getAll(true);
-        },
+        getAll: getAll.bind(null, User),
 
         /**
          * Gets a user from the database.
          * @param {string} id The id of the user.
-         * @returns {Promise<User?>}
+         * @returns {Promise<User?>} The user, or null if it doesn't exist.
          */
-        async get(id) {
-            return get(id, true);
-        },
+        get: get.bind(null, User),
 
         /**
          * Checks if a display name is used.
@@ -78,13 +72,18 @@ const db = {
     },
 
     guides: {
-        async getAll() {
-            return getAll(false);
-        },
+        /**
+         * Gets all guides from the database.
+         * @returns {Promise<Guide[]>} An array of guides.
+         */
+        getAll: getAll.bind(null, Guide),
 
-        async get(id) {
-            return get(id, false);
-        },
+        /**
+         * Gets a guide from the database.
+         * @param {string} id The id of the guide.
+         * @returns {Promise<Guide?>} The guide, or null if it doesn't exist.
+         */
+        get: get.bind(null, Guide),
     },
 };
 
