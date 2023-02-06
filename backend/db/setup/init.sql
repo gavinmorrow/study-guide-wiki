@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS guides (
   year INT NOT NULL
 );
 
-CREATE TYPE permissions AS ENUM ('none', 'read', 'suggest', 'edit', 'manage', 'owner');
+CREATE TYPE permissions AS ENUM ('read', 'suggest', 'edit', 'manage');
 
 CREATE TABLE IF NOT EXISTS user_guides (
   -- The user who is a part of the guide. 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS user_guides (
 
   -- The permissions the user has for the guide.
   -- If you have one, you have all the permissions below it (with a lower value)
-  permissions permissions NOT NULL DEFAULT 'none',
+  permissions permissions NOT NULL,
 
   PRIMARY KEY (userId, guideId)
 );
