@@ -21,6 +21,11 @@ const GET_guide = async (req, res) => {
 		return res.sendStatus(404);
 	}
 
+	// Ensure that the user is allowed to view the guide
+	if (!guideJson.people.includes(userId)) {
+		return res.sendStatus(403);
+	}
+
 	res.json(guideJson);
 };
 
