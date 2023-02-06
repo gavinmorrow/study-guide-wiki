@@ -12,6 +12,16 @@ const GET_guide = async (req, res) => {
 	if (!guideId) {
 		return res.sendStatus(400);
 	}
+
+	/** @type {Guide?} */
+	const guide = await db.guides.get(guideId);
+	const guideJson = guide?.toJSON();
+
+	if (!guideJson) {
+		return res.sendStatus(404);
+	}
+
+	res.json(guideJson);
 };
 
 const POST_guide = (req, res) => {};
