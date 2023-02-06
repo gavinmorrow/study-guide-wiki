@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS guides (
 
 CREATE TYPE permissions AS ENUM ('read', 'suggest', 'edit', 'manage');
 
-CREATE TABLE IF NOT EXISTS user_guides (
+CREATE TABLE IF NOT EXISTS guideAccess (
   -- The user who is a part of the guide. 
   -- To get all the users who are a part of the guide, query the 
   -- `userId` column for the `guideId` of the guide you want.
