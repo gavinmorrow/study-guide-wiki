@@ -35,14 +35,13 @@ const db = {
     users: {
         /**
          * Gets all users from the database.
-         * @returns {Promise<User[]>} An array of users.
+         * @type {() => Promise<User[]>}
          */
         getAll: getAll.bind(null, User),
 
         /**
          * Gets a user from the database.
-         * @param {string} id The id of the user.
-         * @returns {Promise<User?>} The user, or null if it doesn't exist.
+         * @type {(id: string) => Promise<User?>}
          */
         get: get.bind(null, User),
 
@@ -74,14 +73,13 @@ const db = {
     guides: {
         /**
          * Gets all guides from the database.
-         * @returns {Promise<Guide[]>} An array of guides.
+         * @type {() => Promise<Guide[]>}
          */
         getAll: getAll.bind(null, Guide),
 
         /**
          * Gets a guide from the database.
-         * @param {string} id The id of the guide.
-         * @returns {Promise<Guide?>} The guide, or null if it doesn't exist.
+         * @type {(id: string) => Promise<Guide?>}
          */
         get: get.bind(null, Guide),
 
