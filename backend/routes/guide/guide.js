@@ -1,10 +1,10 @@
 const db = require("../../db/db");
 
 /**
-	* A route to fetch the data for a guide.
-	* @param {import("express").Request} req The request object.
-	* @param {import("express").Response} res The response object.
-	*/
+ * A route to fetch the data for a guide.
+ * @param {import("express").Request} req The request object.
+ * @param {import("express").Response} res The response object.
+ */
 const GET_guide = async (req, res) => {
 	const guideId = req.params.id;
 	const userId = req.userId;
