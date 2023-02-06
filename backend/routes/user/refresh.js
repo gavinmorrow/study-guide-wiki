@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const generateAccessToken = require("../authentication/generateAccessToken");
-const generateRefreshToken = require("../authentication/generateRefreshToken");
+const generateAccessToken = require("../../authentication/generateAccessToken");
+const generateRefreshToken = require("../../authentication/generateRefreshToken");
 
 // Each refresh token is only valid for one use
 // And whenever an old token is used, the entire family of tokens is invalidated
