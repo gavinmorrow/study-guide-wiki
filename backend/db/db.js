@@ -84,6 +84,26 @@ const db = {
          * @returns {Promise<Guide?>} The guide, or null if it doesn't exist.
          */
         get: get.bind(null, Guide),
+
+        /**
+         * Adds a guide to the database.
+         * @param {Guide} guide The guide to add.
+         */
+        async add(guide) {
+            await db.raw.none(
+                "INSERT INTO guides (id, title, description, authorId, grade, subject, teacher, year) = ($1, $2, $3, $4, $5, $6, $7, $8)",
+                [
+                    guide.id,
+                    guide.title,
+                    guide.description,
+                    guide.authorId,
+                    guide.grade,
+                    guide.subject,
+                    guide.teacher,
+                    guide.year,
+                ]
+            );
+        },
     },
 };
 
