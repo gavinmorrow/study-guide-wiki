@@ -14,13 +14,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Authentication
-app.use(require("./routes/authenticate"));
+app.use(require("./routes/user/authenticate"));
 
 app.get("/", (_req, res) => res.send("Hello World!"));
-app.post("/login", require("./routes/login"));
-app.post("/signup", require("./routes/signup"));
-app.post("/refresh", require("./routes/refresh"));
-app.get("/user", require("./routes/user"));
+app.post("/login", require("./routes/user/login"));
+app.post("/signup", require("./routes/user/signup"));
+app.post("/refresh", require("./routes/user/refresh"));
+app.get("/user", require("./routes/user/user"));
 app.get("/protected", (_req, res) => {
     res.send("You are authenticated!");
 });

@@ -1,4 +1,4 @@
-const db = require("../db/db");
+const db = require("../../db/db");
 
 /** A route to get all the info of a user.  */
 const user = async (req, res) => {

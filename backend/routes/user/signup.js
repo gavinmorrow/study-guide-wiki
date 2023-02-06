@@ -1,6 +1,6 @@
-const generateAccessToken = require("../authentication/generateAccessToken");
-const db = require("../db/db");
-const User = require("../classes/User");
+const generateAccessToken = require("../../authentication/generateAccessToken");
+const db = require("../../db/db");
+const User = require("../../classes/User");
 
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
