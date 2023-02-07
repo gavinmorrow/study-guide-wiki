@@ -49,6 +49,12 @@ class PermissionLevel {
 		return new PermissionLevel("manage");
 	}
 
+	/**
+	 * The name of the permission level.
+	 * @type {string}
+	 */
+	name;
+
 	constructor(name) {
 		this.name = name;
 	}
