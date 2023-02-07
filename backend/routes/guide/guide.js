@@ -37,20 +37,9 @@ const PUT_guide = (req, res) => {};
 
 const DELETE_guide = (req, res) => {};
 
-const ALL_guide = async (req, res) => {
-	const method = req.method;
-	switch (method) {
-		case "GET":
-			return await GET_guide(req, res);
-		case "POST":
-			return POST_guide(req, res);
-		case "PUT":
-			return PUT_guide(req, res);
-		case "DELETE":
-			return DELETE_guide(req, res);
-		default:
-			return res.sendStatus(405);
-	}
+module.exports = {
+	get: GET_guide,
+	post: POST_guide,
+	put: PUT_guide,
+	delete: DELETE_guide,
 };
-
-module.exports = guide;
