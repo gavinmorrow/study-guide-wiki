@@ -178,3 +178,5 @@ class Guide {
 		);
 	}
 }
+
+module.exports = Guide;
