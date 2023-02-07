@@ -55,6 +55,7 @@ class PermissionLevel {
 	 */
 	name;
 
+	/** @param {string} name */
 	constructor(name) {
 		this.name = name;
 	}
