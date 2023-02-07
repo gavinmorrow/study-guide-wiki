@@ -121,6 +121,14 @@ const db = {
 					guide.year,
 				]
 			);
+
+			// Add people to guide
+			for (const { id: userId, permissionLevel } of guide.people) {
+				await db.raw.none(
+					"INSERT INTO guideAccess (guideId, userId, permissions) VALUES ($1, $2, $3)",
+					[guide.id, userId, permissionLevel.name]
+				);
+			}
 		},
 	},
 };
