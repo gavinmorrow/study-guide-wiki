@@ -16,13 +16,20 @@ app.use(express.urlencoded({ extended: true }));
 // Authentication
 app.use(require("./routes/user/authenticate"));
 
+// Routes
 app.get("/", (_req, res) => res.send("Hello World!"));
+app.get("/protected", (_req, res) => {
+	res.send("You are authenticated!");
+});
+
+// User routes
 app.post("/login", require("./routes/user/login"));
 app.post("/signup", require("./routes/user/signup"));
 app.post("/refresh", require("./routes/user/refresh"));
 app.get("/user", require("./routes/user/user"));
-app.get("/protected", (_req, res) => {
-    res.send("You are authenticated!");
-});
+
+// Guide routes
+const guideRoutes = require("./routes/guide/guide");
+app.get("/guide/:id", guideRoutes.get);
 
 app.listen(PORT, () => console.log(`Listening on localhost:${PORT}!`));
