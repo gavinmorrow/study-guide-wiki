@@ -25,7 +25,7 @@ const GET_guide = async (req, res) => {
 	// The permission level isn't important here because
 	// anyone in the list has at least read access.
 	if (!guideJson.people.includes(userId)) {
-		return res.sendStatus(403);
+		return res.sendStatus(401);
 	}
 
 	res.json(guideJson);
