@@ -5,6 +5,18 @@ const database = pgp(process.env.DB_URL);
 const User = require("../classes/User");
 const Guide = require("../classes/Guide");
 
+const mapUserDbToClass = user => {
+	user.displayName = user.display_name;
+	delete user.display_name;
+	return User.fromObject(user);
+};
+
+const mapGuideDbToClass = guide => {
+	guide.authorId = guide.owner_id;
+	delete guide.owner_id;
+	return Guide.fromObject(guide);
+};
+
 const db = {
 	/** Gets the raw database (pg-promise) object. */
 	get raw() {
@@ -18,7 +30,7 @@ const db = {
 		 */
 		async getAll() {
 			const users = await db.raw.any(`SELECT * FROM users`);
-			return users.map(User.fromObject);
+			return users.map(mapUserDbToClass);
 		},
 
 		/**
@@ -36,7 +48,7 @@ const db = {
 
 			if (user == null) return null;
 
-			return User.fromObject(user);
+			return mapUserDbToClass(user);
 		},
 
 		/**
@@ -46,7 +58,7 @@ const db = {
 		 */
 		async displayNameIsUsed(displayName) {
 			const user = await db.raw.oneOrNone(
-				"SELECT * FROM users WHERE displayName = $1",
+				"SELECT * FROM users WHERE display_name = $1",
 				[displayName]
 			);
 			return user != null;
@@ -58,7 +70,7 @@ const db = {
 		 */
 		async add(user) {
 			await db.raw.none(
-				"INSERT INTO users (id, password, displayName) VALUES ($1, $2, $3)",
+				"INSERT INTO users (id, password, display_name) VALUES ($1, $2, $3)",
 				[user.id, user.password, user.displayName]
 			);
 		},
@@ -71,7 +83,7 @@ const db = {
 		 */
 		async getAll() {
 			const guides = await db.raw.any(`SELECT * FROM guides`);
-			return guides.map(Guide.fromObject);
+			return guides.map(mapGuideDbToClass);
 		},
 
 		/**
@@ -88,9 +100,13 @@ const db = {
 
 			if (guide == null) return null;
 
+			// Map database columns to class properties
+			guide.displayName = guide.display_name;
+			guide.authorId = guide.owner_id;
+
 			// Fetch people who have access to the guide
 			const people = await db.raw.any(
-				"SELECT (userId, permissions) FROM guideAccess WHERE guideId = $1",
+				"SELECT (user_id, permission_level) FROM guide_access WHERE guide_id = $1",
 				[id]
 			);
 
@@ -100,7 +116,7 @@ const db = {
 				permissionLevel: permissions,
 			}));
 
-			return Guide.fromObject(guide);
+			return mapGuideDbToClass(guide);
 		},
 
 		/**
@@ -109,7 +125,7 @@ const db = {
 		 */
 		async add(guide) {
 			await db.raw.none(
-				"INSERT INTO guides (id, title, description, authorId, grade, subject, teacher, year) = ($1, $2, $3, $4, $5, $6, $7, $8)",
+				"INSERT INTO guides (id, title, description, author_id, grade, subject, teacher, year) = ($1, $2, $3, $4, $5, $6, $7, $8)",
 				[
 					guide.id,
 					guide.title,
@@ -125,7 +141,7 @@ const db = {
 			// Add people to guide
 			for (const { id: userId, permissionLevel } of guide.people) {
 				await db.raw.none(
-					"INSERT INTO guideAccess (guideId, userId, permissions) VALUES ($1, $2, $3)",
+					"INSERT INTO guide_access (guide_id, user_id, permission_level) VALUES ($1, $2, $3)",
 					[guide.id, userId, permissionLevel.name]
 				);
 			}
