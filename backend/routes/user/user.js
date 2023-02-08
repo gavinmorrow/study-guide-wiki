@@ -16,7 +16,7 @@ const user = async (req, res) => {
     const userJson = user.toJSON();
 
     // Strip the password
-    delete userJson.password;
+	delete userJson.password;
 
     // Send the JSON
     res.json(userJson);

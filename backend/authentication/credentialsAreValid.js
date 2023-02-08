@@ -8,15 +8,15 @@ const bcrypt = require("bcrypt");
  * @returns {Promise<boolean>}
  */
 const credentialsAreValid = async (id, password) => {
-    // Get the user
-    const user = await db.users.get(id);
-    if (!user) {
-        return false;
-    }
+	// Get the user
+	const user = await db.users.get(id);
+	if (user == null) {
+		return false;
+	}
 
-    // Compare the password
-    const validPassword = bcrypt.compareSync(password, user.password);
-    return validPassword;
+	// Compare the password
+	const validPassword = bcrypt.compareSync(password, user.password);
+	return validPassword;
 };
 
 module.exports = credentialsAreValid;

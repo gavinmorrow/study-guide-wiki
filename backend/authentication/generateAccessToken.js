@@ -6,17 +6,17 @@ const jwt = require("jsonwebtoken");
  * @returns {string} The token.
  */
 const generateAccessToken = id => {
-    // Ensure that the ACCESS_TOKEN_SECRET environment variable is set
-    if (!process.env.ACCESS_TOKEN_SECRET) {
-        throw new Error("ACCESS_TOKEN_SECRET environment variable is not set");
-    }
+	// Ensure that the ACCESS_TOKEN_SECRET environment variable is set
+	if (!process.env.ACCESS_TOKEN_SECRET) {
+		throw new Error("ACCESS_TOKEN_SECRET environment variable is not set");
+	}
 
-    // FIXME: change to "15m" in production
-    const expiresIn = "15s";
-    const secret = process.env.ACCESS_TOKEN_SECRET;
+	// FIXME: change to "15m" in production
+	const expiresIn = "15m";
+	const secret = process.env.ACCESS_TOKEN_SECRET;
 
-    const token = jwt.sign({ id }, secret, { expiresIn });
-    return token;
+	const token = jwt.sign({ id }, secret, { expiresIn });
+	return token;
 };
 
 module.exports = generateAccessToken;
