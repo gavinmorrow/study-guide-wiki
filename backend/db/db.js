@@ -111,14 +111,14 @@ const db = {
 
 			// Fetch people who have access to the guide
 			const people = await db.raw.any(
-				"SELECT (user_id, permission_level) FROM guide_access WHERE guide_id = $1",
+				"SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1",
 				[id]
 			);
 
 			// Add people to guide object
-			guide.people = people.map((userId, permissions) => ({
-				id: userId,
-				permissionLevel: permissions,
+			guide.people = people.map(({user_id, permission_level}) => ({
+				id: user_id,
+				permissionLevel: permission_level,
 			}));
 
 			return mapGuideDbToClass(guide);
