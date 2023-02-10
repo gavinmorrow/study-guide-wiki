@@ -77,7 +77,7 @@ const POST_guide = async (req, res) => {
 
 	// Map string permission levels to `PermissionLevel` values
 	try {
-		guideJson.people = guideJson.people.map((person, permissionString) => {
+		guideJson.people = guideJson.people.map(({ id, permissionString }) => {
 			const permissionLevel =
 				PermissionLevel.fromString(permissionString);
 
@@ -86,7 +86,7 @@ const POST_guide = async (req, res) => {
 			}
 
 			return {
-				id: person,
+				id,
 				permissionLevel,
 			};
 		});
