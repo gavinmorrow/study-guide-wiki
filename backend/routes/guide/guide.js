@@ -1,5 +1,6 @@
 const db = require("../../db/db");
 const Guide = require("../../classes/Guide");
+const PermissionLevel = require("../../classes/PermissionLevel");
 
 /**
  * A route to fetch the data for a guide.
