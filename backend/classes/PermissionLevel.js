@@ -50,6 +50,28 @@ class PermissionLevel {
 	}
 
 	/**
+	 * Converts a string to a permission level.
+	 * @param {string} permissionString
+	 * @returns {PermissionLevel}
+	 */
+	static fromString(permissionString) {
+		switch (permissionString) {
+			case "read":
+				return PermissionLevel.read;
+			case "suggest":
+				return PermissionLevel.suggest;
+			case "edit":
+				return PermissionLevel.edit;
+			case "manage":
+				return PermissionLevel.manage;
+			default:
+				console.error(`Invalid permission level: ${permissionString}`);
+
+				return null;
+		}
+	}
+
+	/**
 	 * The name of the permission level.
 	 * @type {string}
 	 */
