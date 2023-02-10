@@ -41,14 +41,19 @@ const db = {
 		async get(id) {
 			if (id == null) throw new Error("id cannot be null");
 
-			const user = await db.raw.oneOrNone(
-				`SELECT * FROM users WHERE id = $1`,
-				[id]
-			);
+			try {
+				const user = await db.raw.oneOrNone(
+					`SELECT * FROM users WHERE id = $1`,
+					[id]
+				);
 
-			if (user == null) return null;
+				if (user == null) return null;
 
-			return mapUserDbToClass(user);
+				return mapUserDbToClass(user);
+			} catch (err) {
+				console.error(err);
+				return null;
+			}
 		},
 
 		/**
