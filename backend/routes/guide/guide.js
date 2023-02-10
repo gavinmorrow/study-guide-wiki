@@ -131,13 +131,34 @@ const POST_guide = async (req, res) => {
 	res.json({ id });
 };
 
-const PUT_guide = (req, res) => {};
+const DELETE_guide = async (req, res) => {
+	const guideId = req.params.id;
+	const userId = req.userId;
 
-const DELETE_guide = (req, res) => {};
+	if (!guideId) {
+		return res.sendStatus(400);
+	}
+
+	const guide = await db.guides.get(guideId);
+	if (guide == null) {
+		return res.sendStatus(404);
+	}
+
+	// Ensure that the user is allowed to delete the guide.
+	// Only the owner can delete the guide.
+	const userHasAccess = guide.authorId === userId;
+	if (!userHasAccess) {
+		return res.sendStatus(401);
+	}
+
+	// Remove the guide from the database
+	await db.guides.remove(guideId);
+
+	res.sendStatus(200);
+};
 
 module.exports = {
 	get: GET_guide,
 	post: POST_guide,
-	put: PUT_guide,
 	delete: DELETE_guide,
 };
