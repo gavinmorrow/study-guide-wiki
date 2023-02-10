@@ -34,7 +34,102 @@ const GET_guide = async (req, res) => {
 	res.json(guideJson);
 };
 
-const POST_guide = (req, res) => {};
+/**
+ * A route to create a new guide.
+ * @param {import("express").Request} req The request object.
+ * @param {import("express").Response} res The response object.
+ */
+const POST_guide = async (req, res) => {
+	const userId = req.userId;
+
+	if (!userId) {
+		return res.sendStatus(401);
+	}
+
+	/**
+	 * @type { {
+	 * 	title: string,
+	 * 	description: string,
+	 * 	authorId: string,
+	 * 	grade: number,
+	 * 	subject: string,
+	 * 	teacher: string,
+	 * 	year: string,
+	 * 	people: [{ id: string, permissionLevel: string }]
+	 * } }
+	 */
+	const guideJson = req.body;
+	guideJson.authorId = userId;
+
+	if (
+		guideJson.title == null ||
+		guideJson.description == null ||
+		guideJson.authorId == null ||
+		guideJson.grade == null ||
+		guideJson.subject == null ||
+		guideJson.teacher == null ||
+		guideJson.year == null ||
+		guideJson.people == null
+	) {
+		return res.sendStatus(400);
+	}
+
+	// Map string permission levels to `PermissionLevel` values
+	try {
+		guideJson.people = guideJson.people.map((person, permissionString) => {
+			const permissionLevel =
+				PermissionLevel.fromString(permissionString);
+
+			if (permissionLevel == null) {
+				throw new Error("Invalid permission level");
+			}
+
+			return {
+				id: person,
+				permissionLevel,
+			};
+		});
+	} catch (err) {
+		if (err.message.startsWith("Invalid permission level")) {
+			return res.sendStatus(400);
+		} else {
+			console.error(err);
+			return res.sendStatus(500);
+		}
+	}
+
+	// Generate a random ID for the guide
+	/**
+	 * A random id for the guide.
+	 * @type {string}
+	 */
+	let id;
+
+	// Ensure that the id is unique.
+	// This is very unlikely to happen, but it's still possible.
+	// (https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions)
+	do {
+		id = crypto.randomUUID();
+	} while ((await db.guides.get(id)) != null);
+
+	// Create a guide class
+	const guide = new Guide(
+		id,
+		guideJson.title,
+		guideJson.description,
+		guideJson.authorId,
+		guideJson.grade,
+		guideJson.subject,
+		guideJson.teacher,
+		guideJson.year,
+		guideJson.people
+	);
+
+	// Add the guide to the database
+	await db.guides.add(guide);
+
+	res.json({ id });
+};
 
 const PUT_guide = (req, res) => {};
 
