@@ -1,6 +1,6 @@
-# study-guide-wiki
+# Studypedia
 
-A web app to make studying easier. It helps make study guides in a wiki format.
+A web app to make studying easier. It helps make study guides in a wiki format. The frontend is located at https://github.com/gavinmorrow/studypedia-frontend. 
 
 # API
 
