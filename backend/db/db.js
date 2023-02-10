@@ -125,7 +125,7 @@ const db = {
 		 */
 		async add(guide) {
 			await db.raw.none(
-				"INSERT INTO guides (id, title, description, author_id, grade, subject, teacher, year) = ($1, $2, $3, $4, $5, $6, $7, $8)",
+				"INSERT INTO guides (id, title, description, owner_id, grade, subject, teacher, year) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
 				[
 					guide.id,
 					guide.title,
