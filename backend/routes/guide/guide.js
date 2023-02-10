@@ -1,4 +1,5 @@
 const db = require("../../db/db");
+const Guide = require("../../classes/Guide");
 
 /**
  * A route to fetch the data for a guide.
