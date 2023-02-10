@@ -85,6 +85,26 @@ Gets the current user's information. Requires authentication.
 | id          | uuid   | The user's id           |
 | displayName | string | The user's display name |
 
+## GET /guide/:id
+
+Gets a guide. Requires authentication.
+
+### Response
+
+| Name        | Type    | Description             |
+| ----------- | ------- | ----------------------- |
+| id          | uuid    | The guide's id          |
+| title       | string  | The guide's title       |
+| description | string  | The guide's description |
+| authorId    | uuid    | The guide's author's id |
+| grade       | number  | The guide's grade       |
+| subject     | string  | The guide's subject     |
+| teacher     | string  | The guide's teacher     |
+| year        | number  | The guide's year        |
+| people      | (1) | The guide's people      |
+
+(1) `array<{ id: uuid, permissionString: string }>`.
+
 # Setup
 
 1. Install [Docker][install-docker].
