@@ -25,7 +25,9 @@ const GET_guide = async (req, res) => {
 	// Ensure that the user is allowed to view the guide.
 	// The permission level isn't important here because
 	// anyone in the list has at least read access.
-	if (!guideJson.people.includes(userId)) {
+	const userHasAccess =
+		guideJson.people.includes(userId) || guideJson.authorId === userId;
+	if (!userHasAccess) {
 		return res.sendStatus(401);
 	}
 
