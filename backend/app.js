@@ -32,6 +32,6 @@ app.get("/user", require("./routes/user/user"));
 const guideRoutes = require("./routes/guide/guide");
 app.get("/guide/:id", guideRoutes.get);
 app.post("/guide", guideRoutes.post);
-app.delete("/guide/id", guideRoutes.delete);
+app.delete("/guide/:id", guideRoutes.delete);
 
 app.listen(PORT, () => console.log(`Listening on localhost:${PORT}!`));
