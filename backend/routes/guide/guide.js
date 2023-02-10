@@ -152,7 +152,7 @@ const DELETE_guide = async (req, res) => {
 	}
 
 	// Remove the guide from the database
-	await db.guides.remove(guideId);
+	await db.guides.delete(guideId);
 
 	res.sendStatus(200);
 };
