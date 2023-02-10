@@ -31,5 +31,6 @@ app.get("/user", require("./routes/user/user"));
 // Guide routes
 const guideRoutes = require("./routes/guide/guide");
 app.get("/guide/:id", guideRoutes.get);
+app.post("/guide", guideRoutes.post);
 
 app.listen(PORT, () => console.log(`Listening on localhost:${PORT}!`));
