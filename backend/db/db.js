@@ -146,6 +146,21 @@ const db = {
 				);
 			}
 		},
+
+		/**
+		 * Deletes a guide from the database.
+		 * @param {string} id The ID of the guide to delete.
+		 */
+		async delete(id) {
+			// Ensure guide exists
+			const guide = await db.guides.get(id);
+			if (guide == null) return;
+
+			// Delete guide
+			// Because of the foreign key constraint,
+			// this will also delete all guide_access rows.
+			await db.raw.none("DELETE FROM guides WHERE id = $1", [id]);
+		},
 	},
 };
 
