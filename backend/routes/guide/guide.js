@@ -129,7 +129,7 @@ const POST_guide = async (req, res) => {
 	// Add the guide to the database
 	await db.guides.add(guide);
 
-	res.json({ id });
+	res.status(201).json({ id });
 };
 
 const DELETE_guide = async (req, res) => {
@@ -155,7 +155,7 @@ const DELETE_guide = async (req, res) => {
 	// Remove the guide from the database
 	await db.guides.delete(guideId);
 
-	res.sendStatus(200);
+	res.sendStatus(204);
 };
 
 module.exports = {
