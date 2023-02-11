@@ -91,17 +91,17 @@ Gets a guide. Requires authentication.
 
 ### Response
 
-| Name        | Type    | Description             |
-| ----------- | ------- | ----------------------- |
-| id          | uuid    | The guide's id          |
-| title       | string  | The guide's title       |
-| description | string  | The guide's description |
-| authorId    | uuid    | The guide's author's id |
-| grade       | number  | The guide's grade       |
-| subject     | string  | The guide's subject     |
-| teacher     | string  | The guide's teacher     |
-| year        | number  | The guide's year        |
-| people      | (1) | The guide's people      |
+| Name        | Type   | Description             |
+| ----------- | ------ | ----------------------- |
+| id          | uuid   | The guide's id          |
+| title       | string | The guide's title       |
+| description | string | The guide's description |
+| authorId    | uuid   | The guide's author's id |
+| grade       | number | The guide's grade       |
+| subject     | string | The guide's subject     |
+| teacher     | string | The guide's teacher     |
+| year        | number | The guide's year        |
+| people      | (1)    | The guide's people      |
 
 (1) `array<{ id: uuid, permissionString: string }>`.
 
