@@ -19,6 +19,11 @@ A web app to make studying easier. It helps make study guides in a wiki format.
     -   `string` is a string of text.
     -   `uuid` is a [version 4 universally unique identifier][uuidv4], stored as a string.
     -   `jwt` is a JSON Web Token, stored as a string.
+    -   `PermissionLevel` is a string that can be one of the following:
+        -   `manage`
+        -   `edit`
+        -   `suggest`
+        -   `read`
 
 [uuidv4]: https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)
 
@@ -103,7 +108,39 @@ Gets a guide. Requires authentication.
 | year        | number | The guide's year        |
 | people      | (1)    | The guide's people      |
 
-(1) `array<{ id: uuid, permissionString: string }>`.
+(1) `array<{ id: uuid, permissionString: PermissionLevel }>`.
+
+## POST /guide
+
+Creates a new guide. Requires authentication.
+
+### Params
+
+| Name        | Type   | Description             |
+| ----------- | ------ | ----------------------- |
+| title       | string | The guide's title       |
+| description | string | The guide's description |
+| grade       | number | The guide's grade       |
+| subject     | string | The guide's subject     |
+| teacher     | string | The guide's teacher     |
+| year        | number | The guide's year        |
+| people      | (1)    | The guide's people      |
+
+(1) `array<{ id: uuid, permissionString: PermissionLevel }>`.
+
+### Response
+
+| Name | Type | Description    |
+| ---- | ---- | -------------- |
+| id   | uuid | The guide's id |
+
+## DELETE /guide/:id
+
+Deletes a guide. Requires authentication. Requires the authenticated user to be the guide's author.
+
+## Response
+
+The response is empty. The status code will be `204 No Content`.
 
 # Setup
 
