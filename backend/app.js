@@ -34,6 +34,7 @@ app.post("/login", require("./routes/user/login"));
 app.post("/signup", require("./routes/user/signup"));
 app.post("/refresh", require("./routes/user/refresh"));
 app.get("/user", require("./routes/user/user"));
+app.get("/user/:displayName", require("./routes/user/id"));
 
 // Guide routes
 const guideRoutes = require("./routes/guide/guide");
