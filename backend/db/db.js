@@ -57,6 +57,30 @@ const db = {
 		},
 
 		/**
+		 * Gets a user's id from the database by their display name.
+		 * @param {string} displayName The display name of the user to get. If null, an error will be thrown.
+		 * @returns {Promise<string?>} The user's id, or null if not found.
+		 */
+		async getId(displayName) {
+			if (displayName == null)
+				throw new Error("displayName cannot be null");
+
+			try {
+				const user = await db.raw.oneOrNone(
+					`SELECT id FROM users WHERE display_name = $1`,
+					[displayName]
+				);
+
+				if (user == null) return null;
+
+				return user.id;
+			} catch (err) {
+				console.error(err);
+				return null;
+			}
+		},
+
+		/**
 		 * Checks if a display name is used.
 		 * @param {string} displayName The display name to check.
 		 * @returns {Promise<boolean>}
