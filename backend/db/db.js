@@ -140,7 +140,7 @@ const db = {
 			);
 
 			// Add people to guide object
-			guide.people = people.map(({user_id, permission_level}) => ({
+			guide.people = people.map(({ user_id, permission_level }) => ({
 				id: user_id,
 				permissionLevel: permission_level,
 			}));
