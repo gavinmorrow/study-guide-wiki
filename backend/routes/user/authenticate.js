@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 const whitelist = [
-	{ path: "/", method: "GET" },
-	{ path: "/login", method: "POST" },
-	{ path: "/signup", method: "POST" },
-	{ path: "/refresh", method: "POST" },
+	{ path: /^$/, method: "GET" },
+	{ path: /^login$/, method: "POST" },
+	{ path: /^signup$/, method: "POST" },
+	{ path: /^refresh$/, method: "POST" },
+	{ path: /^user\/id/, method: "GET" },
 ];
 
 /**
@@ -15,10 +16,12 @@ const whitelist = [
  */
 const authenticate = (req, res, next) => {
 	// Ensure that authentication is needed
-	const path = req.path;
+	const path = req.path.replace("/", ""); // Only replaces first / (the start of the path)
 	const method = req.method;
 	if (
-		whitelist.some(route => route.path === path && route.method === method)
+		whitelist.some(
+			route => route.path.test(path) && route.method === method
+		)
 	) {
 		return next();
 	}
