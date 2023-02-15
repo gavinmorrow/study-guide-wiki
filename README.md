@@ -1,6 +1,8 @@
 # Studypedia
 
-A web app to make studying easier. It helps make study guides in a wiki format. The frontend is located at https://github.com/gavinmorrow/studypedia-frontend. 
+A web app to make studying easier. It helps make study guides in a wiki format. 
+
+It uses Docker with NodeJS and PostgreSQL containers. 
 
 # API
 
