@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const PORT = 8080;
 
 // Generate JWT token secrets
@@ -18,7 +17,7 @@ console.log("Refresh token secret:", process.env.REFRESH_TOKEN_SECRET);
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(require("cookie-parser")());
 
 // Authentication
 app.use(require("./backend/routes/user/authenticate"));
