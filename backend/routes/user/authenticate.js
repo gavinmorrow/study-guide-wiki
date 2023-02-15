@@ -2,10 +2,16 @@ const jwt = require("jsonwebtoken");
 
 const whitelist = [
 	{ path: /^$/, method: "GET" },
-	{ path: /^login$/, method: "POST" },
-	{ path: /^signup$/, method: "POST" },
-	{ path: /^refresh$/, method: "POST" },
-	{ path: /^user\/id/, method: "GET" },
+	{ path: /^signup$/, method: "GET" },
+	{ path: /^login$/, method: "GET" },
+	{ path: /^dashboard$/, method: "GET" },
+	{ path: /^css/, method: "GET" },
+	{ path: /^js/, method: "GET" },
+	{ path: /^api$/, method: "GET" },
+	{ path: /^api\/login$/, method: "POST" },
+	{ path: /^api\/signup$/, method: "POST" },
+	{ path: /^api\/refresh$/, method: "POST" },
+	{ path: /^api\/user\/id/, method: "GET" },
 ];
 
 /**

@@ -1,0 +1,10 @@
+extends default
+
+block content
+	h1 Login
+	form#login-form(onsubmit="return false")
+		input#display-name(type="text", placeholder="Username")
+		input#password(type="password", placeholder="Password")
+		button(type="submit", value="Login")
+
+	script(src="/js/login.js", type="module")

@@ -1,0 +1,11 @@
+extends default
+
+block content
+	h1 Signup
+	form#signup-form(onsubmit="return false")
+		input#display-name(type="text", name="displayName", placeholder="Username")
+		input#password(type="password", name="password", placeholder="Password")
+		input#password2(type="password", name="password2", placeholder="Confirm Password")
+		input(type="submit", value="Signup")
+	
+	script(src="/js/signup.js", type="module")
