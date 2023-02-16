@@ -11,8 +11,7 @@ const generateAccessToken = id => {
 		throw new Error("ACCESS_TOKEN_SECRET environment variable is not set");
 	}
 
-	// FIXME: change to "15m" in production
-	const expiresIn = "15m";
+	const expiresIn = "15s";
 	const secret = process.env.ACCESS_TOKEN_SECRET;
 
 	const token = jwt.sign({ id }, secret, { expiresIn });
