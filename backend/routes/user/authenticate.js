@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
+const refreshTokens = require("../../authentication/refreshTokens");
+const setAuthCookies = require("./setAuthCookies");
 
 const whitelist = [
 	{ path: /^$/, method: "GET" },
 	{ path: /^signup$/, method: "GET" },
 	{ path: /^login$/, method: "GET" },
-	{ path: /^dashboard$/, method: "GET" },
 	{ path: /^css/, method: "GET" },
 	{ path: /^js/, method: "GET" },
 	{ path: /^api$/, method: "GET" },
@@ -13,6 +14,32 @@ const whitelist = [
 	{ path: /^api\/refresh$/, method: "POST" },
 	{ path: /^api\/user\/id/, method: "GET" },
 ];
+
+const attemptToRefreshTokens = (req, res, next) => {
+	// Try to refresh the token
+	const refreshToken = req.cookies.refreshToken;
+	if (refreshToken == null) return unauthenticatedRoute(req, res);
+
+	try {
+		const newTokens = refreshTokens(refreshToken);
+		if (newTokens == null) return unauthenticatedRoute(res);
+		setAuthCookies(res, newTokens.accessToken, newTokens.refreshToken);
+		next();
+	} catch (err) {
+		return unauthenticatedRoute(req, res);
+	}
+};
+
+const unauthenticatedRoute = (req, res) => {
+	const isApiRoute = req.path.startsWith("/api");
+	if (isApiRoute) {
+		// Direct API request
+		res.sendStatus(401);
+	} else {
+		// Frontend request
+		res.redirect("/login");
+	}
+};
 
 /**
  * A route to authenticate a user.
@@ -32,19 +59,13 @@ const authenticate = (req, res, next) => {
 		return next();
 	}
 
-	// Get the auth header value
-	const authHeader = req.headers.authorization;
-	if (authHeader == null) return res.sendStatus(401);
-
-	// Extract the token from the header
-	const token = authHeader.split(" ")[1];
-	if (token == null) return res.sendStatus(401);
+	// Get the auth cookies value
+	const token = req.cookies.authorization;
+	if (token == null) return attemptToRefreshTokens(req, res, next);
 
 	// Verify the token is valid
 	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-		if (err) {
-			return res.sendStatus(401);
-		}
+		if (err) return attemptToRefreshTokens(req, res, next);
 
 		req.userId = decoded.id;
 		next();

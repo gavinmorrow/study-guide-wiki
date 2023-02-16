@@ -14,23 +14,23 @@ let usedFamilies = new Set();
  * @returns {string} The token.
  */
 const generateRefreshToken = (id, family = null) => {
-    // Ensure that the REFRESH_TOKEN_SECRET environment variable is set
-    if (!process.env.REFRESH_TOKEN_SECRET) {
-        throw new Error("REFRESH_TOKEN_SECRET environment variable is not set");
-    }
+	// Ensure that the REFRESH_TOKEN_SECRET environment variable is set
+	if (!process.env.REFRESH_TOKEN_SECRET) {
+		throw new Error("REFRESH_TOKEN_SECRET environment variable is not set");
+	}
 
-    // Generate a new family if one was not provided
-    if (!family) {
-        do {
-            family = crypto.randomUUID();
-        } while (usedFamilies.has(family));
-        usedFamilies.add(family);
-    }
+	// Generate a new family if one was not provided
+	if (!family) {
+		do {
+			family = crypto.randomUUID();
+		} while (usedFamilies.has(family));
+		usedFamilies.add(family);
+	}
 
-    const token = jwt.sign({ id, family }, process.env.REFRESH_TOKEN_SECRET, {
-        expiresIn: "3d",
-    });
-    return token;
+	const token = jwt.sign({ id, family }, process.env.REFRESH_TOKEN_SECRET, {
+		expiresIn: "3d",
+	});
+	return token;
 };
 
 module.exports = generateRefreshToken;

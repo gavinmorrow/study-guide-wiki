@@ -1,6 +1,7 @@
 const credentialsAreValid = require("../../authentication/credentialsAreValid");
 const generateAccessToken = require("../../authentication/generateAccessToken");
 const generateRefreshToken = require("../../authentication/generateRefreshToken");
+const setAuthCookies = require("./setAuthCookies");
 
 /** A route to login a user and return a JWT. */
 const login = async (req, res) => {
@@ -21,8 +22,9 @@ const login = async (req, res) => {
 	// Generate a refresh token with the id as the payload
 	const refreshToken = generateRefreshToken(id);
 
-	// Return the token to the user
-	res.json({ accessToken, refreshToken });
+	// Set the cookie
+	setAuthCookies(res, accessToken, refreshToken);
+	res.sendStatus(204);
 };
 
 module.exports = login;

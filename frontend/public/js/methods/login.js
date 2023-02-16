@@ -10,15 +10,7 @@ const login = async (id, password) => {
 	if (id == null || password == null) return false;
 
 	const response = await request("/api/login", "POST", { id, password }, false);
-	if (!response.ok) return false;
-
-	const { accessToken, refreshToken } = await response.json();
-	if (accessToken == null || refreshToken == null) return false;
-
-	localStorage.setItem("accessToken", accessToken);
-	localStorage.setItem("refreshToken", refreshToken);
-
-	return true;
+	return response.ok;
 };
 
 export default login;

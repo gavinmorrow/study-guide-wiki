@@ -48,7 +48,6 @@ app.get("/api/protected", (_req, res) => {
 // User routes
 app.post("/api/login", require("./backend/routes/user/login"));
 app.post("/api/signup", require("./backend/routes/user/signup"));
-app.post("/api/refresh", require("./backend/routes/user/refresh"));
 app.get("/api/user", require("./backend/routes/user/user"));
 app.get("/api/user/id/:displayName", require("./backend/routes/user/id"));
 
