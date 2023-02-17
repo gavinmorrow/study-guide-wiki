@@ -11,7 +11,7 @@ const mapUserDbToClass = user => {
 	return User.fromObject(user);
 };
 
-const mapGuideDbToClass = guide => {
+const mapGuideDbToClass = async guide => {
 	guide.authorId = guide.owner_id;
 	delete guide.owner_id;
 	return Guide.fromObject(guide);
@@ -40,7 +40,7 @@ const db = {
 
 				if (user == null) return null;
 
-				return mapUserDbToClass(user);
+				return await mapUserDbToClass(user);
 			} catch (err) {
 				console.error(err);
 				return null;
@@ -127,7 +127,7 @@ const db = {
 				permissionLevel: permission_level,
 			}));
 
-			return mapGuideDbToClass(guide);
+			return await mapGuideDbToClass(guide);
 		},
 
 		/**
