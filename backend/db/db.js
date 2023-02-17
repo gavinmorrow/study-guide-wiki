@@ -14,6 +14,9 @@ const mapUserDbToClass = user => {
 const mapGuideDbToClass = async guide => {
 	guide.authorId = guide.owner_id;
 	delete guide.owner_id;
+
+	// FIXME: move get ppl logic to here
+
 	return Guide.fromObject(guide);
 };
 
