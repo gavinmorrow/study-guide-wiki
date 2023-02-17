@@ -17,7 +17,7 @@ app.set("views", "./frontend/views");
 app.set("view engine", "pug");
 
 // Routes
-app.use("/", require("./frontend/routes")); // Frontend
+app.use("/", require("./frontend/routes/routes")); // Frontend
 app.use("/api", require("./backend/routes/api")); // API
 
 app.listen(PORT, () => console.log(`Listening on localhost:${PORT}!`));
