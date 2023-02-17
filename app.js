@@ -8,6 +8,7 @@ const PORT = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(require("cookie-parser")());
+app.use(require("./backend/routes/normalizeUrl"));
 
 // Authentication
 app.use(require("./backend/routes/auth/authenticate"));
