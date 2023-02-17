@@ -25,15 +25,6 @@ const db = {
 
 	users: {
 		/**
-		 * Gets all users from the database.
-		 * @returns {Promise<User[]>}
-		 */
-		async getAll() {
-			const users = await db.raw.any(`SELECT * FROM users`);
-			return users.map(mapUserDbToClass);
-		},
-
-		/**
 		 * Gets a user from the database.
 		 * @param {string} id The UUID of the user to get. If null, an error will be thrown.
 		 * @returns {Promise<User?>} The user, or null if not found.
@@ -106,15 +97,6 @@ const db = {
 	},
 
 	guides: {
-		/**
-		 * Gets all guides from the database.
-		 * @returns {Promise<Guide[]>}
-		 */
-		async getAll() {
-			const guides = await db.raw.any(`SELECT * FROM guides`);
-			return guides.map(mapGuideDbToClass);
-		},
-
 		/**
 		 * Gets a guide from the database.
 		 * @type {(id: string) => Promise<Guide?>}
