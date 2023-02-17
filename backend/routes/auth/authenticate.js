@@ -24,6 +24,7 @@ const attemptToRefreshTokens = (req, res, next) => {
 		const newTokens = refreshTokens(refreshToken);
 		if (newTokens == null) return unauthenticatedRoute(res);
 		setAuthCookies(res, newTokens.accessToken, newTokens.refreshToken);
+		req.userId = newTokens.accessToken.userId;
 		next();
 	} catch (err) {
 		return unauthenticatedRoute(req, res);
