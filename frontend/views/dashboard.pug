@@ -2,7 +2,7 @@ extends default
 
 block content
 	h1 Hello
-		span#name
+		span#name  #{user.displayName}
 		span !
 
 	script(src="/js/dashboard.js", type="module")
