@@ -16,20 +16,8 @@ app.use(require("./backend/routes/auth/authenticate"));
 app.set("views", "./frontend/views");
 app.set("view engine", "pug");
 
-// Frontend Routes
-app.get("/", (req, res) => res.render("homepage", { title: "Studypedia" }));
-app.get("/signup", (req, res) =>
-	res.render("signup", { title: "Signup | Studypedia" })
-);
-app.get("/login", (req, res) =>
-	res.render("login", { title: "Login | Studypedia" })
-);
-app.get("/dashboard", (req, res) =>
-	res.render("dashboard", { title: "Dashboard | Studypedia" })
-);
-app.use(express.static("./frontend/public"));
-
-// API Routes
-app.use("/api", require("./backend/routes/api"));
+// Routes
+app.use("/", require("./frontend/routes")); // Frontend
+app.use("/api", require("./backend/routes/api")); // API
 
 app.listen(PORT, () => console.log(`Listening on localhost:${PORT}!`));
