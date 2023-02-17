@@ -7,7 +7,7 @@ const PermissionLevel = require("../../classes/PermissionLevel");
  * @param {import("express").Request} req The request object.
  * @param {import("express").Response} res The response object.
  */
-const GET_guide = async (req, res) => {
+const get = async (req, res) => {
 	const guideId = req.params.id;
 	const userId = req.userId;
 
@@ -40,7 +40,7 @@ const GET_guide = async (req, res) => {
  * @param {import("express").Request} req The request object.
  * @param {import("express").Response} res The response object.
  */
-const POST_guide = async (req, res) => {
+const post = async (req, res) => {
 	const userId = req.userId;
 
 	if (!userId) {
@@ -132,7 +132,7 @@ const POST_guide = async (req, res) => {
 	res.status(201).json({ id });
 };
 
-const DELETE_guide = async (req, res) => {
+const delete_ = async (req, res) => {
 	const guideId = req.params.id;
 	const userId = req.userId;
 
@@ -158,8 +158,10 @@ const DELETE_guide = async (req, res) => {
 	res.sendStatus(204);
 };
 
-module.exports = {
-	get: GET_guide,
-	post: POST_guide,
-	delete: DELETE_guide,
-};
+const express = require("express");
+const router = express.Router();
+
+router.route("/:id").get(get).delete(delete_);
+router.post("/", post);
+
+module.exports = router;
