@@ -5,9 +5,31 @@ const database = pgp(process.env.DB_URL);
 const User = require("../classes/User");
 const Guide = require("../classes/Guide");
 
-const mapUserDbToClass = user => {
+const mapUserDbToClass = async user => {
 	user.displayName = user.display_name;
 	delete user.display_name;
+
+	const guideAccess = await db.raw.any(
+		"SELECT * FROM guide_access WHERE user_id = $1",
+		[user.id]
+	);
+
+	// Collapse the array of promises into an array of guides.
+	/** @type {Guide[]} */
+	const guides = await Promise.all(
+		// Create and array of promises, each of which resolves to a guide
+		// or rejects with an error (if the guide is not found).
+		guideAccess.map(id => {
+			return new Promise((resolve, reject) => {
+				db.guides.get(id).then(guide => {
+					if (guide == null) reject("Guide not found");
+					else resolve(guide);
+				});
+			});
+		})
+	);
+	user.guides = guides;
+
 	return User.fromObject(user);
 };
 
