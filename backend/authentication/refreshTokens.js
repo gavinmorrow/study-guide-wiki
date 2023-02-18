@@ -15,7 +15,7 @@ let invalidFamilies = new Set();
 /**
  * Refreshes an access token.
  * @param {string} refreshToken The refresh token to use.
- * @returns {{accessToken: string, refreshToken: string}?} The new access and refresh tokens. If the refresh token is invalid, null is returned.
+ * @returns {{accessToken: string, refreshToken: string, id: string}?} The new access and refresh tokens, plus the user's id. If the refresh token is invalid, null is returned.
  */
 const refreshTokens = async refreshToken => {
 	// Verify the refresh token
@@ -65,7 +65,7 @@ const refreshTokens = async refreshToken => {
 	const newRefreshToken = generateRefreshToken(id, family);
 
 	// Return the new access token and refresh token
-	return { accessToken, refreshToken: newRefreshToken };
+	return { accessToken, refreshToken: newRefreshToken, id };
 };
 
 module.exports = refreshTokens;

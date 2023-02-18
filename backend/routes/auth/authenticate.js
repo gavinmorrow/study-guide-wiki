@@ -24,7 +24,9 @@ const attemptToRefreshTokens = async (req, res, next) => {
 		const newTokens = await refreshTokens(refreshToken);
 		if (newTokens == null) return unauthenticatedRoute(res);
 		setAuthCookies(res, newTokens.accessToken, newTokens.refreshToken);
-		req.userId = newTokens.accessToken.userId;
+		req.userId = newTokens.id;
+		logger.mark("Successfully refreshed tokens.");
+
 		next();
 	} catch (err) {
 		return unauthenticatedRoute(req, res);
@@ -64,13 +66,20 @@ const authenticate = async (req, res, next) => {
 	const token = req.cookies.authorization;
 	if (token == null) return await attemptToRefreshTokens(req, res, next);
 
-	// Verify the token is valid
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
-		if (err) return await attemptToRefreshTokens(req, res, next);
+	try {
+		// Verify the token is valid
+		const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
+		if (decoded.id == null) {
+			logger.trace(`Invalid access token (no id): ${decoded}`);
+			return await unauthenticatedRoute(req, res);
+		}
 		req.userId = decoded.id;
 		next();
-	});
+	} catch (err) {
+		logger.mark("Error while verifying access token:", err);
+		return await attemptToRefreshTokens(req, res, next);
+	}
 };
 
 module.exports = authenticate;
