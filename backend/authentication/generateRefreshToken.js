@@ -1,3 +1,4 @@
+const logger = require("../logger");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
@@ -16,11 +17,13 @@ let usedFamilies = new Set();
 const generateRefreshToken = (id, family = null) => {
 	// Ensure that the REFRESH_TOKEN_SECRET environment variable is set
 	if (!process.env.REFRESH_TOKEN_SECRET) {
+		logger.fatal("REFRESH_TOKEN_SECRET environment variable is not set");
 		throw new Error("REFRESH_TOKEN_SECRET environment variable is not set");
 	}
 
 	// Generate a new family if one was not provided
 	if (!family) {
+		logger.mark("Generating new refresh token family.");
 		do {
 			family = crypto.randomUUID();
 		} while (usedFamilies.has(family));
@@ -30,6 +33,7 @@ const generateRefreshToken = (id, family = null) => {
 	const token = jwt.sign({ id, family }, process.env.REFRESH_TOKEN_SECRET, {
 		expiresIn: "3d",
 	});
+	logger.mark(`Generated refresh token for user ${id}.`);
 	return token;
 };
 

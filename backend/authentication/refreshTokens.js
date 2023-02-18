@@ -1,3 +1,4 @@
+const logger = require("../logger");
 const jwt = require("jsonwebtoken");
 const generateAccessToken = require("./generateAccessToken");
 const generateRefreshToken = require("./generateRefreshToken");
@@ -30,28 +31,30 @@ const refreshTokens = async refreshToken => {
 		family = token.family;
 
 		if (id == null || family == null) {
-			console.error("Invalid refresh token:", token);
+			logger.trace("Invalid refresh token:", token);
 			return null;
 		}
 	} catch (err) {
 		if (!(err instanceof jwt.JsonWebTokenError)) {
 			throw err;
 		}
-		console.error(err);
+		logger.trace("Error validating refresh token:", err);
 
 		return null;
 	}
 
 	// Check if the refresh token family has been invalidated
 	if (invalidFamilies.has(family)) {
-		console.error("Refresh token family has been invalidated.");
+		logger.trace(
+			"Attempted to refresh a refresh token from an invalid family."
+		);
 		return null;
 	}
 
 	// If the token has been used before, invalidate the entire family
 	if (usedTokens.has(refreshToken)) {
 		invalidFamilies.add(family);
-		console.error("Refresh token has been used before.");
+		logger.trace("Refresh token has been used before.");
 		return null;
 	}
 
@@ -63,6 +66,8 @@ const refreshTokens = async refreshToken => {
 
 	// Generate a new refresh token
 	const newRefreshToken = generateRefreshToken(id, family);
+
+	logger.mark("Refreshed tokens for user", id);
 
 	// Return the new access token and refresh token
 	return { accessToken, refreshToken: newRefreshToken };

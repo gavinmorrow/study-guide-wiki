@@ -4,6 +4,8 @@ const express = require("express");
 const app = express();
 const PORT = 8080;
 
+const logger = require("./backend/logger");
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,4 +23,4 @@ app.set("view engine", "pug");
 app.use("/", require("./frontend/routes/routes")); // Frontend
 app.use("/api", require("./backend/routes/api")); // API
 
-app.listen(PORT, () => console.log(`Listening on localhost:${PORT}!`));
+app.listen(PORT, () => logger.info(`Listening on localhost:${PORT}!`));
