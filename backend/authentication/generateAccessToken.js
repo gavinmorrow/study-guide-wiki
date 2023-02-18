@@ -1,3 +1,4 @@
+const logger = require("../logger");
 const jwt = require("jsonwebtoken");
 
 /**
@@ -8,6 +9,7 @@ const jwt = require("jsonwebtoken");
 const generateAccessToken = id => {
 	// Ensure that the ACCESS_TOKEN_SECRET environment variable is set
 	if (!process.env.ACCESS_TOKEN_SECRET) {
+		logger.fatal("ACCESS_TOKEN_SECRET environment variable is not set");
 		throw new Error("ACCESS_TOKEN_SECRET environment variable is not set");
 	}
 
@@ -15,6 +17,7 @@ const generateAccessToken = id => {
 	const secret = process.env.ACCESS_TOKEN_SECRET;
 
 	const token = jwt.sign({ id }, secret, { expiresIn });
+	logger.mark(`Generated access token for user ${id}.`);
 	return token;
 };
 

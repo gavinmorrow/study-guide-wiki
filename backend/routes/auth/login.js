@@ -1,3 +1,4 @@
+const logger = require("../../logger");
 const credentialsAreValid = require("../../authentication/credentialsAreValid");
 const generateAccessToken = require("../../authentication/generateAccessToken");
 const generateRefreshToken = require("../../authentication/generateRefreshToken");
@@ -8,11 +9,13 @@ const login = async (req, res) => {
 	// Get the username and password from the request body
 	const { id, password } = req.body;
 	if (!id || !password) {
+		logger.trace("Id and password not supplied to login route.");
 		return res.status(400).send("Id and password required");
 	}
 
 	// Check if the id and password are correct
 	if (!(await credentialsAreValid(id, password))) {
+		logger.mark("Invalid credentials supplied to login route.");
 		return res.status(401).send("Invalid credentials");
 	}
 
@@ -24,6 +27,9 @@ const login = async (req, res) => {
 
 	// Set the cookie
 	setAuthCookies(res, accessToken, refreshToken);
+
+	logger.mark(`User ${id} logged in.`);
+
 	res.sendStatus(204);
 };
 
