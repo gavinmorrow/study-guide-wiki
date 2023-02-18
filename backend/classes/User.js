@@ -1,3 +1,5 @@
+const Guide = require("./Guide");
+
 /**
  * A user class. It *does not* sync with the database.
  */
