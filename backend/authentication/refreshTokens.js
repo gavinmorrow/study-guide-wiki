@@ -37,20 +37,21 @@ const refreshTokens = async refreshToken => {
 		if (!(err instanceof jwt.JsonWebTokenError)) {
 			throw err;
 		}
+		console.error(err);
 
 		return null;
 	}
 
 	// Check if the refresh token family has been invalidated
 	if (invalidFamilies.has(family)) {
-		console.error("Invalided refresh token.");
+		console.error("Refresh token family has been invalidated.");
 		return null;
 	}
 
 	// If the token has been used before, invalidate the entire family
 	if (usedTokens.has(refreshToken)) {
 		invalidFamilies.add(family);
-		console.error("Invalided refresh token.");
+		console.error("Refresh token has been used before.");
 		return null;
 	}
 
