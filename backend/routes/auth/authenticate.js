@@ -15,13 +15,13 @@ const whitelist = [
 	{ path: /^api\/user\/id/, method: "GET" },
 ];
 
-const attemptToRefreshTokens = (req, res, next) => {
+const attemptToRefreshTokens = async (req, res, next) => {
 	// Try to refresh the token
 	const refreshToken = req.cookies.refreshToken;
 	if (refreshToken == null) return unauthenticatedRoute(req, res);
 
 	try {
-		const newTokens = refreshTokens(refreshToken);
+		const newTokens = await refreshTokens(refreshToken);
 		if (newTokens == null) return unauthenticatedRoute(res);
 		setAuthCookies(res, newTokens.accessToken, newTokens.refreshToken);
 		req.userId = newTokens.accessToken.userId;
@@ -48,7 +48,7 @@ const unauthenticatedRoute = (req, res) => {
  * @param {import("express").Response} res The response.
  * @param {import("express").NextFunction} next The next function.
  */
-const authenticate = (req, res, next) => {
+const authenticate = async (req, res, next) => {
 	// Ensure that authentication is needed
 	const path = req.path.replace("/", ""); // Only replaces first / (the start of the path)
 	const method = req.method;
@@ -62,11 +62,11 @@ const authenticate = (req, res, next) => {
 
 	// Get the auth cookies value
 	const token = req.cookies.authorization;
-	if (token == null) return attemptToRefreshTokens(req, res, next);
+	if (token == null) return await attemptToRefreshTokens(req, res, next);
 
 	// Verify the token is valid
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-		if (err) return attemptToRefreshTokens(req, res, next);
+	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
+		if (err) return await attemptToRefreshTokens(req, res, next);
 
 		req.userId = decoded.id;
 		next();
