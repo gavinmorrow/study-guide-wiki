@@ -28,6 +28,16 @@ const mapUserDbToClass = async user => {
 			});
 		})
 	);
+
+	// Add any guides the user owns to the list
+	const ownedGuidesRaw = await db.raw.any(
+		"SELECT * FROM guides WHERE owner_id = $1",
+		[user.id]
+	);
+	const ownedGuides = await Promise.all(
+		ownedGuidesRaw.map(guide => mapGuideDbToClass(guide))
+	);
+	guides.push(...ownedGuides);
 	user.guides = guides;
 
 	return User.fromObject(user);
