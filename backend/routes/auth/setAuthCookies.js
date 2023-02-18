@@ -7,16 +7,18 @@
  */
 const setAuthCookies = (res, accessToken, refreshToken) => {
 	// Set the cookie
-	res.cookie("authorization", accessToken, {
-		httpOnly: true,
-		secure: process.env.NODE_ENV === "production",
-		maxAge: 1000 * 60 * 25, // *About* 15 minutes (in milliseconds)
-	});
-	res.cookie("refreshToken", refreshToken, {
-		httpOnly: true,
-		secure: process.env.NODE_ENV === "production",
-		maxAge: 1000 * 60 * 60 * 24 * 3, // *About* 3 days (in milliseconds)
-	});
+	if (accessToken != null)
+		res.cookie("authorization", accessToken, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			maxAge: 1000 * 60 * 25, // *About* 15 minutes (in milliseconds)
+		});
+	if (refreshToken != null)
+		res.cookie("refreshToken", refreshToken, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			maxAge: 1000 * 60 * 60 * 24 * 3, // *About* 3 days (in milliseconds)
+		});
 };
 
 module.exports = setAuthCookies;
