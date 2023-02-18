@@ -4,5 +4,11 @@ block content
 	h1 Hello
 		span#name  #{user.displayName}
 		span !
+	
+	h2 Guides
+	ul
+		each guide in user.guides
+			li
+				a(href=`/api/guide/${guide.id}`)= guide.title
 
 	script(src="/js/dashboard.js", type="module")
