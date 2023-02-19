@@ -6,9 +6,9 @@ block content
 		span !
 	
 	h2 Guides
+	button#new-guide-button.material-symbols-outlined add
+	include partials/newGuide
 	ul
 		each guide in user.guides
 			li
 				a(href=`/api/guide/${guide.id}`)= guide.title
-
-	script(src="/js/dashboard.js", type="module")
