@@ -1,0 +1,8 @@
+template#x-modal-template
+	link(rel="stylesheet", href="/css/modal.css")
+	dialog#outer
+		div#inner
+			button#close.material-symbols-outline close
+			slot(name="content")
+
+script(src="/js/modal.js", type="module")
