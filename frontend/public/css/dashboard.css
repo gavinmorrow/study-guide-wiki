@@ -1,0 +1,10 @@
+#new-guide {
+	display: none;
+}
+
+#new-guide.show {
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
