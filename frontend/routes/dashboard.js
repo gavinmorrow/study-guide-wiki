@@ -11,7 +11,11 @@ router.get("/", async (req, res) => {
 	}
 
 	// Render dashboard
-	res.render("dashboard", { title: "Dashboard | Studypedia", user });
+	res.render("dashboard", {
+		title: "Dashboard | Studypedia",
+		user,
+		resourceName: "dashboard",
+	});
 });
 
 module.exports = router;
