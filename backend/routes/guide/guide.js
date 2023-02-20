@@ -48,13 +48,6 @@ const get = async (req, res) => {
  * @param {import("express").Response} res The response object.
  */
 const post = async (req, res) => {
-	const userId = req.userId;
-
-	if (!userId) {
-		logger.trace("No user id supplied to guide route.");
-		return res.sendStatus(401);
-	}
-
 	/**
 	 * @type { {
 	 * 	title: string,
@@ -68,7 +61,7 @@ const post = async (req, res) => {
 	 * } }
 	 */
 	const guideJson = req.body;
-	guideJson.authorId = userId;
+	guideJson.authorId = req.userId;
 
 	if (
 		guideJson.title == null ||
