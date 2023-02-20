@@ -1,5 +1,12 @@
-include modal
-x-modal
+link(rel="stylesheet", href="/css/modal.css")
+dialog#create-guide-modal
+	form(method="dialog")
+		button.modal-close.material-symbols-outlined(tabindex=0) close
 	form(slot="content")
-		input(name="title", placeholder="Title")
+		input(name="title", placeholder="Title", autofocus)
+		input(name="description", placeholder="Description")
+		input(name="grade", placeholder="Grade", type="number", min="1", max="12", step="1")
+		input(name="subject", placeholder="Subject")
+		input(name="teacher", placeholder="Teacher")
+		input(name="year", placeholder="Year", type="number", min="2023", step="1", value="2023")
 		input(type="submit") 
