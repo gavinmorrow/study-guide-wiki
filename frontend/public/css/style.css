@@ -1,18 +1,97 @@
 :root {
-	--bg-color: white;
-	--text-color: black;
+	--color-bg-root: #ffffff;
+	--color-bg-default: #fafafa;
+	--color-bg-higher: #f0f0f0;
+	--color-bg-highest: #e0e0e0;
+
+	--color-foreground-default: #000;
+	--color-foreground-dimmer: #666;
+	--color-foreground-dimmest: #aaa;
+
+	--color-outline-default: #000;
+	--color-outline-weak: #aaa;
+	--color-outline-weaker: #888;
+	--color-outline-weakest: #555;
+
+	--border-emphasis: 1px solid var(--color-outline-default);
+	--border-default: 1px solid var(--color-outline-weak);
+	--border-subtle: 1px solid var(--color-outline-weakest);
+
+	--border-radius-default: 0.5em;
+
+	--padding-x-small: 0.25em;
+	--padding-small: 0.5em;
+	--padding-default: 1em;
+	--padding-large: 2em;
+	--padding-x-large: 3em;
+
+	--margin-x-small: 0.25em;
+	--margin-small: 0.5em;
+	--margin-default: 1em;
+	--margin-large: 2em;
+	--margin-x-large: 3em;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bg-color: #112;
-		--text-color: #fff;
+		--color-bg-root: #0a0a1a;
+		--color-bg-default: #1a1a2a;
+		--color-bg-higher: #2a2a3a;
+		--color-bg-highest: #3a3a4a;
+
+		--color-foreground-default: #f0f0f0;
+		--color-foreground-dimmer: #e0e0e0;
+		--color-foreground-dimmest: #a0a0a0;
+
+		--color-outline-default: #f0f0f0;
+		--color-outline-weak: #a0a0a0;
+		--color-outline-weaker: #808080;
+		--color-outline-weakest: #505050;
 	}
 }
 
 html {
 	margin: 0;
 	padding: 0;
-	background-color: var(--bg-color);
-	color: var(--text-color);
+	background-color: var(--color-bg-root);
+	color: var(--color-foreground-default);
+}
+
+input {
+	display: block;
+	transition: border 0.22s ease-in-out;
+
+	background-color: var(--color-bg-higher);
+	color: var(--color-foreground-default);
+
+	border: var(--border-subtle);
+	border-radius: var(--border-radius-default);
+
+	padding: var(--padding-small);
+	margin: var(--margin-small) 0;
+}
+
+input:focus {
+	border: var(--border-emphasis);
+	outline: none;
+}
+
+button,
+input[type="submit"] {
+	transition: border 0.22s ease-in-out;
+
+	background-color: var(--color-bg-higher);
+	color: var(--color-foreground-default);
+
+	border: var(--border-subtle);
+	border-radius: var(--border-radius-default);
+
+	padding: var(--padding-small);
+	margin: var(--margin-small) 0;
+}
+
+:is(button, input[type="submit"]):focus,
+:is(button, input[type="submit"]):hover {
+	border: var(--border-emphasis);
+	outline: none;
 }
