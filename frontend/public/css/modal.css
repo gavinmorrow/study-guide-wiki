@@ -1,35 +1,21 @@
-#outer {
-	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	margin: 0;
-	background-color: rgba(0, 0, 0, 0.75);
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-#outer.closed {
-	display: none;
-}
-
-#inner {
-	background-color: var(--bg-color);
-	padding: 1rem;
-	border-radius: 1rem;
-	position: relative;
-	margin: auto;
-}
-
-#close {
-	position: absolute;
-	top: 0.1rem;
-	right: 0.1rem;
-	background-color: transparent;
+dialog {
+	background-color: var(--color-bg-default);
+	color: var(--text-color);
+	padding: 1em;
+	border-radius: 1em;
 	border: none;
-	color: white;
+}
+
+dialog::backdrop {
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+dialog .modal-close {
+	background-color: transparent;
+	border: var(--border-default);
+	border-color: transparent;
+	color: var(--color-foreground-dimmest);
 	padding: 0;
+	display: block;
+	margin-bottom: 0.5em;
 }
