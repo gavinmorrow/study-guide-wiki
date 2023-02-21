@@ -1,0 +1,7 @@
+link(rel="stylesheet", href="/css/modal.css")
+
+mixin modal(id)
+	dialog&attributes(attributes)
+		form(method="dialog")
+			button.modal-close.material-symbols-outlined(tabindex=0) close
+		block
