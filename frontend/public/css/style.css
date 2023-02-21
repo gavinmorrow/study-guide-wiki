@@ -8,6 +8,7 @@
 	--color-foreground-dimmer: #666;
 	--color-foreground-dimmest: #aaa;
 
+	--color-outline-error: #f00;
 	--color-outline-default: #000;
 	--color-outline-weak: #aaa;
 	--color-outline-weaker: #888;
@@ -60,7 +61,7 @@ html {
 
 input {
 	display: block;
-	transition: border 0.22s ease-in-out;
+	transition: 0.22s ease-in-out;
 
 	background-color: var(--color-bg-highest);
 	color: var(--color-foreground-default);
@@ -79,7 +80,7 @@ input:focus {
 
 button,
 input[type="submit"] {
-	transition: border 0.22s ease-in-out;
+	transition: 0.22s ease-in-out;
 
 	background-color: var(--color-bg-higher);
 	color: var(--color-foreground-default);
@@ -95,4 +96,9 @@ input[type="submit"] {
 :is(button, input[type="submit"]):hover {
 	border: var(--border-emphasis);
 	outline: none;
+}
+
+form input.error {
+	border: var(--border-emphasis);
+	border-color: var(--color-outline-error);
 }
