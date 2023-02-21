@@ -18,12 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS guides (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title VARCHAR(255) NOT NULL,
-  description VARCHAR(255) NOT NULL DEFAULT '',
   owner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  grade INT NOT NULL,
-  subject VARCHAR(255) NOT NULL,
-  teacher VARCHAR(255) NOT NULL,
-  year INT NOT NULL
 );
 
 CREATE TYPE permission_levels AS ENUM ('read', 'suggest', 'edit', 'manage');
