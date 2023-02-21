@@ -3,11 +3,7 @@ include ../mixins/modal
 +modal()#create-guide-modal
 	form#create-guide-modal-form(onsubmit="return false;", slot="content")
 		input(name="title", placeholder="Title", autofocus)
-		input(name="description", placeholder="Description")
 		input(name="grade", placeholder="Grade", type="number", min="1", max="12", step="1")
-		input(name="subject", placeholder="Subject")
-		input(name="teacher", placeholder="Teacher")
-		input(name="year", placeholder="Year", type="number", min="2023", step="1", value="2023")
 		input(type="submit", value="Create Guide", style="margin: 0")
 
 script(src="/js/newGuide.js", type="module")
