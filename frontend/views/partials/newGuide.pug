@@ -1,7 +1,7 @@
 include ../mixins/modal
 
 +modal()#create-guide-modal
-	form.new-guide-form(onsubmit="return false;", slot="content")
+	form#create-guide-modal-form(onsubmit="return false;", slot="content")
 		input(name="title", placeholder="Title", autofocus)
 		input(name="description", placeholder="Description")
 		input(name="grade", placeholder="Grade", type="number", min="1", max="12", step="1")
