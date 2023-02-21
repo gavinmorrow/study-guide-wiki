@@ -23,15 +23,6 @@ class Guide {
 	#title;
 
 	/**
-	 * The description of the guide. Deafults to an empty string.
-	 * @type {string}
-	 */
-	get description() {
-		return this.#description;
-	}
-	#description = "";
-
-	/**
 	 * The author of the guide's UUID.
 	 * @type {uuid}
 	 */
@@ -39,42 +30,6 @@ class Guide {
 		return this.#authorId;
 	}
 	#authorId;
-
-	/**
-	 * The grade of the guide.
-	 * @type {number}
-	 */
-	get grade() {
-		return this.#grade;
-	}
-	#grade;
-
-	/**
-	 * The subject of the guide.
-	 * @type {string}
-	 */
-	get subject() {
-		return this.#subject;
-	}
-	#subject;
-
-	/**
-	 * The teacher of the guide.
-	 * @type {string}
-	 */
-	get teacher() {
-		return this.#teacher;
-	}
-	#teacher;
-
-	/**
-	 * The year of the guide.
-	 * @type {number}
-	 */
-	get year() {
-		return this.#year;
-	}
-	#year;
 
 	/**
 	 * The people who have access to the guide, and their permission level.
@@ -91,33 +46,13 @@ class Guide {
 	/**
 	 * @param {string} id The id of the guide. This is a UUID.
 	 * @param {string} title The title of the guide.
-	 * @param {string} description The description of the guide.
 	 * @param {uuid} authorId The author of the guide's UUID.
-	 * @param {number} grade The grade of the guide.
-	 * @param {string} subject The subject of the guide.
-	 * @param {string} teacher The teacher of the guide.
-	 * @param {number} year The year of the guide.
 	 * @param {[{ id: string, permissionLevel: PermissionLevel }]} [people=[]] The people who have access to the guide, and their permission level. This should *not* include the author. Defaults to an empty array.
 	 */
-	constructor(
-		id,
-		title,
-		description,
-		authorId,
-		grade,
-		subject,
-		teacher,
-		year,
-		people = []
-	) {
+	constructor(id, title, authorId, people = []) {
 		this.#id = id;
 		this.#title = title;
-		this.#description = description;
 		this.#authorId = authorId;
-		this.#grade = grade;
-		this.#subject = subject;
-		this.#teacher = teacher;
-		this.#year = year;
 		this.#people = people;
 	}
 
@@ -126,12 +61,7 @@ class Guide {
 	 * @returns { {
 	 * 	id: string,
 	 * 	title: string,
-	 * 	description: string,
 	 * 	authorId: string,
-	 * 	grade: number,
-	 * 	subject: string,
-	 * 	teacher: string,
-	 * 	year: string,
 	 * 	people: [{ id: string, permissionLevel: PermissionLevel }]
 	 * } } The JSON representation of the guide.
 	 */
@@ -139,12 +69,7 @@ class Guide {
 		return {
 			id: this.id,
 			title: this.title,
-			description: this.description,
 			authorId: this.authorId,
-			grade: this.grade,
-			subject: this.subject,
-			teacher: this.teacher,
-			year: this.year,
 			people: this.people,
 		};
 	}
@@ -154,28 +79,13 @@ class Guide {
 	 * @param { {
 	 * 	id: string,
 	 * 	title: string,
-	 * 	description: string,
 	 * 	authorId: string,
-	 * 	grade: number,
-	 * 	subject: string,
-	 * 	teacher: string,
-	 * 	year: string,
 	 * 	people: [{ id: string, permissionLevel: PermissionLevel }]
 	 * } } guide The guide object to convert.
 	 * @returns {Guide}
 	 */
 	static fromObject(guide) {
-		return new Guide(
-			guide.id,
-			guide.title,
-			guide.description,
-			guide.authorId,
-			guide.grade,
-			guide.subject,
-			guide.teacher,
-			guide.year,
-			guide.people
-		);
+		return new Guide(guide.id, guide.title, guide.authorId, guide.people);
 	}
 }
 

@@ -51,12 +51,7 @@ const post = async (req, res) => {
 	/**
 	 * @type { {
 	 * 	title: string,
-	 * 	description: string,
 	 * 	authorId: string,
-	 * 	grade: number,
-	 * 	subject: string,
-	 * 	teacher: string,
-	 * 	year: string,
 	 * 	people: [{ id: string, permissionLevel: string }]
 	 * } }
 	 */
@@ -65,12 +60,7 @@ const post = async (req, res) => {
 
 	if (
 		guideJson.title == null ||
-		guideJson.description == null ||
 		guideJson.authorId == null ||
-		guideJson.grade == null ||
-		guideJson.subject == null ||
-		guideJson.teacher == null ||
-		guideJson.year == null ||
 		guideJson.people == null
 	) {
 		logger.trace("Invalid guide data supplied to guide route.");
@@ -122,12 +112,7 @@ const post = async (req, res) => {
 	const guide = new Guide(
 		id,
 		guideJson.title,
-		guideJson.description,
 		guideJson.authorId,
-		guideJson.grade,
-		guideJson.subject,
-		guideJson.teacher,
-		guideJson.year,
 		guideJson.people
 	);
 
