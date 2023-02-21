@@ -174,7 +174,6 @@ const db = {
 				if (guide == null) return null;
 
 				// Map database columns to class properties
-				guide.displayName = guide.display_name;
 				guide.authorId = guide.owner_id;
 
 				// Fetch people who have access to the guide
@@ -205,17 +204,8 @@ const db = {
 		async add(guide) {
 			try {
 				await db.raw.none(
-					"INSERT INTO guides (id, title, description, owner_id, grade, subject, teacher, year) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
-					[
-						guide.id,
-						guide.title,
-						guide.description,
-						guide.authorId,
-						guide.grade,
-						guide.subject,
-						guide.teacher,
-						guide.year,
-					]
+					"INSERT INTO guides (id, title, owner_id) VALUES ($1, $2, $3)",
+					[guide.id, guide.title, guide.authorId]
 				);
 
 				logger.mark(`Added guide ${guide.id} to database`);
