@@ -3,7 +3,7 @@ const db = require("../../db/db");
 /** A route to get all the info of a user.  */
 const user = async (req, res) => {
 	// Get the id
-	const id = req.userId;
+	const id = req.params.id;
 	if (id == null) {
 		logger.trace("No id provided to get user route.");
 		return res.status(400).send("No id provided.");
