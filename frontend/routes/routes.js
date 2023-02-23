@@ -9,6 +9,7 @@ router.get("/login", (req, res) =>
 	res.render("login", { title: "Login | Studypedia" })
 );
 router.use("/dashboard", require("./dashboard"));
+router.use("/guide", require("./guide"));
 router.use(express.static("./frontend/public"));
 
 module.exports = router;
