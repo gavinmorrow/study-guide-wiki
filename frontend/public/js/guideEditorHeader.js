@@ -6,7 +6,7 @@ const changeTitle = async newTitle => {
 		.querySelector("meta[name='data-guide-id']")
 		.getAttribute("content");
 
-	const response = await request("/guide", "PATCH", {
+	const response = await request("/api/guide", "PATCH", {
 		id,
 		newTitle,
 	});
