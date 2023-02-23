@@ -1,18 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+
 :root {
 	--color-bg-root: #ffffff;
-	--color-bg-default: #fafafa;
-	--color-bg-higher: #f0f0f0;
-	--color-bg-highest: #e0e0e0;
+	--color-bg-default: #eaeaea;
+	--color-bg-higher: #dadada;
+	--color-bg-highest: #cacaca;
 
 	--color-foreground-default: #000;
 	--color-foreground-dimmer: #666;
 	--color-foreground-dimmest: #aaa;
 
+	--color-link-default: #0000ee;
+
 	--color-outline-error: #f00;
 	--color-outline-default: #000;
-	--color-outline-weak: #aaa;
+	--color-outline-weak: #555;
 	--color-outline-weaker: #888;
-	--color-outline-weakest: #555;
+	--color-outline-weakest: #aaa;
 
 	--border-emphasis: 1px solid var(--color-outline-default);
 	--border-default: 1px solid var(--color-outline-weak);
@@ -32,6 +36,15 @@
 	--margin-default: 1em;
 	--margin-large: 2em;
 	--margin-x-large: 3em;
+
+	--font-family-body: "Quicksand", sans-serif;
+	--font-family-heading: "Quicksand", sans-serif;
+
+	--font-weight-h1: 700;
+	--font-weight-h2: 600;
+	--font-weight-h3: 500;
+
+	--transition-default: 0.22s ease-in-out;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,11 +58,17 @@
 		--color-foreground-dimmer: #e0e0e0;
 		--color-foreground-dimmest: #a0a0a0;
 
+		--color-link-default: #0f5aee;
+
 		--color-outline-default: #f0f0f0;
 		--color-outline-weak: #a0a0a0;
 		--color-outline-weaker: #808080;
 		--color-outline-weakest: #505050;
 	}
+}
+
+* {
+	font-family: var(--font-family-body);
 }
 
 html {
@@ -59,29 +78,27 @@ html {
 	color: var(--color-foreground-default);
 }
 
-input {
-	display: block;
-	transition: 0.22s ease-in-out;
-
-	background-color: var(--color-bg-highest);
-	color: var(--color-foreground-default);
-
-	border: var(--border-subtle);
-	border-radius: var(--border-radius-default);
-
-	padding: var(--padding-small);
-	margin: var(--margin-small) 0;
+h1,
+h2,
+h3 {
+	font-family: var(--font-family-heading);
 }
 
-input:focus {
-	border: var(--border-emphasis);
-	outline: none;
+h1 {
+	font-weight: var(--font-weight-h1);
+}
+
+h2 {
+	font-weight: var(--font-weight-h2);
+}
+
+h3 {
+	font-weight: var(--font-weight-h3);
 }
 
 button,
-input[type="submit"] {
-	transition: 0.22s ease-in-out;
-
+input {
+	transition: border var(--transition-default);
 	background-color: var(--color-bg-higher);
 	color: var(--color-foreground-default);
 
@@ -92,8 +109,13 @@ input[type="submit"] {
 	margin: var(--margin-small) 0;
 }
 
-:is(button, input[type="submit"]):focus,
-:is(button, input[type="submit"]):hover {
+input:not([type="submit"]) {
+	display: block;
+	background-color: var(--color-bg-highest);
+}
+
+:is(button, input):focus,
+:is(button, input):hover {
 	border: var(--border-emphasis);
 	outline: none;
 }
