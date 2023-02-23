@@ -1,0 +1,28 @@
+#outer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	background-color: var(--color-bg-default);
+	border-radius: var(--border-radius-default);
+	margin: 0;
+
+	transition: background-color var(--transition-default);
+}
+
+#title {
+	font-size: x-large;
+}
+
+#link {
+	color: var(--color-text-default);
+	text-decoration: none;
+}
+
+#link:hover article,
+#link:focus-within article,
+#link:active article,
+#link:target article {
+	background-color: var(--color-bg-higher);
+}
