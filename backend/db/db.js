@@ -224,6 +224,21 @@ const db = {
 			}
 		},
 
+		async updateTitle(id, newTitle) {
+			try {
+				await db.raw.none(
+					"UPDATE guides SET title = $1 WHERE id = $2",
+					[newTitle, id]
+				);
+
+				logger.mark(`Updated title of guide ${id} to ${newTitle}`);
+				return true;
+			} catch (err) {
+				logger.error("Error updating guide:", err);
+				return false;
+			}
+		},
+
 		/**
 		 * Deletes a guide from the database.
 		 * @param {string} id The ID of the guide to delete.
