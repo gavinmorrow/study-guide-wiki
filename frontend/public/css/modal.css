@@ -16,10 +16,12 @@ dialog .modal-close {
 	padding: 0;
 	margin: 0;
 
+	color: var(--color-foreground-dimmest);
+	background-color: transparent;
+}
+
+dialog .modal-close:not(:hover, :focus) {
 	/* So that the border width doesn't change */
 	border: var(--border-default);
 	border-color: transparent;
-
-	color: var(--color-foreground-dimmest);
-	background-color: transparent;
 }
