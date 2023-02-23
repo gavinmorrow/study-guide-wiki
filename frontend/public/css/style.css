@@ -22,8 +22,9 @@
 	--border-default: 1px solid var(--color-outline-weak);
 	--border-subtle: 1px solid var(--color-outline-weakest);
 
-	--border-radius-default: 0.5em;
 	--border-radius-small: 0.25em;
+	--border-radius-default: 0.5em;
+	--border-radius-large: 1em;
 
 	--padding-x-small: 0.25em;
 	--padding-small: 0.5em;
@@ -45,6 +46,8 @@
 	--font-weight-h3: 500;
 
 	--transition-default: 0.22s ease-in-out;
+
+	--blur-default: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -76,6 +79,11 @@ html {
 	padding: 0;
 	background-color: var(--color-bg-root);
 	color: var(--color-foreground-default);
+}
+
+body {
+	padding: var(--padding-default);
+	margin: 0;
 }
 
 h1,
