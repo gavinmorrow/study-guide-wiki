@@ -1,3 +1,4 @@
+const logger = require("../../logger");
 const db = require("../../db/db");
 
 /** A route to get all the info of a user.  */
