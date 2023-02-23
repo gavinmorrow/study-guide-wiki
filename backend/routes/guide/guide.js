@@ -126,6 +126,50 @@ const post = async (req, res) => {
 	logger.mark(`Guide ${id} successfully sent to client.`);
 };
 
+const patch = async (req, res) => {
+	const { id: guideId, newTitle } = req.body;
+	const userId = req.userId;
+
+	if (guideId == null || newTitle == null || newTitle?.length === 0) {
+		logger.trace("Invalid guide data supplied to guide route.");
+		return res.sendStatus(400);
+	}
+
+	const guide = await db.guides.get(guideId);
+	if (guide == null) {
+		logger.trace(
+			`Guide ${guideId} not found in database when attempting to update.`
+		);
+		return res.sendStatus(404);
+	}
+
+	// Ensure that the user is allowed to update the guide.
+	// Must be owner or have manage permissions.
+	const userHasAccess =
+		guide.authorId === userId ||
+		guide.people.filter(
+			({ id, permissionLevel }) =>
+				id === userId && permissionLevel === PermissionLevel.manage
+		).length === 1;
+
+	if (!userHasAccess) {
+		logger.trace(
+			`User ${userId} does not have access to update guide ${guideId}.`
+		);
+		return res.sendStatus(401);
+	}
+
+	// Update the guide
+	const response = await db.guides.updateTitle(guideId, newTitle);
+	if (response) {
+		logger.mark(`Guide ${guideId} successfully updated.`);
+		res.sendStatus(200);
+	} else {
+		logger.trace(`Guide ${guideId} failed to update.`);
+		res.sendStatus(500);
+	}
+};
+
 const delete_ = async (req, res) => {
 	const guideId = req.params.id;
 	const userId = req.userId;
@@ -165,6 +209,6 @@ const express = require("express");
 const router = express.Router();
 
 router.route("/:id").get(get).delete(delete_);
-router.post("/", post);
+router.route("/").post(post).patch(patch);
 
 module.exports = router;
