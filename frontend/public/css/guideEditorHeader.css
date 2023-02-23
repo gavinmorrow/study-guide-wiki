@@ -1,4 +1,4 @@
-#guideEditorHeader {
+#guide-editor-header {
 	position: sticky;
 	top: var(--margin-small);
 
@@ -20,7 +20,7 @@
 }
 
 /* From https://stackoverflow.com/a/26200863/15920018 */
-#guideEditorHeader::after {
+#guide-editor-header::after {
 	content: "";
 	position: absolute;
 	top: 0;
@@ -36,10 +36,27 @@
 	z-index: -1;
 }
 
-#guideEditorHeader > h1 {
+#guide-editor-header > * {
+	margin: 0;
+}
+
+#guide-editor-header + * {
+	/* Header already has margin-bottom */
+	margin-top: 0;
+}
+
+#guide-editor-header > h1 {
+	font-size: medium;
 	font-weight: normal;
 }
 
-#guideEditorHeader > * {
-	margin: 0;
+#guide-editor-header > h1 > input {
+	font-size: inherit;
+	margin: calc(-1 * var(--margin-small));
+	border-color: transparent;
+	background-color: transparent;
+}
+
+#guide-editor-header > h1 > :is(input:hover, input:focus) {
+	border: var(--border-emphasis);
 }
