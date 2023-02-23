@@ -1,3 +1,22 @@
 #new-guide-button {
 	font-size: large;
 }
+
+#guides {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-gap: var(--margin-default);
+
+	list-style-type: none;
+	padding: 0;
+}
+
+#guides > * {
+	display: inline-block;
+}
+
+#guides-header-wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
