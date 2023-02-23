@@ -1,0 +1,45 @@
+#guideEditorHeader {
+	position: sticky;
+	top: var(--margin-small);
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
+	padding: var(--padding-default);
+
+	/* Negative margin to compensate for body padding */
+	margin: calc(-1 * var(--margin-small));
+	margin-bottom: var(--margin-small);
+
+	/* In here not ::after because for some 
+	   reason it doesn't work there. */
+	backdrop-filter: blur(var(--blur-default));
+	-webkit-backdrop-filter: blur(var(--blur-default));
+}
+
+/* From https://stackoverflow.com/a/26200863/15920018 */
+#guideEditorHeader::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	/* Higher not default because of opacity */
+	background-color: var(--color-bg-higher);
+	opacity: 0.75;
+
+	border-radius: var(--border-radius-large);
+	z-index: -1;
+}
+
+#guideEditorHeader > h1 {
+	font-weight: normal;
+}
+
+#guideEditorHeader > * {
+	margin: 0;
+}
