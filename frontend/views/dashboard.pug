@@ -1,14 +1,19 @@
 extends layouts/default
 
 block content
+	include components/guideCard
+
 	h1 Hello
 		span#name  #{user.displayName}
 		span !
 	
-	h2 Guides
-	button#new-guide-button.material-symbols-outlined add
+	div#guides-header-wrapper
+		h2 Guides
+		button#new-guide-button.material-symbols-outlined add
+		
 	include partials/newGuide
-	ul
+
+	ul#guides
 		each guide in user.guides
 			li
-				a(href=`/api/guide/${guide.id}`)= guide.title
+				guide-card(data-id= guide.id, data-title= guide.title)
