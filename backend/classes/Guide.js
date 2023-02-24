@@ -66,14 +66,8 @@ class Guide {
 		return this.#data.people;
 	}
 
-	/**
-	 * @param {string} id The id of the guide. This is a UUID.
-	 * @param {string} title The title of the guide.
-	 * @param {uuid} authorId The author of the guide's UUID.
-	 * @param {GuideSection[]} sections The sections of the guide.
-	 * @param {[{ id: string, permissionLevel: PermissionLevel }]} [people=[]] The people who have access to the guide, and their permission level. This should *not* include the author. Defaults to an empty array.
-	 */
-	constructor(id, title, authorId, sections, people = []) {
+	/** @param {GuideData} data The data to use for this guide. */
+	constructor(data) {
 		this.#data = { id, title, authorId, sections, people };
 	}
 
