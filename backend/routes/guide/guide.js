@@ -52,7 +52,7 @@ const post = async (req, res) => {
 	 * @type { {
 	 * 	title: string,
 	 * 	authorId: string,
-	 * 	people: [{ id: string, permissionLevel: string }]
+	 * 	people: [import("../../classes/Guide").PermissionData[]]
 	 * } }
 	 */
 	const guideJson = req.body;
@@ -109,17 +109,21 @@ const post = async (req, res) => {
 	} while ((await db.guides.get(id)) != null);
 
 	// Create a guide class
-	const guide = new Guide(
+	const guide = new Guide({
 		id,
-		guideJson.title,
-		guideJson.authorId,
-		guideJson.people
-	);
+		title: guideJson.title,
+		authorId: guideJson.authorId,
+		people: guideJson.people,
+	});
 
 	// Add the guide to the database
-	await db.guides.add(guide);
+	const guideAddedToDb = await db.guides.add(guide);
+	if (!guideAddedToDb) {
+		logger.trace(`Guide ${id} failed to be added to database.`);
+		return res.sendStatus(500);
+	}
 
-	logger.mark(`Guide ${id} successfully created and added to database.`);
+	logger.info(`Guide ${id} successfully created and added to database.`);
 
 	res.status(201).json({ id });
 

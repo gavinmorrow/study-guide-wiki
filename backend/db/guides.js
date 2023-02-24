@@ -8,7 +8,7 @@ const mapGuideDbToClass = async guide => {
 
 	// FIXME: move get ppl logic to here
 
-	return Guide.fromObject(guide);
+	return new Guide(guide);
 };
 
 const guides = {
@@ -56,6 +56,7 @@ const guides = {
 	/**
 	 * Adds a guide to the database.
 	 * @param {Guide} guide The guide to add.
+	 * @returns {Promise<boolean>} Whether the guide was added successfully.
 	 */
 	async add(guide) {
 		try {
@@ -75,11 +76,19 @@ const guides = {
 			}
 
 			logger.mark(`Added people to guide ${guide.id}`);
+			return true;
 		} catch (err) {
 			logger.error("Error adding guide to database:", err);
+			return false;
 		}
 	},
 
+	/**
+	 * Updates the title of a guide.
+	 * @param {string} id The ID of the guide to update.
+	 * @param {string} newTitle The new title of the guide.
+	 * @returns {Promise<boolean>} Whether the title was updated successfully.
+	 */
 	async updateTitle(id, newTitle) {
 		try {
 			await db.none("UPDATE guides SET title = $1 WHERE id = $2", [
@@ -98,6 +107,7 @@ const guides = {
 	/**
 	 * Deletes a guide from the database.
 	 * @param {string} id The ID of the guide to delete.
+	 * @returns {Promise<boolean>} Whether the guide was deleted successfully.
 	 */
 	async delete(id) {
 		// Ensure guide exists
@@ -110,8 +120,10 @@ const guides = {
 			// this will also delete all guide_access rows.
 			await db.none("DELETE FROM guides WHERE id = $1", [id]);
 			logger.mark(`Deleted guide ${id}`);
+			return true;
 		} catch (err) {
 			logger.error("Error deleting guide:", err);
+			return false;
 		}
 	},
 };
