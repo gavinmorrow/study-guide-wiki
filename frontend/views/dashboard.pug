@@ -14,6 +14,6 @@ block content
 	include partials/newGuide
 
 	ul#guides
-		each guide in user.guides
+		each guide in guides
 			li
 				guide-card(data-id= guide.id, data-title= guide.title)

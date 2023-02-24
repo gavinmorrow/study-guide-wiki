@@ -10,10 +10,16 @@ router.get("/", async (req, res) => {
 		return res.sendStatus(401);
 	}
 
+	// Resolve guides
+	const guides = await Promise.all(
+		user.guides.map(async guideId => await db.guides.get(guideId))
+	);
+
 	// Render dashboard
 	res.render("dashboard", {
 		title: "Dashboard | Studypedia",
 		user,
+		guides,
 		resourceName: "dashboard",
 	});
 });

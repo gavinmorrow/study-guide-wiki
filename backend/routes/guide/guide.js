@@ -83,7 +83,7 @@ const post = async (req, res) => {
 				permissionLevel,
 			};
 		});
-		logger.trace("Successfully mapped permission levels.");
+		logger.mark("Successfully mapped permission levels.");
 	} catch (err) {
 		if (err.message.startsWith("Invalid permission level")) {
 			return res.sendStatus(400);

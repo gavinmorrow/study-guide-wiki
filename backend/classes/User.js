@@ -36,8 +36,8 @@ class User {
 	#displayName;
 
 	/**
-	 * The guides the user is a part of.
-	 * @type {Array<Guide>}
+	 * The ids of the guides the user is a part of.
+	 * @type {Array<string>}
 	 */
 	get guides() {
 		return this.#guides;
@@ -48,7 +48,7 @@ class User {
 	 * @param {string} id The id of the user. This is a UUID.
 	 * @param {string} password The password of the user. This is hashed with bcrypt.
 	 * @param {string} displayName The user's display name.
-	 * @param {Array<Guide>} guides The guides the user is a part of.
+	 * @param {Array<string>} guides The ids of the guides the user is a part of.
 	 */
 	constructor(id, password, displayName, guides) {
 		this.#id = id;
@@ -59,49 +59,24 @@ class User {
 
 	/**
 	 * Returns a JSON representation of the user.
-	 * @returns { { id: string, password: string, displayName: string, guides: [{
-	 * 	id: string,
-	 * 	title: string,
-	 * 	description: string,
-	 * 	authorId: string,
-	 * 	grade: number,
-	 * 	subject: string,
-	 * 	teacher: string,
-	 * 	year: string,
-	 * 	people: [{ id: string, permissionLevel: PermissionLevel }]
-	 * }] } } The JSON representation of the user.
+	 * @returns { { id: string, password: string, displayName: string, guides: [string] } } The JSON representation of the user.
 	 */
 	toJSON() {
 		return {
 			id: this.id,
 			password: this.password,
 			displayName: this.displayName,
-			guides: this.guides.map(guide => guide.toJSON()),
+			guides: this.guides,
 		};
 	}
 
 	/**
 	 * Converts an object to a user class.
-	 * @param { { id: string, password: string, displayName: string, guides: [{
-	 * 	id: string,
-	 * 	title: string,
-	 * 	description: string,
-	 * 	authorId: string,
-	 * 	grade: number,
-	 * 	subject: string,
-	 * 	teacher: string,
-	 * 	year: string,
-	 * 	people: [{ id: string, permissionLevel: PermissionLevel }]
-	 * }] } } user The user object to convert.
+	 * @param { { id: string, password: string, displayName: string, guides: [string] } } user The user object to convert.
 	 * @returns {User}
 	 */
 	static fromObject(user) {
-		return new User(
-			user.id,
-			user.password,
-			user.displayName,
-			user.guides.map(guide => Guide.fromObject(guide))
-		);
+		return new User(user.id, user.password, user.displayName, user.guides);
 	}
 }
 
