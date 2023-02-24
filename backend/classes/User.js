@@ -1,26 +1,36 @@
-// TODO: Refactor (similar to Guide.js)
+/**
+ * @typedef {object} UserData
+ * @property {string} id The id (UUID) of the user.
+ * @property {string} password The password of the user. This is hashed with bcrypt.
+ * @property {string} displayName The user's display name.
+ * @property {Array<string>} guides The ids of the guides the user is a part of.
+ */
 
 /**
  * A user class. It *does not* sync with the database.
  */
 class User {
 	/**
+	 * All data for this user.
+	 * @type {UserData}
+	 */
+	#data = {};
+
+	/**
 	 * The id (UUID) of the user.
 	 * @type {string}
 	 */
 	get id() {
-		return this.#id;
+		return this.#data.id;
 	}
-	#id;
 
 	/**
 	 * The password of the user. This is hashed with bcrypt.
 	 * @type {string}
 	 */
 	get password() {
-		return this.#password;
+		return this.#data.password;
 	}
-	#password;
 
 	/**
 	 * The user's display name.
@@ -31,52 +41,28 @@ class User {
 	 * @type {string}
 	 */
 	get displayName() {
-		return this.#displayName;
+		return this.#data.displayName;
 	}
-	#displayName;
 
 	/**
 	 * The ids of the guides the user is a part of.
 	 * @type {Array<string>}
 	 */
 	get guides() {
-		return this.#guides;
+		return this.#data.guides;
 	}
-	#guides = [];
 
-	/**
-	 * @param {string} id The id of the user. This is a UUID.
-	 * @param {string} password The password of the user. This is hashed with bcrypt.
-	 * @param {string} displayName The user's display name.
-	 * @param {Array<string>} guides The ids of the guides the user is a part of.
-	 */
-	constructor(id, password, displayName, guides) {
-		this.#id = id;
-		this.#password = password;
-		this.#displayName = displayName;
-		this.#guides = guides;
+	/** @param {UserData} data The data to use for this user. */
+	constructor(data) {
+		this.#data = data;
 	}
 
 	/**
 	 * Returns a JSON representation of the user.
-	 * @returns { { id: string, password: string, displayName: string, guides: [string] } } The JSON representation of the user.
+	 * @returns {UserData} The JSON representation of the user.
 	 */
 	toJSON() {
-		return {
-			id: this.id,
-			password: this.password,
-			displayName: this.displayName,
-			guides: this.guides,
-		};
-	}
-
-	/**
-	 * Converts an object to a user class.
-	 * @param { { id: string, password: string, displayName: string, guides: [string] } } user The user object to convert.
-	 * @returns {User}
-	 */
-	static fromObject(user) {
-		return new User(user.id, user.password, user.displayName, user.guides);
+		return this.#data;
 	}
 }
 
