@@ -55,9 +55,14 @@ const signup = async (req, res) => {
 
 	try {
 		// Create the user and add it to the database
-		const user = new User(id, passwordHash, displayName);
-		await db.users.add(user);
-		logger.mark(`User ${id} created and added to database.`);
+		const user = new User({ id, password: passwordHash, displayName });
+
+		const userAddedToDb = await db.users.add(user);
+		if (!userAddedToDb) {
+			throw new Error("User not added to database");
+		}
+
+		logger.info(`User ${id} created and added to database.`);
 	} catch (err) {
 		res.sendStatus(500);
 		logger.error("Error createing user or adding user to database:", err);
