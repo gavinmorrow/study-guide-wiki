@@ -25,7 +25,7 @@ const mapUserDbToClass = async user => {
 
 		logger.mark("Mapped user db to class");
 
-		return User.fromObject(user);
+		return new User(user);
 	} catch (err) {
 		logger.error("Error mapping user db to class:", err);
 		return null;
@@ -106,6 +106,7 @@ const users = {
 	/**
 	 * Adds a user to the database.
 	 * @param {User} user The user to add.
+	 * @returns {Promise<boolean>} True if successful, false if not.
 	 */
 	async add(user) {
 		try {
@@ -114,8 +115,10 @@ const users = {
 				[user.id, user.password, user.displayName]
 			);
 			logger.mark("Added user to database");
+			return true;
 		} catch (err) {
 			logger.error("Error adding user to database:", err);
+			return false;
 		}
 	},
 };
