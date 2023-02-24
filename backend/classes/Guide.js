@@ -68,7 +68,7 @@ class Guide {
 
 	/** @param {GuideData} data The data to use for this guide. */
 	constructor(data) {
-		this.#data = { id, title, authorId, sections, people };
+		this.#data = data;
 	}
 
 	/**
