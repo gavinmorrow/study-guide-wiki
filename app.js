@@ -6,6 +6,9 @@ const PORT = 8080;
 
 const logger = require("./backend/logger");
 
+// Websockets
+require("express-ws")(app);
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
