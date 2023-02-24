@@ -78,21 +78,6 @@ class Guide {
 	toJSON() {
 		return this.#data;
 	}
-
-	/**
-	 * Converts an object to a guide class.
-	 * @param {GuideData} guide The guide object to convert.
-	 * @returns {Guide}
-	 */
-	static fromObject(guide) {
-		return new Guide(
-			guide.id,
-			guide.title,
-			guide.authorId,
-			guide.sections,
-			guide.people
-		);
-	}
 }
 
 module.exports = Guide;
