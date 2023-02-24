@@ -36,8 +36,17 @@ class GuideSection {
 		return this.#data.content;
 	}
 
-	constructor(guideId, title, content) {
-		this.#data = { guideId, title, content };
+	/** @param {GuideSectionData} data The data for this guide section. */
+	constructor(data) {
+		this.#data = data;
+	}
+
+	/**
+	 * Returns a JSON representation of the guide section.
+	 * @returns {GuideSectionData} The JSON representation of the guide section.
+	 */
+	toJSON() {
+		return this.#data;
 	}
 }
 
