@@ -1,4 +1,4 @@
-const Guide = require("./Guide");
+// TODO: Refactor (similar to Guide.js)
 
 /**
  * A user class. It *does not* sync with the database.
