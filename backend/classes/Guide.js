@@ -32,6 +32,15 @@ class Guide {
 	#authorId;
 
 	/**
+	 * The sections of the guide.
+	 * @type {GuideSection[]}
+	 */
+	get sections() {
+		return this.#sections;
+	}
+	#sections = [];
+
+	/**
 	 * The people who have access to the guide, and their permission level.
 	 *
 	 * This should *not* include the author.
@@ -47,12 +56,14 @@ class Guide {
 	 * @param {string} id The id of the guide. This is a UUID.
 	 * @param {string} title The title of the guide.
 	 * @param {uuid} authorId The author of the guide's UUID.
+	 * @param {GuideSection[]} sections The sections of the guide.
 	 * @param {[{ id: string, permissionLevel: PermissionLevel }]} [people=[]] The people who have access to the guide, and their permission level. This should *not* include the author. Defaults to an empty array.
 	 */
-	constructor(id, title, authorId, people = []) {
+	constructor(id, title, authorId, sections, people = []) {
 		this.#id = id;
 		this.#title = title;
 		this.#authorId = authorId;
+		this.#sections = sections;
 		this.#people = people;
 	}
 
@@ -62,6 +73,7 @@ class Guide {
 	 * 	id: string,
 	 * 	title: string,
 	 * 	authorId: string,
+	 * 	sections: GuideSection[],
 	 * 	people: [{ id: string, permissionLevel: PermissionLevel }]
 	 * } } The JSON representation of the guide.
 	 */
@@ -70,6 +82,7 @@ class Guide {
 			id: this.id,
 			title: this.title,
 			authorId: this.authorId,
+			sections: this.sections,
 			people: this.people,
 		};
 	}
@@ -80,12 +93,19 @@ class Guide {
 	 * 	id: string,
 	 * 	title: string,
 	 * 	authorId: string,
+	 * 	sections: GuideSection[],
 	 * 	people: [{ id: string, permissionLevel: PermissionLevel }]
 	 * } } guide The guide object to convert.
 	 * @returns {Guide}
 	 */
 	static fromObject(guide) {
-		return new Guide(guide.id, guide.title, guide.authorId, guide.people);
+		return new Guide(
+			guide.id,
+			guide.title,
+			guide.authorId,
+			guide.sections,
+			guide.people
+		);
 	}
 }
 
