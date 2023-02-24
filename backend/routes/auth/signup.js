@@ -65,7 +65,7 @@ const signup = async (req, res) => {
 		logger.info(`User ${id} created and added to database.`);
 	} catch (err) {
 		res.sendStatus(500);
-		logger.error("Error createing user or adding user to database:", err);
+		logger.error("Error creating user or adding user to database:", err);
 		return;
 	}
 
