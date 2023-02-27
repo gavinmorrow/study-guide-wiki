@@ -11,10 +11,10 @@ router.get("/:id", async (req, res) => {
 	}
 
 	// Render
-	res.render("guide", {
+	res.render("guideEditor", {
 		title: `${guide.title} | Studypedia`,
 		guide,
-		resourceName: "guide",
+		resourceName: "guideEditor",
 	});
 });
 
