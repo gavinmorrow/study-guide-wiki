@@ -1,6 +1,7 @@
 /**
  * @typedef {string} WSMessageType
  * @enum {WSMessageType}
+ * @property {WSMessageType} PING
  * @property {WSMessageType} ERROR
  */
 
