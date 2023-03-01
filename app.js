@@ -8,6 +8,19 @@ const logger = require("./backend/logger");
 
 // Websockets
 require("express-ws")(app);
+app.ws("/api/echo", (ws, req) => {
+	ws.on("message", msg => {
+		logger.mark("Message from the client", msg);
+		if (msg == "Ping!") ws.send("Pong!");
+		else ws.send(msg);
+	});
+	ws.on("error", err => {
+		logger.info("Error from the client", err);
+	});
+
+	logger.mark("Connected to the client");
+	ws.send("Hello!");
+});
 
 // Middleware
 app.use(express.json());
