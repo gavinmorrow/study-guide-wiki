@@ -1,6 +1,7 @@
 #guide-editor-header {
 	position: sticky;
 	top: var(--margin-small);
+	grid-area: nav;
 
 	display: flex;
 	flex-direction: row;
