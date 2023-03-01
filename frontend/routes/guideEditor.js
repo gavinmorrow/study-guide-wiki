@@ -18,4 +18,18 @@ router.get("/:id", async (req, res) => {
 	});
 });
 
+// Websocket api
+router.ws("/:id", async (ws, req) => {
+	logger.mark(`Websocket editor connected to guide ${req.params.id}`);
+	ws.on("message", msg => {
+		if (msg.type == null)
+			ws.send({
+				type: "error",
+				message: "Invalid message type",
+			});
+
+		logger.info("Message from the client:", msg);
+	});
+});
+
 module.exports = router;
