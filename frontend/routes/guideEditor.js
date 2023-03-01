@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const db = require("../../backend/db/db");
+const db = require("../../api/db/db");
 
 router.get("/:id", async (req, res) => {
 	// Get guide
