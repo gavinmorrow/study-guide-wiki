@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const db = require("../api/db/db");
+const db = require("../../db/db");
 
 router.get("/", async (req, res) => {
 	// Get user

@@ -1,4 +1,4 @@
-const logger = require("../../logger");
+const logger = require("../../../logger");
 const credentialsAreValid = require("../../authentication/credentialsAreValid");
 const generateAccessToken = require("../../authentication/generateAccessToken");
 const generateRefreshToken = require("../../authentication/generateRefreshToken");

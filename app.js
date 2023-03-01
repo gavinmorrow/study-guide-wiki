@@ -1,10 +1,10 @@
-require("./api/authentication/generateTokenSecrets");
+require("./backend/api/authentication/generateTokenSecrets");
 
 const express = require("express");
 const app = express();
 const PORT = 8080;
 
-const logger = require("./api/logger");
+const logger = require("./backend/logger");
 
 // Websockets
 require("express-ws")(app);
@@ -26,17 +26,17 @@ app.ws("/api/echo", (ws, req) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(require("cookie-parser")());
-app.use(require("./api/routes/normalizeUrl"));
+app.use(require("./backend/api/routes/normalizeUrl"));
 
 // Authentication
-app.use(require("./api/routes/auth/authenticate"));
+app.use(require("./backend/api/routes/auth/authenticate"));
 
 // Pug
 app.set("views", "./frontend/views");
 app.set("view engine", "pug");
 
 // Routes
-app.use("/", require("./frontend/routes/routes")); // Frontend
-app.use("/api", require("./api/routes/api")); // API
+app.use("/", require("./backend/client/routes/routes")); // Frontend
+app.use("/api", require("./backend/api/routes/api")); // API
 
 app.listen(PORT, () => logger.info(`Listening on localhost:${PORT}!`));

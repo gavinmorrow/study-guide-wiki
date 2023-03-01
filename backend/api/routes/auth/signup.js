@@ -1,6 +1,6 @@
-const logger = require("../../logger");
-const db = require("../../db/db");
-const User = require("../../classes/User");
+const logger = require("../../../logger");
+const db = require("../../../db/db");
+const User = require("../../../classes/User");
 
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");

@@ -1,5 +1,5 @@
-const logger = require("../../logger");
-const db = require("../../db/db");
+const logger = require("../../../logger");
+const db = require("../../../db/db");
 
 /** A route to get the id of a user from their display name.  */
 const getId = async (req, res) => {

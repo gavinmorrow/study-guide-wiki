@@ -1,4 +1,4 @@
-const logger = require("../logger");
+const logger = require("../../logger");
 const jwt = require("jsonwebtoken");
 const generateAccessToken = require("./generateAccessToken");
 const generateRefreshToken = require("./generateRefreshToken");

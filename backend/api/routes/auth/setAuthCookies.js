@@ -1,4 +1,4 @@
-const logger = require("../../logger");
+const logger = require("../../../logger");
 /**
  * Sets the authorization and refresh token cookies on the given response.
  * This *does not* send the response.

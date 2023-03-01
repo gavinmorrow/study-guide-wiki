@@ -1,5 +1,5 @@
-const logger = require("../logger");
-const db = require("../db/db");
+const logger = require("../../logger");
+const db = require("../../db/db");
 const bcrypt = require("bcrypt");
 
 /**
