@@ -23,7 +23,7 @@ const generateRefreshToken = (id, family = null) => {
 
 	// Generate a new family if one was not provided
 	if (!family) {
-		logger.mark("Generating new refresh token family.");
+		logger.trace("Generating new refresh token family.");
 		do {
 			family = crypto.randomUUID();
 		} while (usedFamilies.has(family));
@@ -33,7 +33,7 @@ const generateRefreshToken = (id, family = null) => {
 	const token = jwt.sign({ id, family }, process.env.REFRESH_TOKEN_SECRET, {
 		expiresIn: "3d",
 	});
-	logger.mark(`Generated refresh token for user ${id}.`);
+	logger.trace(`Generated refresh token for user ${id}.`);
 	return token;
 };
 

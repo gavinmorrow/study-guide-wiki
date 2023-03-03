@@ -23,7 +23,7 @@ const mapUserDbToClass = async user => {
 
 		user.guides = [...guideAccess, ...ownedGuides];
 
-		logger.mark("Mapped user db to class");
+		logger.trace("Mapped user db to class");
 
 		return new User(user);
 	} catch (err) {
@@ -49,11 +49,11 @@ const users = {
 			);
 
 			if (user == null) {
-				logger.trace(`User with id ${id} not found`);
+				logger.debug(`User with id ${id} not found`);
 				return null;
 			}
 
-			logger.mark(`User with id ${id} found`);
+			logger.trace(`User with id ${id} found`);
 
 			return await mapUserDbToClass(user);
 		} catch (err) {
@@ -78,9 +78,9 @@ const users = {
 			);
 
 			if (user == null)
-				return logger.trace(`User "${displayName}" not found`);
+				return logger.debug(`User "${displayName}" not found`);
 
-			logger.mark(`User "${displayName}" found: ${user.id}`);
+			logger.trace(`User "${displayName}" found: ${user.id}`);
 
 			return user.id;
 		} catch (err) {
@@ -99,7 +99,7 @@ const users = {
 			"SELECT * FROM users WHERE display_name = $1",
 			[displayName]
 		);
-		logger.mark("Checking if display name is used");
+		logger.trace("Checking if display name is used");
 		return user != null;
 	},
 
@@ -114,7 +114,7 @@ const users = {
 				"INSERT INTO users (id, password, display_name) VALUES ($1, $2, $3)",
 				[user.id, user.password, user.displayName]
 			);
-			logger.mark("Added user to database");
+			logger.trace("Added user to database");
 			return true;
 		} catch (err) {
 			logger.error("Error adding user to database:", err);

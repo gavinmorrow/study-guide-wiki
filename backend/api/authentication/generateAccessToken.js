@@ -17,7 +17,7 @@ const generateAccessToken = id => {
 	const secret = process.env.ACCESS_TOKEN_SECRET;
 
 	const token = jwt.sign({ id }, secret, { expiresIn });
-	logger.mark(`Generated access token for user ${id}.`);
+	logger.trace(`Generated access token for user ${id}.`);
 	return token;
 };
 

@@ -6,7 +6,7 @@ const user = async (req, res) => {
 	// Get the id
 	const id = req.params.id;
 	if (id == null) {
-		logger.trace("No id provided to get user route.");
+		logger.debug("No id provided to get user route.");
 		return res.status(400).send("No id provided.");
 	}
 
@@ -15,7 +15,7 @@ const user = async (req, res) => {
 
 	// If the user doesn't exist, return a 404
 	if (user == null) {
-		logger.trace(`User ${id} not found in database.`);
+		logger.debug(`User ${id} not found in database.`);
 		return res.status(404).send("User not found.");
 	}
 
@@ -27,7 +27,7 @@ const user = async (req, res) => {
 
 	// Send the JSON
 	res.json(userJson);
-	logger.mark(`User ${id} successfully sent to client.`);
+	logger.trace(`User ${id} successfully sent to client.`);
 };
 
 module.exports = user;

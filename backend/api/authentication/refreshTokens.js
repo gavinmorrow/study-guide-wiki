@@ -31,21 +31,21 @@ const refreshTokens = async refreshToken => {
 		family = token.family;
 
 		if (id == null || family == null) {
-			logger.trace("Invalid refresh token:", token);
+			logger.debug("Invalid refresh token:", token);
 			return null;
 		}
 	} catch (err) {
 		if (!(err instanceof jwt.JsonWebTokenError)) {
 			throw err;
 		}
-		logger.trace("Error validating refresh token:", err);
+		logger.debug("Error validating refresh token:", err);
 
 		return null;
 	}
 
 	// Check if the refresh token family has been invalidated
 	if (invalidFamilies.has(family)) {
-		logger.trace(
+		logger.debug(
 			"Attempted to refresh a refresh token from an invalid family."
 		);
 		return null;
@@ -54,7 +54,7 @@ const refreshTokens = async refreshToken => {
 	// If the token has been used before, invalidate the entire family
 	if (usedTokens.has(refreshToken)) {
 		invalidFamilies.add(family);
-		logger.trace("Refresh token has been used before.");
+		logger.debug("Refresh token has been used before.");
 		return null;
 	}
 
@@ -67,7 +67,7 @@ const refreshTokens = async refreshToken => {
 	// Generate a new refresh token
 	const newRefreshToken = generateRefreshToken(id, family);
 
-	logger.mark("Refreshed tokens for user", id);
+	logger.trace("Refreshed tokens for user", id);
 
 	// Return the new access token and refresh token
 	return { accessToken, refreshToken: newRefreshToken, id };

@@ -11,7 +11,7 @@ const generateTokenSecrets = () => {
 		? "refresh"
 		: crypto.randomBytes(64).toString("hex");
 
-	logger.mark("Token secrets generated.");
+	logger.trace("Token secrets generated.");
 };
 
 generateTokenSecrets();

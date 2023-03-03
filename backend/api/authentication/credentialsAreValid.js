@@ -12,17 +12,17 @@ const credentialsAreValid = async (id, password) => {
 	// Get the user
 	const user = await db.users.get(id);
 	if (user == null) {
-		logger.trace(`User ${id} not found.`);
+		logger.debug(`User ${id} not found.`);
 		return false;
 	}
 
 	// Compare the password
 	const validPassword = bcrypt.compareSync(password, user.password);
 	if (validPassword) {
-		logger.mark(`User ${id} had credentials validated.`);
+		logger.trace(`User ${id} had credentials validated.`);
 		return true;
 	} else {
-		logger.trace(`User ${id} had invalid credentials.`);
+		logger.debug(`User ${id} had invalid credentials.`);
 		return false;
 	}
 };

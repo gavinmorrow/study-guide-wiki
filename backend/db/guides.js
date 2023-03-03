@@ -44,7 +44,7 @@ const guides = {
 				permissionLevel: permission_level,
 			}));
 
-			logger.mark(`Guide with id ${id} found`);
+			logger.trace(`Guide with id ${id} found`);
 
 			return await mapGuideDbToClass(guide);
 		} catch (err) {
@@ -65,7 +65,7 @@ const guides = {
 				[guide.id, guide.title, guide.authorId]
 			);
 
-			logger.mark(`Added guide ${guide.id} to database`);
+			logger.trace(`Added guide ${guide.id} to database`);
 
 			// Add people to guide
 			for (const { id: userId, permissionLevel } of guide.people) {
@@ -75,7 +75,7 @@ const guides = {
 				);
 			}
 
-			logger.mark(`Added people to guide ${guide.id}`);
+			logger.trace(`Added people to guide ${guide.id}`);
 			return true;
 		} catch (err) {
 			logger.error("Error adding guide to database:", err);
@@ -96,7 +96,7 @@ const guides = {
 				id,
 			]);
 
-			logger.mark(`Updated title of guide ${id} to ${newTitle}`);
+			logger.trace(`Updated title of guide ${id} to ${newTitle}`);
 			return true;
 		} catch (err) {
 			logger.error("Error updating guide:", err);
@@ -112,14 +112,14 @@ const guides = {
 	async delete(id) {
 		// Ensure guide exists
 		const guide = await db.guides.get(id);
-		if (guide == null) return logger.mark(`Guide ${id} not found`);
+		if (guide == null) return logger.trace(`Guide ${id} not found`);
 
 		try {
 			// Delete guide
 			// Because of the foreign key constraint,
 			// this will also delete all guide_access rows.
 			await db.none("DELETE FROM guides WHERE id = $1", [id]);
-			logger.mark(`Deleted guide ${id}`);
+			logger.trace(`Deleted guide ${id}`);
 			return true;
 		} catch (err) {
 			logger.error("Error deleting guide:", err);

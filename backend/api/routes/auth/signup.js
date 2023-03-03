@@ -17,17 +17,17 @@ const signup = async (req, res) => {
 
 	// Ensure that the password and display name are valid
 	if (password == null) {
-		logger.trace("No password supplied to signup route.");
+		logger.debug("No password supplied to signup route.");
 		return res.status(400).send("Password is required");
 	}
 	if (displayName == null || displayName.length < 1) {
-		logger.trace("No display name supplied to signup route.");
+		logger.debug("No display name supplied to signup route.");
 		return res.status(400).send("Display name is required");
 	}
 
 	// Ensure that the display name is unique
 	if (await db.users.displayNameIsUsed(displayName)) {
-		logger.mark("Display name already in use.");
+		logger.trace("Display name already in use.");
 		return res.status(400).send("Display name is already in use");
 	}
 
@@ -49,7 +49,7 @@ const signup = async (req, res) => {
 	// This is very unlikely to happen, but it's still possible.
 	// (https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions)
 	do {
-		logger.mark("Generating random id for user.");
+		logger.trace("Generating random id for user.");
 		id = crypto.randomUUID();
 	} while ((await db.users.get(id)) != null);
 
@@ -70,7 +70,7 @@ const signup = async (req, res) => {
 	}
 
 	res.json({ id });
-	logger.mark(`Sent id back to client after signup: ${id}`);
+	logger.trace(`Sent id back to client after signup: ${id}`);
 };
 
 module.exports = signup;

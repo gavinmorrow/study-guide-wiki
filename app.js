@@ -10,7 +10,7 @@ const logger = require("./backend/logger");
 require("express-ws")(app);
 app.ws("/api/echo", (ws, req) => {
 	ws.on("message", msg => {
-		logger.mark("Message from the client", msg);
+		logger.trace("Message from the client", msg);
 		if (msg == "Ping!") ws.send("Pong!");
 		else ws.send(msg);
 	});
@@ -18,7 +18,7 @@ app.ws("/api/echo", (ws, req) => {
 		logger.info("Error from the client", err);
 	});
 
-	logger.mark("Connected to the client");
+	logger.trace("Connected to the client");
 	ws.send("Hello!");
 });
 

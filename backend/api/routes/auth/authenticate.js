@@ -20,7 +20,7 @@ const attemptToRefreshTokens = async (req, res, next) => {
 	// Try to refresh the token
 	const refreshToken = req.cookies.refreshToken;
 	if (refreshToken == null) {
-		logger.mark(
+		logger.trace(
 			"No refresh token found when attempting to refresh tokens."
 		);
 		return unauthenticatedRoute(req, res);
@@ -29,13 +29,13 @@ const attemptToRefreshTokens = async (req, res, next) => {
 	try {
 		const newTokens = await refreshTokens(refreshToken);
 		if (newTokens == null) {
-			logger.mark("Could not refresh tokens.");
+			logger.trace("Could not refresh tokens.");
 			return unauthenticatedRoute(res);
 		}
 
 		setAuthCookies(res, newTokens.accessToken, newTokens.refreshToken);
 		req.userId = newTokens.id;
-		logger.mark("Successfully refreshed tokens.");
+		logger.trace("Successfully refreshed tokens.");
 
 		next();
 	} catch (err) {
@@ -46,15 +46,15 @@ const attemptToRefreshTokens = async (req, res, next) => {
 
 const unauthenticatedRoute = (req, res) => {
 	const isApiRoute = req.path.startsWith("/api");
-	logger.mark(`Unauthenticated route: ${req.path} (API: ${isApiRoute})`);
+	logger.trace(`Unauthenticated route: ${req.path} (API: ${isApiRoute})`);
 	if (isApiRoute) {
 		// Direct API request
 		res.sendStatus(401);
-		logger.mark(`Sent 401 status code to API request ${req.path}`);
+		logger.trace(`Sent 401 status code to API request ${req.path}`);
 	} else {
 		// Frontend request
 		res.redirect("/login");
-		logger.mark(`Redirected to login page from ${req.path}`);
+		logger.trace(`Redirected to login page from ${req.path}`);
 	}
 };
 
@@ -68,20 +68,20 @@ const authenticate = async (req, res, next) => {
 	// Ensure that authentication is needed
 	const path = req.path.replace("/", ""); // Only replaces first / (the start of the path)
 	const method = req.method;
-	logger.mark(`Authenticating route: ${method} ${path}`);
+	logger.trace(`Authenticating route: ${method} ${path}`);
 	if (
 		whitelist.some(
 			route => route.path.test(path) && route.method === method
 		)
 	) {
-		logger.mark(`Route ${method} ${path} is whitelisted.`);
+		logger.trace(`Route ${method} ${path} is whitelisted.`);
 		return next();
 	}
 
 	// Get the auth cookies value
 	const token = req.cookies.authorization;
 	if (token == null) {
-		logger.mark("No authorization token found.");
+		logger.trace("No authorization token found.");
 		return await attemptToRefreshTokens(req, res, next);
 	}
 
@@ -90,15 +90,15 @@ const authenticate = async (req, res, next) => {
 		const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
 		if (decoded.id == null) {
-			logger.trace(`Invalid access token (no id): ${decoded}`);
+			logger.debug(`Invalid access token (no id): ${decoded}`);
 			return await unauthenticatedRoute(req, res);
 		}
 		req.userId = decoded.id;
 
-		logger.mark(`Successfully authenticated route ${method} ${path}`);
+		logger.trace(`Successfully authenticated route ${method} ${path}`);
 		next();
 	} catch (err) {
-		logger.mark("Error while verifying access token:", err);
+		logger.trace("Error while verifying access token:", err);
 		return await attemptToRefreshTokens(req, res, next);
 	}
 };

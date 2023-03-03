@@ -13,7 +13,7 @@ const get = async (req, res) => {
 	const userId = req.userId;
 
 	if (!guideId) {
-		logger.trace("No guide id supplied to guide route.");
+		logger.debug("No guide id supplied to guide route.");
 		return res.sendStatus(400);
 	}
 
@@ -22,7 +22,7 @@ const get = async (req, res) => {
 	const guideJson = guide?.toJSON();
 
 	if (!guideJson) {
-		logger.trace(`Guide ${guideId} not found in database.`);
+		logger.debug(`Guide ${guideId} not found in database.`);
 		return res.sendStatus(404);
 	}
 
@@ -32,14 +32,14 @@ const get = async (req, res) => {
 	const userHasAccess =
 		guideJson.people.includes(userId) || guideJson.authorId === userId;
 	if (!userHasAccess) {
-		logger.trace(
+		logger.debug(
 			`User ${userId} does not have access to guide ${guideId}.`
 		);
 		return res.sendStatus(401);
 	}
 
 	res.json(guideJson);
-	logger.mark(`Guide ${guideId} successfully sent to user ${userId}.`);
+	logger.trace(`Guide ${guideId} successfully sent to user ${userId}.`);
 };
 
 /**
@@ -63,7 +63,7 @@ const post = async (req, res) => {
 		guideJson.authorId == null ||
 		guideJson.people == null
 	) {
-		logger.trace("Invalid guide data supplied to guide route.");
+		logger.debug("Invalid guide data supplied to guide route.");
 		return res.sendStatus(400);
 	}
 
@@ -83,7 +83,7 @@ const post = async (req, res) => {
 				permissionLevel,
 			};
 		});
-		logger.mark("Successfully mapped permission levels.");
+		logger.trace("Successfully mapped permission levels.");
 	} catch (err) {
 		if (err.message.startsWith("Invalid permission level")) {
 			return res.sendStatus(400);
@@ -105,7 +105,7 @@ const post = async (req, res) => {
 	// (https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions)
 	do {
 		id = crypto.randomUUID();
-		logger.mark(`Generating id for new guide.`);
+		logger.trace(`Generating id for new guide.`);
 	} while ((await db.guides.get(id)) != null);
 
 	// Create a guide class
@@ -119,7 +119,7 @@ const post = async (req, res) => {
 	// Add the guide to the database
 	const guideAddedToDb = await db.guides.add(guide);
 	if (!guideAddedToDb) {
-		logger.trace(`Guide ${id} failed to be added to database.`);
+		logger.debug(`Guide ${id} failed to be added to database.`);
 		return res.sendStatus(500);
 	}
 
@@ -127,7 +127,7 @@ const post = async (req, res) => {
 
 	res.status(201).json({ id });
 
-	logger.mark(`Guide ${id} successfully sent to client.`);
+	logger.trace(`Guide ${id} successfully sent to client.`);
 };
 
 const patch = async (req, res) => {
@@ -135,13 +135,13 @@ const patch = async (req, res) => {
 	const userId = req.userId;
 
 	if (guideId == null || newTitle == null || newTitle?.length === 0) {
-		logger.trace("Invalid guide data supplied to guide route.");
+		logger.debug("Invalid guide data supplied to guide route.");
 		return res.sendStatus(400);
 	}
 
 	const guide = await db.guides.get(guideId);
 	if (guide == null) {
-		logger.trace(
+		logger.debug(
 			`Guide ${guideId} not found in database when attempting to update.`
 		);
 		return res.sendStatus(404);
@@ -157,7 +157,7 @@ const patch = async (req, res) => {
 		).length === 1;
 
 	if (!userHasAccess) {
-		logger.trace(
+		logger.debug(
 			`User ${userId} does not have access to update guide ${guideId}.`
 		);
 		return res.sendStatus(401);
@@ -166,10 +166,10 @@ const patch = async (req, res) => {
 	// Update the guide
 	const response = await db.guides.updateTitle(guideId, newTitle);
 	if (response) {
-		logger.mark(`Guide ${guideId} successfully updated.`);
+		logger.trace(`Guide ${guideId} successfully updated.`);
 		res.sendStatus(200);
 	} else {
-		logger.trace(`Guide ${guideId} failed to update.`);
+		logger.debug(`Guide ${guideId} failed to update.`);
 		res.sendStatus(500);
 	}
 };
@@ -179,13 +179,13 @@ const delete_ = async (req, res) => {
 	const userId = req.userId;
 
 	if (!guideId) {
-		logger.trace("No guide id supplied to delete guide route.");
+		logger.debug("No guide id supplied to delete guide route.");
 		return res.sendStatus(400);
 	}
 
 	const guide = await db.guides.get(guideId);
 	if (guide == null) {
-		logger.trace(
+		logger.debug(
 			`Guide ${guideId} not found in database when attempting to delete.`
 		);
 		return res.sendStatus(404);
@@ -195,7 +195,7 @@ const delete_ = async (req, res) => {
 	// Only the owner can delete the guide.
 	const userHasAccess = guide.authorId === userId;
 	if (!userHasAccess) {
-		logger.trace(
+		logger.debug(
 			`User ${userId} does not have access to delete guide ${guideId}.`
 		);
 		return res.sendStatus(401);
@@ -204,7 +204,7 @@ const delete_ = async (req, res) => {
 	// Remove the guide from the database
 	await db.guides.delete(guideId);
 
-	logger.mark(`Guide ${guideId} successfully deleted from database.`);
+	logger.trace(`Guide ${guideId} successfully deleted from database.`);
 
 	res.sendStatus(204);
 };
