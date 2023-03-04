@@ -9,9 +9,9 @@ services:
             retries: 5
         build: .
         depends_on:
-            - postgres
+            - db
         environment:
-            DB_URL: postgres://app:password@postgres:5432/app_db
+            DB_URL: db://app:password@db:5432/app_db
             NODE_ENV: development
         ports:
             - "8080:8080"
@@ -20,7 +20,7 @@ services:
             - .:/app/
             - /app/node_modules
 
-    postgres:
+    db:
         image: postgres
         restart: always
         healthcheck:
