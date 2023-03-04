@@ -31,10 +31,7 @@ log4js.configure({
 	},
 	categories: {
 		default: {
-			appenders: [
-				"importantFilter",
-				"notImportantFilter"
-			],
+			appenders: ["importantFilter", "notImportantFilter"],
 			level: "all",
 			enableCallStack: true,
 		},
