@@ -2,15 +2,6 @@ const logger = require("../logger");
 const db = require("./pgp");
 const Guide = require("../classes/Guide");
 
-const mapGuideDbToClass = async guide => {
-	guide.authorId = guide.owner_id;
-	delete guide.owner_id;
-
-	// FIXME: move get ppl logic to here
-
-	return new Guide(guide);
-};
-
 const guides = {
 	/**
 	 * Gets a guide from the database.
@@ -18,35 +9,29 @@ const guides = {
 	 * @returns {Promise<Guide?>} The guide, or null if not found.
 	 */
 	async get(id) {
-		if (id == null)
-			return logger.error("Attempted to get guide with null id");
+		if (id == null) return logger.error("Attempted to get guide with null id");
 
 		try {
-			const guide = await db.oneOrNone(
-				`SELECT * FROM guides WHERE id = $1`,
-				[id]
-			);
+			logger.debug("Getting guide with id", id);
 
-			if (guide == null) return null;
+			const [[guide], people] = await db.multi("SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1", [id]);
 
-			// Map database columns to class properties
-			guide.authorId = guide.owner_id;
+			if (guide == null) {
+				logger.mark("guide not found");
+				return null;
+			}
 
-			// Fetch people who have access to the guide
-			const people = await db.any(
-				"SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1",
-				[id]
-			);
-
-			// Add people to guide object
-			guide.people = people.map(({ user_id, permission_level }) => ({
+			guide.people = people.map(({user_id, permission_level}) => ({
 				id: user_id,
 				permissionLevel: permission_level,
 			}));
 
+			guide.authorId = guide.owner_id;
+			delete guide.owner_id;
+
 			logger.trace(`Guide with id ${id} found`);
 
-			return await mapGuideDbToClass(guide);
+			return new Guide(guide);
 		} catch (err) {
 			logger.error("Error getting guide:", err);
 			return null;
@@ -60,19 +45,13 @@ const guides = {
 	 */
 	async add(guide) {
 		try {
-			await db.none(
-				"INSERT INTO guides (id, title, owner_id) VALUES ($1, $2, $3)",
-				[guide.id, guide.title, guide.authorId]
-			);
+			await db.none("INSERT INTO guides (id, title, owner_id) VALUES ($1, $2, $3)", [guide.id, guide.title, guide.authorId]);
 
 			logger.trace(`Added guide ${guide.id} to database`);
 
 			// Add people to guide
-			for (const { id: userId, permissionLevel } of guide.people) {
-				await db.none(
-					"INSERT INTO guide_access (guide_id, user_id, permission_level) VALUES ($1, $2, $3)",
-					[guide.id, userId, permissionLevel.name]
-				);
+			for (const {id: userId, permissionLevel} of guide.people) {
+				await db.none("INSERT INTO guide_access (guide_id, user_id, permission_level) VALUES ($1, $2, $3)", [guide.id, userId, permissionLevel.name]);
 			}
 
 			logger.trace(`Added people to guide ${guide.id}`);
@@ -91,10 +70,7 @@ const guides = {
 	 */
 	async updateTitle(id, newTitle) {
 		try {
-			await db.none("UPDATE guides SET title = $1 WHERE id = $2", [
-				newTitle,
-				id,
-			]);
+			await db.none("UPDATE guides SET title = $1 WHERE id = $2", [newTitle, id]);
 
 			logger.trace(`Updated title of guide ${id} to ${newTitle}`);
 			return true;
