@@ -61,7 +61,7 @@ class WSMessage {
 	 * @param {WSMessageType} type The type of the message.
 	 * @param {any} data The data of the message.
 	 */
-	constructor(type, data = null) {
+	constructor(type, data = undefined) {
 		this.type = type;
 		this.data = data;
 	}
