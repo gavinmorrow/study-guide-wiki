@@ -54,25 +54,17 @@ router.ws("/:id", (ws, req) => {
 		try {
 			msg = JSON.parse(msg);
 		} catch (e) {
-			ws.send(
-				WSMessage.error(
-					"Invalid message format. Message must be JSON.",
-					msg
-				)
-			);
+			ws.send(WSMessage.error("Invalid message format. Message must be JSON.", msg));
 			logger.debug("Invalid message format for websocket message:", msg);
 		}
 
-		if (msg.type == null)
-			ws.send(WSMessage.error("Message type not specified", msg));
+		if (msg.type == null) ws.send(WSMessage.error("Message type not specified", msg));
 
 		handleMessage(msg, ws);
 	});
 
 	ws.on("close", () => {
-		logger.info(
-			`Websocket editor disconnected from guide ${req.params.id}`
-		);
+		logger.info(`Websocket editor disconnected from guide ${req.params.id}`);
 
 		clearInterval(pingInterval);
 	});

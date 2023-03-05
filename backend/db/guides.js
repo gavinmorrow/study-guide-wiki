@@ -14,14 +14,17 @@ const guides = {
 		try {
 			logger.debug("Getting guide with id", id);
 
-			const [[guide], people] = await db.multi("SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1", [id]);
+			const [[guide], people] = await db.multi(
+				"SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1",
+				[id]
+			);
 
 			if (guide == null) {
 				logger.mark("guide not found");
 				return null;
 			}
 
-			guide.people = people.map(({user_id, permission_level}) => ({
+			guide.people = people.map(({ user_id, permission_level }) => ({
 				id: user_id,
 				permissionLevel: permission_level,
 			}));
@@ -45,13 +48,20 @@ const guides = {
 	 */
 	async add(guide) {
 		try {
-			await db.none("INSERT INTO guides (id, title, owner_id) VALUES ($1, $2, $3)", [guide.id, guide.title, guide.authorId]);
+			await db.none("INSERT INTO guides (id, title, owner_id) VALUES ($1, $2, $3)", [
+				guide.id,
+				guide.title,
+				guide.authorId,
+			]);
 
 			logger.trace(`Added guide ${guide.id} to database`);
 
 			// Add people to guide
-			for (const {id: userId, permissionLevel} of guide.people) {
-				await db.none("INSERT INTO guide_access (guide_id, user_id, permission_level) VALUES ($1, $2, $3)", [guide.id, userId, permissionLevel.name]);
+			for (const { id: userId, permissionLevel } of guide.people) {
+				await db.none(
+					"INSERT INTO guide_access (guide_id, user_id, permission_level) VALUES ($1, $2, $3)",
+					[guide.id, userId, permissionLevel.name]
+				);
 			}
 
 			logger.trace(`Added people to guide ${guide.id}`);

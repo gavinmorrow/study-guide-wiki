@@ -20,9 +20,7 @@ const attemptToRefreshTokens = async (req, res, next) => {
 	// Try to refresh the token
 	const refreshToken = req.cookies.refreshToken;
 	if (refreshToken == null) {
-		logger.trace(
-			"No refresh token found when attempting to refresh tokens."
-		);
+		logger.trace("No refresh token found when attempting to refresh tokens.");
 		return unauthenticatedRoute(req, res);
 	}
 
@@ -69,11 +67,7 @@ const authenticate = async (req, res, next) => {
 	const path = req.path.replace("/", ""); // Only replaces first / (the start of the path)
 	const method = req.method;
 	logger.trace(`Authenticating route: ${method} ${path}`);
-	if (
-		whitelist.some(
-			route => route.path.test(path) && route.method === method
-		)
-	) {
+	if (whitelist.some(route => route.path.test(path) && route.method === method)) {
 		logger.trace(`Route ${method} ${path} is whitelisted.`);
 		return next();
 	}

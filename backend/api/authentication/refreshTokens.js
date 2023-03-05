@@ -22,10 +22,7 @@ const refreshTokens = async refreshToken => {
 	// Verify the refresh token
 	let id, family;
 	try {
-		const token = jwt.verify(
-			refreshToken,
-			process.env.REFRESH_TOKEN_SECRET
-		);
+		const token = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
 		id = token.id;
 		family = token.family;
@@ -45,9 +42,7 @@ const refreshTokens = async refreshToken => {
 
 	// Check if the refresh token family has been invalidated
 	if (invalidFamilies.has(family)) {
-		logger.debug(
-			"Attempted to refresh a refresh token from an invalid family."
-		);
+		logger.debug("Attempted to refresh a refresh token from an invalid family.");
 		return null;
 	}
 

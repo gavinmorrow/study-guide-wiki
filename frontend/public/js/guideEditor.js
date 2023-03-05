@@ -11,7 +11,7 @@ socket.addEventListener("message", msg => {
 
 	try {
 		msg = JSON.parse(msg.data);
-	} catch(err) {
+	} catch (err) {
 		console.error("Invalid message format. Message must be JSON.", msg);
 		return;
 	}

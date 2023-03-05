@@ -29,12 +29,9 @@ const get = async (req, res) => {
 	// Ensure that the user is allowed to view the guide.
 	// The permission level isn't important here because
 	// anyone in the list has at least read access.
-	const userHasAccess =
-		guideJson.people.includes(userId) || guideJson.authorId === userId;
+	const userHasAccess = guideJson.people.includes(userId) || guideJson.authorId === userId;
 	if (!userHasAccess) {
-		logger.debug(
-			`User ${userId} does not have access to guide ${guideId}.`
-		);
+		logger.debug(`User ${userId} does not have access to guide ${guideId}.`);
 		return res.sendStatus(401);
 	}
 
@@ -58,11 +55,7 @@ const post = async (req, res) => {
 	const guideJson = req.body;
 	guideJson.authorId = req.userId;
 
-	if (
-		guideJson.title == null ||
-		guideJson.authorId == null ||
-		guideJson.people == null
-	) {
+	if (guideJson.title == null || guideJson.authorId == null || guideJson.people == null) {
 		logger.debug("Invalid guide data supplied to guide route.");
 		return res.sendStatus(400);
 	}
@@ -70,8 +63,7 @@ const post = async (req, res) => {
 	// Map string permission levels to `PermissionLevel` values
 	try {
 		guideJson.people = guideJson.people.map(({ id, permissionString }) => {
-			const permissionLevel =
-				PermissionLevel.fromString(permissionString);
+			const permissionLevel = PermissionLevel.fromString(permissionString);
 
 			if (permissionLevel == null) {
 				logger.error("Found invalid permission level in guide data.");
@@ -141,9 +133,7 @@ const patch = async (req, res) => {
 
 	const guide = await db.guides.get(guideId);
 	if (guide == null) {
-		logger.debug(
-			`Guide ${guideId} not found in database when attempting to update.`
-		);
+		logger.debug(`Guide ${guideId} not found in database when attempting to update.`);
 		return res.sendStatus(404);
 	}
 
@@ -152,14 +142,11 @@ const patch = async (req, res) => {
 	const userHasAccess =
 		guide.authorId === userId ||
 		guide.people.filter(
-			({ id, permissionLevel }) =>
-				id === userId && permissionLevel === PermissionLevel.manage
+			({ id, permissionLevel }) => id === userId && permissionLevel === PermissionLevel.manage
 		).length === 1;
 
 	if (!userHasAccess) {
-		logger.debug(
-			`User ${userId} does not have access to update guide ${guideId}.`
-		);
+		logger.debug(`User ${userId} does not have access to update guide ${guideId}.`);
 		return res.sendStatus(401);
 	}
 
@@ -185,9 +172,7 @@ const delete_ = async (req, res) => {
 
 	const guide = await db.guides.get(guideId);
 	if (guide == null) {
-		logger.debug(
-			`Guide ${guideId} not found in database when attempting to delete.`
-		);
+		logger.debug(`Guide ${guideId} not found in database when attempting to delete.`);
 		return res.sendStatus(404);
 	}
 
@@ -195,9 +180,7 @@ const delete_ = async (req, res) => {
 	// Only the owner can delete the guide.
 	const userHasAccess = guide.authorId === userId;
 	if (!userHasAccess) {
-		logger.debug(
-			`User ${userId} does not have access to delete guide ${guideId}.`
-		);
+		logger.debug(`User ${userId} does not have access to delete guide ${guideId}.`);
 		return res.sendStatus(401);
 	}
 

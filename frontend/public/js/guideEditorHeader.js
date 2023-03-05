@@ -2,9 +2,7 @@ const changeTitle = async newTitle => {
 	const request = (await import("./methods/request.js")).default;
 	console.log(`Changing title to ${newTitle}`);
 
-	const id = document
-		.querySelector("meta[name='data-guide-id']")
-		.getAttribute("content");
+	const id = document.querySelector("meta[name='data-guide-id']").getAttribute("content");
 
 	const response = await request("/api/guide", "PATCH", {
 		id,
