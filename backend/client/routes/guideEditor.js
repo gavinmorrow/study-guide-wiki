@@ -28,6 +28,9 @@ const handleMessage = (msg, ws) => {
 			ws.send(WSMessage.pong());
 			break;
 
+		case "pong":
+			break;
+
 		case "update":
 			break;
 
@@ -44,7 +47,7 @@ router.ws("/:id", (ws, req) => {
 
 	const pingInterval = setInterval(() => {
 		logger.debug("Sending ping");
-		ws.ping("Ping!");
+		ws.send(WSMessage.ping());
 	}, 1000 * 10);
 
 	ws.on("message", msg => {
@@ -73,8 +76,6 @@ router.ws("/:id", (ws, req) => {
 
 		clearInterval(pingInterval);
 	});
-
-	ws.send("Hi!");
 });
 
 module.exports = router;
