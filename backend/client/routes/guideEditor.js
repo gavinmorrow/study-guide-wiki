@@ -42,6 +42,11 @@ const handleMessage = (msg, ws) => {
 router.ws("/:id", (ws, req) => {
 	logger.debug(`Websocket editor connected to guide ${req.params.id}`);
 
+	const pingInterval = setInterval(() => {
+		logger.debug("Sending ping");
+		ws.ping("Ping!");
+	}, 1000 * 10);
+
 	ws.on("message", msg => {
 		try {
 			msg = JSON.parse(msg);
@@ -65,6 +70,8 @@ router.ws("/:id", (ws, req) => {
 		logger.info(
 			`Websocket editor disconnected from guide ${req.params.id}`
 		);
+
+		clearInterval(pingInterval);
 	});
 
 	ws.send("Hi!");
