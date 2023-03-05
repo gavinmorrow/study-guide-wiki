@@ -12,7 +12,7 @@ const guides = {
 		if (id == null) return logger.error("Attempted to get guide with null id");
 
 		try {
-			logger.debug("Getting guide with id", id);
+			logger.trace("Getting guide with id", id);
 
 			const [[guide], people] = await db.multi(
 				"SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1",
@@ -20,7 +20,7 @@ const guides = {
 			);
 
 			if (guide == null) {
-				logger.mark("guide not found");
+				logger.debug(`Guide with id ${id} not found`);
 				return null;
 			}
 
