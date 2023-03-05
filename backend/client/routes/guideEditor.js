@@ -7,6 +7,7 @@ const WSMessage = require("../classes/WSMessage");
 
 router.get("/:id", async (req, res) => {
 	// Get guide
+	// FIXME: loading guide before sending the page kills performance
 	const guide = await db.guides.get(req.params.id);
 	if (guide == null) {
 		return res.sendStatus(404);
