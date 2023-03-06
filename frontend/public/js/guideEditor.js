@@ -2,8 +2,17 @@ const guideId = document.querySelector("meta[name='data-guide-id']").content;
 
 // Connect to the server with websockets
 const socket = new WebSocket(`ws://localhost:8080/guide/${guideId}`);
+
 socket.addEventListener("open", () => {
 	console.log("Connected to the server");
+});
+
+socket.addEventListener("error", err => {
+	console.error("Error from the server:", err);
+});
+
+socket.addEventListener("close", () => {
+	console.log("Disconnected from the server");
 });
 
 socket.addEventListener("message", msg => {
@@ -28,10 +37,6 @@ socket.addEventListener("message", msg => {
 		default:
 			console.error("Invalid message type", msg.type);
 	}
-});
-
-socket.addEventListener("error", err => {
-	console.error("Error from the server:", err);
 });
 
 const editor = document.getElementById("editor");
