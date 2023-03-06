@@ -6,6 +6,8 @@ block head
 block content
 	include partials/guideEditorHeader
 	main
-		for paragraph in guide.content.split("\n"):
-			section
-				textarea(class="guide-editor-paragraph")= paragraph
+		for section in guide.sections
+			section(class="guide-editor-section")
+				for paragraph in section.content.split("\n")
+					section
+						textarea(class="guide-editor-paragraph")= paragraph
