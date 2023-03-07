@@ -66,6 +66,15 @@ const guides = {
 			}
 
 			logger.trace(`Added people to guide ${guide.id}`);
+
+			// Add sections to guide
+			for (const { title, content } of guide.sections) {
+				await db.none(
+					"INSERT INTO guide_sections (guide_id, title, content) VALUES ($1, $2, $3)",
+					[guide.id, title, content]
+				);
+			}
+
 			return true;
 		} catch (err) {
 			logger.error("Error adding guide to database:", err);
