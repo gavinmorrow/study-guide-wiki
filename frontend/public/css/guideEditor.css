@@ -20,14 +20,24 @@ main {
 	/* To center editor */
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	/* align-items: center; */
 }
 
-#editor {
+.guide-editor-section {
 	width: 100%;
-	height: 100%;
+}
 
-	background-color: var(--color-bg-root);
+.guide-editor-section > h2 {
+	margin-top: 0;
+	margin-bottom: var(--margin-small);
+}
+
+.guide-editor-paragraph {
+	width: 100%;
+	/* height: 100%; */
+
+	/* background-color: var(--color-bg-root); */
+	background-color: var(--color-bg-default);
 	border: none;
 	outline: none;
 
