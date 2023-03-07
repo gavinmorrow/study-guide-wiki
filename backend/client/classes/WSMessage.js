@@ -64,6 +64,7 @@ class WSMessage {
 		return new WSMessage(WSMessage.types.pong).toString();
 	}
 
+	// TODO: maybe make seperate methods for each update type?
 	/**
 	 * Creates a new update message.
 	 * @param {UpdateType} type The type of the update.
@@ -99,7 +100,7 @@ class WSMessage {
 	 * @param {string} userId The ID of the user who unlocked the paragraph.
 	 * @returns {string}
 	 */
-	static unlockParagraph (paragraphId, userId) {
+	static unlockParagraph(paragraphId, userId) {
 		return new WSMessage(WSMessage.types.unlockParagraph, {
 			paragraphId,
 			userId,
