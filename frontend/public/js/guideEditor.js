@@ -38,9 +38,3 @@ socket.addEventListener("message", msg => {
 			console.error("Invalid message type", msg.type);
 	}
 });
-
-const editor = document.getElementById("editor");
-editor.addEventListener("input", () => {
-	const content = editor.value;
-	console.log(content);
-});
