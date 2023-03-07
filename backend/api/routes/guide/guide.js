@@ -106,6 +106,7 @@ const post = async (req, res) => {
 		title: guideJson.title,
 		authorId: guideJson.authorId,
 		people: guideJson.people,
+		sections: [],
 	});
 
 	// Add the guide to the database
