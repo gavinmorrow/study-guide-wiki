@@ -139,7 +139,7 @@ const guides = {
 		try {
 			await db.tx(t => {
 				const queries = users.map(({ id: userId, permissionLevel }) =>
-					addPerson(guideId, userId, permissionLevel, t);
+					addPerson(guideId, userId, permissionLevel, t)
 				);
 				return t.batch(queries);
 			});
