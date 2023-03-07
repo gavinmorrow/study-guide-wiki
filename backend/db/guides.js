@@ -1,6 +1,7 @@
 const logger = require("../logger");
 const db = require("./pgp");
 const Guide = require("../classes/Guide");
+const GuideSection = require("../classes/GuideSection");
 
 const guides = {
 	/**
@@ -68,6 +69,13 @@ const guides = {
 			logger.trace(`Added people to guide ${guide.id}`);
 
 			// Add sections to guide
+			if (guide.sections.length === 0) {
+				logger.trace(`No sections found in guide ${guide.id}, adding default section.`);
+				guide.sections.push(
+					new GuideSection({ guideId: guide.id, title: "Main", content: "" })
+				);
+			}
+			
 			for (const { title, content } of guide.sections) {
 				await db.none(
 					"INSERT INTO guide_sections (guide_id, title, content) VALUES ($1, $2, $3)",
