@@ -8,6 +8,9 @@
 	justify-content: space-between;
 	align-items: center;
 
+	/* To crop background blur */
+	border-radius: var(--border-radius-large);
+
 	padding: var(--padding-default);
 
 	/* Negative margin to compensate for body padding */
@@ -33,7 +36,9 @@
 	background-color: var(--color-bg-higher);
 	opacity: 0.75;
 
+	/* To crop background color */
 	border-radius: var(--border-radius-large);
+
 	z-index: -1;
 }
 
