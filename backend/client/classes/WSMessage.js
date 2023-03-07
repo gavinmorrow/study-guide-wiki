@@ -72,7 +72,7 @@ class WSMessage {
 	 * @returns {string?} The message, or null if the type is invalid.
 	 */
 	static update(type, data) {
-		const type = WSMessage.types.update[type];
+		type = WSMessage.types.update[type];
 		if (type == null) {
 			logger.error(`Invalid update type: ${type}`);
 			return null;
