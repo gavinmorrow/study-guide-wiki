@@ -48,7 +48,7 @@ router.ws("/:id", (ws, req) => {
 	const pingInterval = setInterval(() => {
 		logger.trace("Sending ping");
 		ws.send(WSMessage.ping());
-	}, 1000 * 10);
+	}, 1000 * 60 /* about 1 minute (in milliseconds) */);
 
 	ws.on("message", msg => {
 		try {
