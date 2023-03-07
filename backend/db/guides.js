@@ -151,6 +151,20 @@ const guides = {
 		}
 	},
 
+	async addSection(guideId, title, content) {
+		try {
+			await db.none(
+				"INSERT INTO guide_sections (guide_id, title, content) VALUES ($1, $2, $3)",
+				[guideId, title, content]
+			);
+			logger.trace(`Added section ${title} to guide ${guideId}`);
+			return true;
+		} catch (err) {
+			logger.error("Error adding section to guide:", err);
+			return false;
+		}
+	},
+
 	/**
 	 * Deletes a guide from the database.
 	 * @param {string} id The ID of the guide to delete.
