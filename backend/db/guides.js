@@ -92,6 +92,48 @@ const guides = {
 	},
 
 	/**
+	 * Adds a person to a guide.
+	 * @param {string} guideId The ID of the guide to add the person to.
+	 * @param {string} userId The ID of the user to add to the guide.
+	 * @param {PermissionLevel} permissionLevel The permission level of the user.
+	 * @param {pgp.IDatabase} tx The transaction to use. If not provided, a new transaction will be created.
+	 * @returns {Promise<boolean>} Whether the person was added successfully.
+	 */
+	async addPerson(guideId, userId, permissionLevel, tx = db) {
+		try {
+			await tx.none(
+				"INSERT INTO guide_access (guide_id, user_id, permission_level) VALUES ($1, $2, $3)",
+				[guideId, userId, permissionLevel.name]
+			);
+			return true;
+		} catch (err) {
+			logger.error(`Error adding user ${userId} to guide: ${err}`);
+			return false;
+		}
+	},
+
+	/**
+	 * Adds multiple people to a guide.
+	 * @param {string} guideId The ID of the guide to add the people to.
+	 * @param {{ id: string, permissionLevel: PermissionLevel }[]} users The users to add to the guide.
+	 * @returns {Promise<boolean>} Whether the people were added successfully.
+	 */
+	async addPeople(guideId, ...users) {
+		try {
+			await db.tx(t => {
+				const queries = users.map(({ id: userId, permissionLevel }) =>
+					addPerson(guideId, userId, permissionLevel, t);
+				);
+				return t.batch(queries);
+			});
+			return true;
+		} catch (err) {
+			logger.error("Error adding people to guide:", err);
+			return false;
+		}
+	},
+
+	/**
 	 * Deletes a guide from the database.
 	 * @param {string} id The ID of the guide to delete.
 	 * @returns {Promise<boolean>} Whether the guide was deleted successfully.
