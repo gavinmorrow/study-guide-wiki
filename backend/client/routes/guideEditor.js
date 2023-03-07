@@ -43,10 +43,10 @@ const handleMessage = (msg, ws) => {
 };
 
 router.ws("/:id", (ws, req) => {
-	logger.debug(`Websocket editor connected to guide ${req.params.id}`);
+	logger.debug(`User ${req.userId} connected to guide ${req.params.id} via websockets`);
 
 	const pingInterval = setInterval(() => {
-		logger.debug("Sending ping");
+		logger.trace("Sending ping");
 		ws.send(WSMessage.ping());
 	}, 1000 * 10);
 
