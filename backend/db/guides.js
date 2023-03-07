@@ -14,8 +14,8 @@ const guides = {
 		try {
 			logger.trace("Getting guide with id", id);
 
-			const [[guide], people] = await db.multi(
-				"SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1",
+			const [[guide], people, sections] = await db.multi(
+				"SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1; SELECT title, content FROM guide_sections WHERE guide_id = $1;",
 				[id]
 			);
 
@@ -29,6 +29,7 @@ const guides = {
 				permissionLevel: permission_level,
 			}));
 
+			guide.sections = sections;
 			guide.authorId = guide.owner_id;
 			delete guide.owner_id;
 
