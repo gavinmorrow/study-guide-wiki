@@ -8,6 +8,6 @@ block content
 	main
 		for section in guide.sections
 			section(class="guide-editor-section")
+				h2= section.title
 				for paragraph in section.content.split("\n")
-					section
-						textarea(class="guide-editor-paragraph")= paragraph
+					textarea(class="guide-editor-paragraph")= paragraph
