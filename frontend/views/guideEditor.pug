@@ -10,4 +10,5 @@ block content
 			section(class="guide-editor-section")
 				h2= section.title
 				for paragraph in section.content.split("\n")
-					textarea(class="guide-editor-paragraph")= paragraph
+					div.textarea-grow-wrap
+						textarea(class="guide-editor-paragraph", onInput="this.parentNode.dataset.replicatedValue = this.value")= paragraph

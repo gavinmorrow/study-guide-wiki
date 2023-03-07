@@ -140,11 +140,11 @@ form input.error {
 /* Auto growing textareas
  * https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/
  */
-.grow-wrap {
+.textarea-grow-wrap {
 	/* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
 	display: grid;
 }
-.grow-wrap::after {
+.textarea-grow-wrap::after {
 	/* Note the weird space! Needed to preventy jumpy behavior */
 	content: attr(data-replicated-value) " ";
 
@@ -154,18 +154,18 @@ form input.error {
 	/* Hidden from view, clicks, and screen readers */
 	visibility: hidden;
 }
-.grow-wrap > textarea {
+.textarea-grow-wrap > textarea {
 	/* You could leave this, but after a user resizes, then it ruins the auto sizing */
 	resize: none;
 
 	/* Firefox shows scrollbar on growth, you can hide like this. */
 	overflow: hidden;
 }
-.grow-wrap > textarea,
-.grow-wrap::after {
+.textarea-grow-wrap > textarea,
+.textarea-grow-wrap::after {
 	/* Identical styling required!! */
-	border: 1px solid black;
-	padding: 0.5rem;
+	/* border: 1px solid black; */
+	/* padding: 0.5rem; */
 	font: inherit;
 
 	/* Place on top of each other */
