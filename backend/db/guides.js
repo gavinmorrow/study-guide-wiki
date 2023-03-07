@@ -143,6 +143,7 @@ const guides = {
 				);
 				return t.batch(queries);
 			});
+			logger.trace(`Added ${users.length} people (${users.join()}) to guide ${guideId}`);
 			return true;
 		} catch (err) {
 			logger.error("Error adding people to guide:", err);
