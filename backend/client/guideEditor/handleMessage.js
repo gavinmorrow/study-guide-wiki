@@ -14,7 +14,7 @@ const handleError = require("./handle/error");
 const logger = require("../../logger");
 
 const handleMessage = (msg, ws) => {
-	logger.info("Message from the client:", msg);
+	logger.trace("Message from the client:", msg);
 
 	switch (msg.type) {
 		case "ping":
