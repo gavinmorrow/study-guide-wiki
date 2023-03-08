@@ -1,15 +1,15 @@
 /**
  * @typedef {object} PermissionData
  * @property {string} id The id of the user.
- * @property {PermissionLevel} permissionLevel The permission level of the user.
+ * @property {import("./PermissionLevel")} permissionLevel The permission level of the user.
  */
 
 /**
  * @typedef {object} GuideData
  * @property {string} id The id (UUID) of the guide.
  * @property {string} title The title of the guide.
- * @property {uuid} authorId The author of the guide's UUID.
- * @property {GuideSection[]} sections The sections of the guide.
+ * @property {string} authorId The author of the guide's UUID.
+ * @property {import("./GuideSection")[]} sections The sections of the guide.
  * @property {PermissionData[]} people The people who have access to the guide, and their permission level. This should *not* include the author.
  */
 
@@ -21,7 +21,7 @@ class Guide {
 	 * All data for this guide.
 	 * @type {GuideData}
 	 */
-	#data = {};
+	#data;
 
 	/**
 	 * The id (UUID) of the guide.
@@ -49,7 +49,7 @@ class Guide {
 
 	/**
 	 * The sections of the guide.
-	 * @type {GuideSection[]}
+	 * @type {import("./GuideSection")[]}
 	 */
 	get sections() {
 		return this.#data.sections;
