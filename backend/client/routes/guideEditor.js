@@ -20,28 +20,6 @@ router.get("/:id", async (req, res) => {
 	});
 });
 
-const handleMessage = (msg, ws) => {
-	logger.info("Message from the client:", msg);
-
-	switch (msg.type) {
-		case "ping":
-			ws.send(WSMessage.pong());
-			break;
-
-		case "pong":
-			break;
-
-		case "update":
-			break;
-
-		case "error":
-			break;
-
-		default:
-			ws.send(WSMessage.error("Invalid message type", msg.type));
-	}
-};
-
 router.ws("/:id", (ws, req) => {
 	logger.debug(`User ${req.userId} connected to guide ${req.params.id} via websockets`);
 
