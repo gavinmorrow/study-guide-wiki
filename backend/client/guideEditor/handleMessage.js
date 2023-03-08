@@ -11,7 +11,7 @@ const handleLockParagraph = require("./handle/lockParagraph");
 const handleUnlockParagraph = require("./handle/unlockParagraph");
 const handleError = require("./handle/error");
 
-const logger = require("../../../logger");
+const logger = require("../../logger");
 
 const handleMessage = (msg, ws) => {
 	logger.info("Message from the client:", msg);
@@ -33,31 +33,31 @@ const handleMessage = (msg, ws) => {
 		case "newSection":
 			handleNewSection(msg.data);
 			break;
-		
+
 		case "updateSectionTitle":
 			handleUpdateSectionTitle(msg.data);
 			break;
-		
+
 		case "deleteSection":
 			handleDeleteSection(msg.data);
 			break;
-		
+
 		case "newParagraph":
 			handleNewParagraph(msg.data);
 			break;
-		
+
 		case "updateParagraph":
 			handleUpdateParagraph(msg.data);
 			break;
-		
+
 		case "deleteParagraph":
 			handleDeleteParagraph(msg.data);
 			break;
-		
+
 		case "lockParagraph":
 			handleLockParagraph(msg.data);
 			break;
-		
+
 		case "unlockParagraph":
 			handleUnlockParagraph(msg.data);
 			break;
