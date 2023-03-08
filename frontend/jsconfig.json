@@ -1,0 +1,6 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./public",
+		"module": "ES6"
+	}
+}
