@@ -11,6 +11,8 @@ const handleLockParagraph = require("./handle/lockParagraph");
 const handleUnlockParagraph = require("./handle/unlockParagraph");
 const handleError = require("./handle/error");
 
+const logger = require("../../../logger");
+
 const handleMessage = (msg, ws) => {
 	logger.info("Message from the client:", msg);
 
