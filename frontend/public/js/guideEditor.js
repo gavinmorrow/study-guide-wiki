@@ -1,3 +1,4 @@
+// @ts-ignore (querySelector in this case will return a meta html element, which has a content property)
 const guideId = document.querySelector("meta[name='data-guide-id']").content;
 
 // Handle messages from the server
@@ -45,7 +46,9 @@ socket.addEventListener("message", msg => {
 });
 
 // Handle user input
-for (const textarea of document.querySelectorAll("main textarea")) {
+/** @type {NodeListOf<HTMLTextAreaElement>} */
+const editors = document.querySelectorAll("main textarea");
+for (const textarea of editors) {
 	textarea.addEventListener("input", () => {
 		socket.send(
 			JSON.stringify({
@@ -57,15 +60,18 @@ for (const textarea of document.querySelectorAll("main textarea")) {
 		);
 	});
 
-	textarea.addEventListener("beforeinput", e => {
-		// Check to see if paragraph should be deleted
-		if (textarea.value !== "") return;
-		if (e.inputType === "deleteContentBackward") {
-			socket.send(JSON.stringify({ type: "deleteParagraph" }));
+	textarea.addEventListener(
+		"beforeinput",
+		/** @param {InputEvent} e */ e => {
+			// Check to see if paragraph should be deleted
+			if (textarea.value !== "") return;
+			if (e.inputType === "deleteContentBackward") {
+				socket.send(JSON.stringify({ type: "deleteParagraph" }));
 
-			// Lock the previous paragraph, if possible
-			const prev = textarea.parentElement.previousElementSibling.querySelector("textarea");
-				
+				// Lock the previous paragraph, if possible
+				const prev =
+					textarea.parentElement.previousElementSibling.querySelector("textarea");
+			}
 		}
-	});
+	);
 }

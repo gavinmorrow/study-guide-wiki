@@ -21,6 +21,7 @@ router.get("/:id", async (req, res) => {
 	});
 });
 
+// @ts-ignore (property ws does exist on the router)
 router.ws("/:id", (ws, req) => {
 	req.guideId = req.params.id;
 	logger.info(`User ${req.userId} connected to guide ${req.guideId} via websockets`);

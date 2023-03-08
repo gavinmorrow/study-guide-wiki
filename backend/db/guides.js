@@ -10,7 +10,10 @@ const guides = {
 	 * @returns {Promise<Guide?>} The guide, or null if not found.
 	 */
 	async get(id) {
-		if (id == null) return logger.error("Attempted to get guide with null id");
+		if (id == null) {
+			logger.error("Attempted to get guide with null id");
+			return null;
+		}
 
 		try {
 			logger.trace("Getting guide with id", id);
@@ -75,7 +78,7 @@ const guides = {
 					new GuideSection({ guideId: guide.id, title: "Main", content: "" })
 				);
 			}
-			
+
 			for (const { title, content } of guide.sections) {
 				await db.none(
 					"INSERT INTO guide_sections (guide_id, title, content) VALUES ($1, $2, $3)",
@@ -112,8 +115,8 @@ const guides = {
 	 * Adds a person to a guide.
 	 * @param {string} guideId The ID of the guide to add the person to.
 	 * @param {string} userId The ID of the user to add to the guide.
-	 * @param {PermissionLevel} permissionLevel The permission level of the user.
-	 * @param {pgp.IDatabase} tx The transaction to use. If not provided, a new transaction will be created.
+	 * @param {import("../classes/PermissionLevel")} permissionLevel The permission level of the user.
+	 * @param {import("pg-promise").IDatabase|import("pg-promise").ITask<{}>} tx The transaction to use. If not provided, a new transaction will be created.
 	 * @returns {Promise<boolean>} Whether the person was added successfully.
 	 */
 	async addPerson(guideId, userId, permissionLevel, tx = db) {
@@ -132,14 +135,14 @@ const guides = {
 	/**
 	 * Adds multiple people to a guide.
 	 * @param {string} guideId The ID of the guide to add the people to.
-	 * @param {{ id: string, permissionLevel: PermissionLevel }[]} users The users to add to the guide.
+	 * @param {{ id: string, permissionLevel: import("../classes/PermissionLevel") }[]} users The users to add to the guide.
 	 * @returns {Promise<boolean>} Whether the people were added successfully.
 	 */
 	async addPeople(guideId, ...users) {
 		try {
 			await db.tx(t => {
 				const queries = users.map(({ id: userId, permissionLevel }) =>
-					addPerson(guideId, userId, permissionLevel, t)
+					guides.addPerson(guideId, userId, permissionLevel, t)
 				);
 				return t.batch(queries);
 			});
@@ -172,8 +175,11 @@ const guides = {
 	 */
 	async delete(id) {
 		// Ensure guide exists
-		const guide = await db.guides.get(id);
-		if (guide == null) return logger.trace(`Guide ${id} not found`);
+		const guide = await guides.get(id);
+		if (guide == null) {
+			logger.trace(`Guide ${id} not found`);
+			return false;
+		}
 
 		try {
 			// Delete guide

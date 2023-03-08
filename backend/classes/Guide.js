@@ -41,7 +41,7 @@ class Guide {
 
 	/**
 	 * The author of the guide's UUID.
-	 * @type {uuid}
+	 * @type {string}
 	 */
 	get authorId() {
 		return this.#data.authorId;
