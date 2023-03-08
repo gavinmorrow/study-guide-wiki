@@ -22,10 +22,10 @@ router.get("/:id", async (req, res) => {
 });
 
 router.ws("/:id", (ws, req) => {
-	logger.debug(`User ${req.userId} connected to guide ${req.params.id} via websockets`);
+	req.guideId = req.params.id;
+	logger.info(`User ${req.userId} connected to guide ${req.guideId} via websockets`);
 
 	const pingInterval = setInterval(() => {
-		logger.trace("Sending ping");
 		ws.send(WSMessage.ping());
 	}, 1000 * 60 /* about 1 minute (in milliseconds) */);
 
@@ -43,7 +43,7 @@ router.ws("/:id", (ws, req) => {
 	});
 
 	ws.on("close", () => {
-		logger.info(`Websocket editor disconnected from guide ${req.params.id}`);
+		logger.trace(`Websocket editor disconnected from guide ${req.params.id}`);
 
 		clearInterval(pingInterval);
 	});
