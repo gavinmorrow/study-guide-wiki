@@ -4,6 +4,7 @@ const router = express.Router();
 const db = require("../../db/db");
 const logger = require("../../logger");
 const WSMessage = require("../classes/WSMessage");
+const handleMessage = require("../guideEditor/handleMessage");
 
 router.get("/:id", async (req, res) => {
 	// Get guide
