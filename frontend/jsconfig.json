@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"baseUrl": "./public",
-		"module": "ES2022",
+		"target": "ES2022",
 		"checkJs": true
 	}
 }
