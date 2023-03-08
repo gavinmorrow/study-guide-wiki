@@ -57,7 +57,15 @@ for (const textarea of document.querySelectorAll("main textarea")) {
 		);
 	});
 
-	textarea.addEventListener("keyup", e => {
-		if (e.key === "Backspace") console.log("delete");
+	textarea.addEventListener("beforeinput", e => {
+		// Check to see if paragraph should be deleted
+		if (textarea.value !== "") return;
+		if (e.inputType === "deleteContentBackward") {
+			socket.send(JSON.stringify({ type: "deleteParagraph" }));
+
+			// Lock the previous paragraph, if possible
+			const prev = textarea.parentElement.previousElementSibling.querySelector("textarea");
+				
+		}
 	});
 }
