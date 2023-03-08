@@ -1,8 +1,5 @@
 const guideId = document.querySelector("meta[name='data-guide-id']").content;
 
-// Handle user input
-
-
 // Handle messages from the server
 const handleMessage = msg => {
 	switch (msg.type) {
@@ -46,3 +43,21 @@ socket.addEventListener("message", msg => {
 
 	handleMessage(msg);
 });
+
+// Handle user input
+for (const textarea of document.querySelectorAll("main textarea")) {
+	textarea.addEventListener("input", () => {
+		socket.send(
+			JSON.stringify({
+				type: "updateParagraph",
+				data: {
+					newValue: textarea.value,
+				},
+			})
+		);
+	});
+
+	textarea.addEventListener("keyup", e => {
+		if (e.key === "Backspace") console.log("delete");
+	});
+}
