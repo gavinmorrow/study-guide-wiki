@@ -1,4 +1,3 @@
-const handlePing = require("./handle/ping");
 const handlePong = require("./handle/pong");
 const handleUpdateGuideTitle = require("./handle/updateGuideTitle");
 const handleNewSection = require("./handle/newSection");
@@ -17,11 +16,6 @@ const handleMessage = (msg, ws) => {
 	logger.trace("Message from the client:", msg);
 
 	switch (msg.type) {
-		case "ping":
-			ws.send(WSMessage.pong());
-			handlePing();
-			break;
-
 		case "pong":
 			handlePong();
 			break;
