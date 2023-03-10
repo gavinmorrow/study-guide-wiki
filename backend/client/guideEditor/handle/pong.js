@@ -1,5 +1,5 @@
 const logger = require("../../../logger");
-const pong = data => {
-	logger.trace("Pong", data);
+const pong = () => {
+	logger.trace("Got pong from client");
 };
 module.exports = pong;

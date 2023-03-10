@@ -1,5 +1,5 @@
 const logger = require("../../../logger");
-const unlockParagraph = data => {
+const unlockParagraph = (ws, data) => {
 	logger.trace("Unlocking paragraph", data);
 
 	// TODO: unlock paragraph

@@ -10,6 +10,8 @@ const handleLockParagraph = require("./handle/lockParagraph");
 const handleUnlockParagraph = require("./handle/unlockParagraph");
 const handleError = require("./handle/error");
 
+const WSMessage = require("../classes/WSMessage");
+
 const logger = require("../../logger");
 
 const handleMessage = (msg, ws) => {
@@ -21,43 +23,43 @@ const handleMessage = (msg, ws) => {
 			break;
 
 		case "updateGuideTitle":
-			handleUpdateGuideTitle(msg.data);
+			handleUpdateGuideTitle(ws, msg.data);
 			break;
 
 		case "newSection":
-			handleNewSection(msg.data);
+			handleNewSection(ws, msg.data);
 			break;
 
 		case "updateSectionTitle":
-			handleUpdateSectionTitle(msg.data);
+			handleUpdateSectionTitle(ws, msg.data);
 			break;
 
 		case "deleteSection":
-			handleDeleteSection(msg.data);
+			handleDeleteSection(ws, msg.data);
 			break;
 
 		case "newParagraph":
-			handleNewParagraph(msg.data);
+			handleNewParagraph(ws, msg.data);
 			break;
 
 		case "updateParagraph":
-			handleUpdateParagraph(msg.data);
+			handleUpdateParagraph(ws, msg.data);
 			break;
 
 		case "deleteParagraph":
-			handleDeleteParagraph(msg.data);
+			handleDeleteParagraph(ws, msg.data);
 			break;
 
 		case "lockParagraph":
-			handleLockParagraph(msg.data);
+			handleLockParagraph(ws, msg.data);
 			break;
 
 		case "unlockParagraph":
-			handleUnlockParagraph(msg.data);
+			handleUnlockParagraph(ws, msg.data);
 			break;
 
 		case "error":
-			handleError(msg.data);
+			handleError(ws, msg.data);
 			break;
 
 		default:

@@ -1,5 +1,5 @@
 const logger = require("../../../logger");
-const updateParagraph = data => {
+const updateParagraph = (ws, data) => {
 	logger.trace("Updating paragraph", data);
 
 	// TODO: update paragraph in database

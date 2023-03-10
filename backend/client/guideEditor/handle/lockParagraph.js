@@ -1,5 +1,5 @@
 const logger = require("../../../logger");
-const lockParagraph = data => {
+const lockParagraph = (ws, data) => {
 	logger.trace("Locking paragraph", data);
 
 	// TODO: lock paragraph
