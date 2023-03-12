@@ -19,7 +19,7 @@ const guides = {
 			logger.trace("Getting guide with id", id);
 
 			const [[guide], people, sections] = await db.multi(
-				"SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1; SELECT title, content FROM guide_sections WHERE guide_id = $1;",
+				"SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1; SELECT title, paragraphs FROM guide_sections WHERE guide_id = $1;",
 				[id]
 			);
 
@@ -33,7 +33,14 @@ const guides = {
 				permissionLevel: permission_level,
 			}));
 
-			guide.sections = sections;
+			guide.sections = sections.map(
+				({ title, paragraphs }) =>
+					new GuideSection({
+						guideId: id,
+						title,
+						paragraphs: paragraphs.map(paragraph => JSON.parse(paragraph)),
+					})
+			);
 			guide.authorId = guide.owner_id;
 			delete guide.owner_id;
 
@@ -75,14 +82,18 @@ const guides = {
 			if (guide.sections.length === 0) {
 				logger.trace(`No sections found in guide ${guide.id}, adding default section.`);
 				guide.sections.push(
-					new GuideSection({ guideId: guide.id, title: "Main", content: "" })
+					new GuideSection({
+						guideId: guide.id,
+						title: "Main",
+						paragraphs: [{ id: crypto.randomUUID(), content: "" }],
+					})
 				);
 			}
 
-			for (const { title, content } of guide.sections) {
+			for (const { title, paragraphs } of guide.sections) {
 				await db.none(
-					"INSERT INTO guide_sections (guide_id, title, content) VALUES ($1, $2, $3)",
-					[guide.id, title, content]
+					"INSERT INTO guide_sections (guide_id, title, paragraphs) VALUES ($1, $2, $3)",
+					[guide.id, title, paragraphs]
 				);
 			}
 
