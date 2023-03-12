@@ -10,7 +10,7 @@ class GuideSection {
 	 * All data for this guide section
 	 * @type {GuideSectionData}
 	 */
-	#data = {};
+	#data;
 
 	/**
 	 * The id of the guide this section belongs to.
