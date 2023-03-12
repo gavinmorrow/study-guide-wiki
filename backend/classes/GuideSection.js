@@ -2,7 +2,9 @@
  * @typedef {object} GuideSectionData
  * @property {string} guideId The id of the guide this section belongs to.
  * @property {string} title The title of the guide section.
- * @property {string} content The content of the guide section. This is markdown.
+ * @property {object[]} paragraphs The content of the guide section.
+ * @property {string} paragraphs.id The id of the paragraph.
+ * @property {string} paragraphs.content The content of the paragraph. This is markdown.
  */
 
 class GuideSection {
@@ -29,11 +31,11 @@ class GuideSection {
 	}
 
 	/**
-	 * The content of the guide section. This is markdown.
-	 * @type {string}
+	 * The content of the guide section.
+	 * @type {object[]}
 	 */
-	get content() {
-		return this.#data.content;
+	get paragraphs() {
+		return this.#data.paragraphs;
 	}
 
 	/** @param {GuideSectionData} data The data for this guide section. */
