@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS guide_access (
 CREATE TABLE IF NOT EXISTS guide_sections (
   guide_id UUID NOT NULL REFERENCES guides(id) ON DELETE CASCADE,
   title VARCHAR(255) NOT NULL,
-  content TEXT NOT NULL,
+  paragraphs TEXT[],
 
   PRIMARY KEY (guide_id, title)
 );
