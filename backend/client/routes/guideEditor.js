@@ -3,28 +3,29 @@ const router = express.Router();
 
 const db = require("../../db/db");
 const logger = require("../../logger");
+
 const WSMessage = require("../classes/WSMessage");
+const Session = require("../classes/Session");
 const handleMessage = require("../guideEditor/handleMessage");
 
-router.get("/:id", async (req, res) => {
-	// Get guide
-	const guide = await db.guides.get(req.params.id);
-	if (guide == null) {
-		return res.sendStatus(404);
-	}
-
-	// Render
-	res.render("guideEditor", {
-		title: `${guide.title} | Studypedia`,
-		guide,
-		resourceName: "guideEditor",
-	});
-});
-
+/**
+ * @type { Object<string, Session> }
+ */
+const sessions = {};
 // @ts-ignore (property ws does exist on the router)
 router.ws("/:id", (ws, req) => {
 	req.guideId = req.params.id;
 	logger.info(`User ${req.userId} connected to guide ${req.guideId} via websockets`);
+
+	// Check if session exists
+	if (sessions[req.guideId] == null) {
+		// If not, create a new session
+		sessions[req.guideId] = new Session();
+	}
+
+	// Connect to session
+	ws.session = sessions[req.guideId];
+	ws.session.connectUser(req.userId);
 
 	const pingInterval = setInterval(() => {
 		ws.send(WSMessage.ping());
@@ -47,6 +48,21 @@ router.ws("/:id", (ws, req) => {
 		logger.trace(`Websocket editor disconnected from guide ${req.params.id}`);
 
 		clearInterval(pingInterval);
+	});
+});
+
+router.get("/:id", async (req, res) => {
+	// Get guide
+	let guide = await db.guides.get(req.params.id);
+	if (guide == null) {
+		return res.sendStatus(404);
+	}
+
+	// Render
+	res.render("guideEditor", {
+		title: `${guide.title} | Studypedia`,
+		guide,
+		resourceName: "guideEditor",
 	});
 });
 
