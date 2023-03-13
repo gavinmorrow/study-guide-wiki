@@ -14,18 +14,28 @@ const handleMessage = require("../guideEditor/handleMessage");
 const sessions = {};
 // @ts-ignore (property ws does exist on the router)
 router.ws("/:id", (ws, req) => {
-	req.guideId = req.params.id;
-	logger.info(`User ${req.userId} connected to guide ${req.guideId} via websockets`);
+	ws.guideId = req.params.id;
+	ws.userId = req.userId;
+	logger.info(`User ${ws.userId} connected to guide ${ws.guideId} via websockets`);
 
 	// Check if session exists
 	if (sessions[req.guideId] == null) {
-		// If not, create a new session
-		sessions[req.guideId] = new Session();
+		// Get guide
+		let guide = db.guides.get(ws.guideId);
+		if (guide == null) {
+			ws.send(WSMessage.error("Guide not found", ws.guideId));
+			logger.debug(`Guide ${ws.guideId} not found`);
+			ws.close();
+			return;
+		}
+
+		// Create session
+		sessions[ws.guideId] = new Session(guide);
 	}
 
 	// Connect to session
-	ws.session = sessions[req.guideId];
-	ws.session.connectUser(req.userId);
+	ws.session = sessions[ws.guideId];
+	ws.session.connectUser(ws.userId);
 
 	const pingInterval = setInterval(() => {
 		ws.send(WSMessage.ping());
@@ -45,7 +55,7 @@ router.ws("/:id", (ws, req) => {
 	});
 
 	ws.on("close", () => {
-		logger.trace(`Websocket editor disconnected from guide ${req.params.id}`);
+		logger.trace(`Websocket editor disconnected from guide ${ws.guideId}`);
 
 		clearInterval(pingInterval);
 	});

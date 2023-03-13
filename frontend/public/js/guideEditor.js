@@ -49,6 +49,25 @@ socket.addEventListener("message", msg => {
 /** @type {NodeListOf<HTMLTextAreaElement>} */
 const editors = document.querySelectorAll("main textarea");
 for (const textarea of editors) {
+	textarea.addEventListener("focus", () => {
+		socket.send(
+			JSON.stringify({
+				type: "lockParagraph",
+				data: {
+					paragraphId: textarea.id,
+				},
+			})
+		);
+	});
+
+	textarea.addEventListener("blur", () => {
+		socket.send(
+			JSON.stringify({
+				type: "unlockParagraph",
+			})
+		);
+	});
+
 	textarea.addEventListener("input", () => {
 		socket.send(
 			JSON.stringify({
@@ -70,7 +89,31 @@ for (const textarea of editors) {
 
 				// Lock the previous paragraph, if possible
 				const prev =
-					textarea.parentElement.previousElementSibling.querySelector("textarea");
+					textarea.parentElement.previousElementSibling?.querySelector("textarea");
+				if (prev != null) {
+					socket.send(
+						JSON.stringify({
+							type: "lockParagraph",
+							data: {
+								paragraphId: prev.id,
+							},
+						})
+					);
+					return;
+				}
+			}
+
+			// Lock the next paragraph, if possible
+			const next = textarea.parentElement.nextElementSibling?.querySelector("textarea");
+			if (next != null) {
+				socket.send(
+					JSON.stringify({
+						type: "lockParagraph",
+						data: {
+							paragraphId: next.id,
+						},
+					})
+				);
 			}
 		}
 	);

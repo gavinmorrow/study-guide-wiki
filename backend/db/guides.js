@@ -18,10 +18,12 @@ const guides = {
 		try {
 			logger.trace("Getting guide with id", id);
 
-			const [[guide], people, sections] = await db.multi(
-				"SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1; SELECT title, paragraphs FROM guide_sections WHERE guide_id = $1;",
+			const [[guide], people, sections, paragraphsData] = await db.multi(
+				"SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1; SELECT title FROM guide_sections WHERE guide_id = $1; SELECT section_title, paragraph_id, content FROM guide_section_paragraphs WHERE guide_id = $1",
 				[id]
 			);
+
+			logger.debug(paragraphsData);
 
 			if (guide == null) {
 				logger.debug(`Guide with id ${id} not found`);

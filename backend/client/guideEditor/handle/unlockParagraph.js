@@ -1,7 +1,7 @@
 const logger = require("../../../logger");
 const unlockParagraph = (ws, data) => {
-	logger.trace("Unlocking paragraph", data);
+	logger.trace("Unlocking paragraph for user", ws.userId);
 
-	// TODO: unlock paragraph
+	ws.session.locks = ws.session.locks.filter(lock => lock.userId !== ws.userId);
 };
 module.exports = unlockParagraph;
