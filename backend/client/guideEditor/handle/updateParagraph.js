@@ -1,7 +1,7 @@
 const db = require("../../../db/db");
 const logger = require("../../../logger");
 const WSMessage = require("../../classes/WSMessage");
-const updateParagraph = (ws, data) => {
+const updateParagraph = async (ws, data) => {
 	logger.trace("Updating paragraph", data);
 
 	// Current paragraph
@@ -18,8 +18,17 @@ const updateParagraph = (ws, data) => {
 		return;
 	}
 
-	logger.info("Paragraph ID:", paragraphId);
+	const success = await db.guides.updateParagraphContent(paragraphId, data.newValue);
+	if (!success) {
+		logger.warn("Paragraph", paragraphId, "could not be updated");
+		ws.send(
+			WSMessage.error("Paragraph could not be updated", {
+				type: "paragraphUpdateFailed",
+				paragraphId,
+			})
+		);
+	}
 
-	// TODO: Update paragraph in db
+	logger.debug("Paragraph", paragraphId, "updated");
 };
 module.exports = updateParagraph;
