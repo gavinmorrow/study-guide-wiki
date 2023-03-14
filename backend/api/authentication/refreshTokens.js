@@ -16,7 +16,7 @@ let invalidFamilies = new Set();
 /**
  * Refreshes an access token.
  * @param {string} refreshToken The refresh token to use.
- * @returns {{accessToken: string, refreshToken: string, id: string}?} The new access and refresh tokens, plus the user's id. If the refresh token is invalid, null is returned.
+ * @returns {Promise<{accessToken: string, refreshToken: string, id: string}?>} The new access and refresh tokens, plus the user's id. If the refresh token is invalid, null is returned.
  */
 const refreshTokens = async refreshToken => {
 	// Verify the refresh token
@@ -24,7 +24,9 @@ const refreshTokens = async refreshToken => {
 	try {
 		const token = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
+		// @ts-ignore
 		id = token.id;
+		// @ts-ignore
 		family = token.family;
 
 		if (id == null || family == null) {

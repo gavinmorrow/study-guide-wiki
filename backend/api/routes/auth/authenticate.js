@@ -83,10 +83,12 @@ const authenticate = async (req, res, next) => {
 		// Verify the token is valid
 		const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
+		// @ts-ignore
 		if (decoded.id == null) {
 			logger.debug(`Invalid access token (no id): ${decoded}`);
 			return await unauthenticatedRoute(req, res);
 		}
+		// @ts-ignore
 		req.userId = decoded.id;
 
 		logger.trace(`Successfully authenticated route ${method} ${path}`);
