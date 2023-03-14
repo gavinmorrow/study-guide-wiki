@@ -1,10 +1,8 @@
+const db = require("../../../db/db");
 const logger = require("../../../logger");
 const WSMessage = require("../../classes/WSMessage");
 const updateParagraph = (ws, data) => {
 	logger.trace("Updating paragraph", data);
-
-	// Current user
-	const user = ws.session.user;
 
 	// Current paragraph
 	const paragraphId = ws.session.locks.find(lock => lock.userId === ws.userId)?.paragraphId;
@@ -21,5 +19,7 @@ const updateParagraph = (ws, data) => {
 	}
 
 	logger.info("Paragraph ID:", paragraphId);
+
+	// TODO: Update paragraph in db
 };
 module.exports = updateParagraph;
