@@ -277,12 +277,12 @@ const guides = {
 	 * @param {import("pg-promise").IDatabase|import("pg-promise").ITask<{}>} t The transaction to use. If not provided, a new transaction will be created.
 	 * @returns {Promise<boolean>} Whether the paragraph was updated successfully.
 	 */
-	async updateParagraphContent (paragraphId, content, t = db) {
+	async updateParagraphContent(paragraphId, content, t = db) {
 		try {
-			await t.none("UPDATE guide_section_paragraphs SET content = $1 WHERE paragraph_id = $2", [
-				content,
-				paragraphId,
-			]);
+			await t.none(
+				"UPDATE guide_section_paragraphs SET content = $1 WHERE paragraph_id = $2",
+				[content, paragraphId]
+			);
 			logger.trace(`Updated paragraph content for paragraph ${paragraphId}`);
 			return true;
 		} catch (err) {
