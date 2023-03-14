@@ -308,6 +308,7 @@ const guides = {
 			// Delete guide
 			// Because of the foreign key constraint,
 			// this will also delete all guide_access rows.
+			// (And all guide sections, paragraphs, etc.)
 			await db.none("DELETE FROM guides WHERE id = $1", [id]);
 			logger.trace(`Deleted guide ${id}`);
 			return true;
