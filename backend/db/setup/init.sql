@@ -38,20 +38,17 @@ CREATE TABLE IF NOT EXISTS guide_access (
 );
 
 CREATE TABLE IF NOT EXISTS guide_sections (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   guide_id UUID NOT NULL REFERENCES guides(id) ON DELETE CASCADE,
-  title VARCHAR(255) NOT NULL,
+  title VARCHAR(255) NOT NULL
 --   paragraphs TEXT[],
-
-  PRIMARY KEY (guide_id, title)
 );
 
 CREATE TABLE IF NOT EXISTS guide_section_paragraphs (
   guide_id UUID NOT NULL REFERENCES guides(id) ON DELETE CASCADE,
-  section_title VARCHAR(255) NOT NULL REFERENCES guide_sections(title) ON DELETE CASCADE,
-  paragraph_id UUID NOT NULL DEFAULT gen_random_uuid(),
-  content TEXT NOT NULL DEFAULT '',
-
-  PRIMARY KEY (guide_id, section_title, paragraph_id)
+  section_id UUID NOT NULL REFERENCES guide_sections(id) ON DELETE CASCADE,
+  paragraph_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  content TEXT NOT NULL DEFAULT ''
 );
 
 COMMIT;
