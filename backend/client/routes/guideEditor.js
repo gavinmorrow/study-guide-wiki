@@ -41,7 +41,7 @@ router.ws("/:id", (ws, req) => {
 		ws.send(WSMessage.ping());
 	}, 1000 * 60 /* about 1 minute (in milliseconds) */);
 
-	ws.on("message", msg => {
+	ws.on("message", async msg => {
 		try {
 			msg = JSON.parse(msg);
 		} catch (e) {
@@ -51,7 +51,7 @@ router.ws("/:id", (ws, req) => {
 
 		if (msg.type == null) ws.send(WSMessage.error("Message type not specified", msg));
 
-		handleMessage(msg, ws);
+		await handleMessage(msg, ws);
 	});
 
 	ws.on("close", () => {

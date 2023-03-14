@@ -14,52 +14,52 @@ const WSMessage = require("../classes/WSMessage");
 
 const logger = require("../../logger");
 
-const handleMessage = (msg, ws) => {
+const handleMessage = async (msg, ws) => {
 	logger.trace("Message from the client:", msg);
 
 	switch (msg.type) {
 		case "pong":
-			handlePong();
+			await handlePong();
 			break;
 
 		case "updateGuideTitle":
-			handleUpdateGuideTitle(ws, msg.data);
+			await handleUpdateGuideTitle(ws, msg.data);
 			break;
 
 		case "newSection":
-			handleNewSection(ws, msg.data);
+			await handleNewSection(ws, msg.data);
 			break;
 
 		case "updateSectionTitle":
-			handleUpdateSectionTitle(ws, msg.data);
+			await handleUpdateSectionTitle(ws, msg.data);
 			break;
 
 		case "deleteSection":
-			handleDeleteSection(ws, msg.data);
+			await handleDeleteSection(ws, msg.data);
 			break;
 
 		case "newParagraph":
-			handleNewParagraph(ws, msg.data);
+			await handleNewParagraph(ws, msg.data);
 			break;
 
 		case "updateParagraph":
-			handleUpdateParagraph(ws, msg.data);
+			await handleUpdateParagraph(ws, msg.data);
 			break;
 
 		case "deleteParagraph":
-			handleDeleteParagraph(ws, msg.data);
+			await handleDeleteParagraph(ws, msg.data);
 			break;
 
 		case "lockParagraph":
-			handleLockParagraph(ws, msg.data);
+			await handleLockParagraph(ws, msg.data);
 			break;
 
 		case "unlockParagraph":
-			handleUnlockParagraph(ws, msg.data);
+			await handleUnlockParagraph(ws, msg.data);
 			break;
 
 		case "error":
-			handleError(ws, msg.data);
+			await handleError(ws, msg.data);
 			break;
 
 		default:
