@@ -18,34 +18,46 @@ const guides = {
 		try {
 			logger.trace("Getting guide with id", id);
 
-			const [[guide], people, sections, paragraphsData] = await db.multi(
-				"SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1; SELECT id, title FROM guide_sections WHERE guide_id = $1; SELECT section_id, paragraph_id, content FROM guide_section_paragraphs WHERE guide_id = $1",
-				[id]
-			);
+			/** @type {Guide} */
+			let guide;
+			await db.task(async t => {
+				const [[guideResult], people, sections, paragraphs] = await t.multi(
+					"SELECT * FROM guides WHERE id = $1; SELECT user_id, permission_level FROM guide_access WHERE guide_id = $1; SELECT id, title FROM guide_sections WHERE guide_id = $1; SELECT section_id, paragraph_id, content FROM guide_section_paragraphs WHERE guide_id = $1",
+					[id]
+				);
 
-			logger.debug("Paragraphs:", paragraphsData);
+				if (guideResult == null) {
+					logger.debug(`Guide with id ${id} not found`);
+					return null;
+				}
 
-			if (guide == null) {
-				logger.debug(`Guide with id ${id} not found`);
-				return null;
-			}
+				guideResult.people = people.map(({ user_id, permission_level }) => ({
+					id: user_id,
+					permissionLevel: permission_level,
+				}));
 
-			guide.people = people.map(({ user_id, permission_level }) => ({
-				id: user_id,
-				permissionLevel: permission_level,
-			}));
+				guideResult.sections = sections.map(
+					({ id, title }) =>
+						new GuideSection({
+							guideId: id,
+							id,
+							title,
+							paragraphs: paragraphs
+								.filter(p => p.section_id === id)
+								.map(p => {
+									p.id = p.paragraph_id;
+									delete p.paragraph_id;
+									delete p.section_id;
+									delete p.guide_id;
+									return p;
+								}),
+						})
+				);
+				guideResult.authorId = guideResult.owner_id;
+				delete guideResult.owner_id;
 
-			guide.sections = sections.map(
-				({ id, title, paragraphs }) =>
-					new GuideSection({
-						guideId: id,
-						id,
-						title,
-						paragraphs: paragraphs.map(paragraph => JSON.parse(paragraph)), // FIXME: (FATAL) This is not how paragraphs are stored now
-					})
-			);
-			guide.authorId = guide.owner_id;
-			delete guide.owner_id;
+				guide = guideResult;
+			});
 
 			logger.trace(`Guide with id ${id} found`);
 
@@ -221,7 +233,7 @@ const guides = {
 	async addParagraph(guideId, sectionId, paragraphId, content, t = db) {
 		try {
 			await t.none(
-				"INSERT INTO guide_section_paragraphs (id, guide_id, section_id, content) VALUES ($1, $2, $3, $4)",
+				"INSERT INTO guide_section_paragraphs (paragraph_id, guide_id, section_id, content) VALUES ($1, $2, $3, $4)",
 				[paragraphId, guideId, sectionId, content]
 			);
 			logger.trace(`Added paragraph to section ${sectionId} in guide ${guideId}.`);
