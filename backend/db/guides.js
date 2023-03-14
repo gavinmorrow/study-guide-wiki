@@ -271,6 +271,27 @@ const guides = {
 	},
 
 	/**
+	 * Update a paragraph's content.
+	 * @param {string} paragraphId The ID of the paragraph to update.
+	 * @param {string} content The new content of the paragraph.
+	 * @param {import("pg-promise").IDatabase|import("pg-promise").ITask<{}>} t The transaction to use. If not provided, a new transaction will be created.
+	 * @returns {Promise<boolean>} Whether the paragraph was updated successfully.
+	 */
+	async updateParagraphContent (paragraphId, content, t = db) {
+		try {
+			await t.none("UPDATE guide_section_paragraphs SET content = $1 WHERE paragraph_id = $2", [
+				content,
+				paragraphId,
+			]);
+			logger.trace(`Updated paragraph content for paragraph ${paragraphId}`);
+			return true;
+		} catch (err) {
+			logger.error(`Error updating paragraph content for paragraph ${paragraphId}: ${err}`);
+			return false;
+		}
+	},
+
+	/**
 	 * Deletes a guide from the database.
 	 * @param {string} id The ID of the guide to delete.
 	 * @returns {Promise<boolean>} Whether the guide was deleted successfully.
