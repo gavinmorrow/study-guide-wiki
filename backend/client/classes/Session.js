@@ -15,10 +15,14 @@ class Session {
 	users = [];
 
 	/**
-	 * The locks (on paragraphs) that users have obtained.
-	 * @type {object[]} The paragraph and user UUIDs.
+	 * @typedef {object} Lock
 	 * @property {string} paragraphId The paragraph UUID.
-	 * @property {string} userId The user UUID.
+	 * @property {string} token The user's session token.
+	 */
+
+	/**
+	 * The locks (on paragraphs) that users have obtained.
+	 * @type {Lock[]}
 	 */
 	locks = [];
 
