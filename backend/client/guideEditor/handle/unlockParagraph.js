@@ -1,7 +1,17 @@
 const logger = require("../../../logger");
-const unlockParagraph = (ws, data, session) => {
-	logger.trace("Unlocking paragraph for user", ws.userId);
+const Session = require("../../classes/Session");
+const UserSession = require("../../classes/UserSession");
 
-	session.locks = session.locks.filter(lock => lock.userId !== ws.userId);
+/**
+ * Unlocks a paragraph for a user.
+ * @param {WebSocket} ws The user's websocket.
+ * @param {object} data The message data.
+ * @param {UserSession} userSession The user's session data.
+ * @param {Session} session The session data.
+ */
+const unlockParagraph = (ws, data, userSession, session) => {
+	logger.trace("Unlocking paragraph for session token", userSession.token);
+
+	session.locks = session.locks.filter(lock => lock.token !== userSession.token);
 };
 module.exports = unlockParagraph;
