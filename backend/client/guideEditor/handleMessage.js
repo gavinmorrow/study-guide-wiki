@@ -14,7 +14,7 @@ const WSMessage = require("../classes/WSMessage");
 
 const logger = require("../../logger");
 
-const handleMessage = async (msg, ws, session) => {
+const handleMessage = async (msg, ws, userSession, session) => {
 	logger.trace("Message from the client:", msg);
 
 	switch (msg.type) {
@@ -23,43 +23,43 @@ const handleMessage = async (msg, ws, session) => {
 			break;
 
 		case "updateGuideTitle":
-			await handleUpdateGuideTitle(ws, msg.data, session);
+			await handleUpdateGuideTitle(ws, msg.data, userSession);
 			break;
 
 		case "newSection":
-			await handleNewSection(ws, msg.data, session);
+			await handleNewSection(ws, msg.data, userSession);
 			break;
 
 		case "updateSectionTitle":
-			await handleUpdateSectionTitle(ws, msg.data, session);
+			await handleUpdateSectionTitle(ws, msg.data, userSession);
 			break;
 
 		case "deleteSection":
-			await handleDeleteSection(ws, msg.data, session);
+			await handleDeleteSection(ws, msg.data, userSession);
 			break;
 
 		case "newParagraph":
-			await handleNewParagraph(ws, msg.data, session);
+			await handleNewParagraph(ws, msg.data, userSession);
 			break;
 
 		case "updateParagraph":
-			await handleUpdateParagraph(ws, msg.data, session);
+			await handleUpdateParagraph(ws, msg.data, userSession);
 			break;
 
 		case "deleteParagraph":
-			await handleDeleteParagraph(ws, msg.data, session);
+			await handleDeleteParagraph(ws, msg.data, userSession);
 			break;
 
 		case "lockParagraph":
-			await handleLockParagraph(ws, msg.data, session);
+			await handleLockParagraph(ws, msg.data, userSession, session);
 			break;
 
 		case "unlockParagraph":
-			await handleUnlockParagraph(ws, msg.data, session);
+			await handleUnlockParagraph(ws, msg.data, userSession);
 			break;
 
 		case "error":
-			await handleError(ws, msg.data, session);
+			await handleError(ws, msg.data, userSession);
 			break;
 
 		default:
