@@ -1,4 +1,5 @@
 const logger = require("../../logger");
+const UserSession = require("./UserSession");
 
 class Session {
 	/**
@@ -9,7 +10,7 @@ class Session {
 
 	/**
 	 * The users in this session.
-	 * @type {{id: string, ws: any}[]} The users' UUIDs and websockets.
+	 * @type {UserSession[]}
 	 */
 	users = [];
 
@@ -25,9 +26,25 @@ class Session {
 		this.guide = guide;
 	}
 
+	/**
+	 * Connects a user to this session.
+	 * @param {string} userId The user's UUID.
+	 * @param {WebSocket} ws The user's websocket.
+	 * @returns {UserSession} The user's session data.
+	 */
 	connectUser(userId, ws) {
-		logger.trace(`User ${userId} connected to guide ${ws.guideId}`);
-		this.users.push({ id: userId, ws });
+		// create a session token (uuid)
+		const token = crypto.randomUUID();
+
+		// create a new user session
+		const userSession = new UserSession(token, userId, ws);
+
+		logger.trace(
+			`User ${userSession.userId} (session token: ${userSession.token}) connected to guide ${userSession.guideId}`
+		);
+		this.users.push(userSession);
+
+		return userSession;
 	}
 
 	/**
@@ -36,12 +53,14 @@ class Session {
 	 */
 	broadcast(msg) {
 		logger.trace(
-			`Broadcasting message to ${this.users.length} users in guide ${this.guide.id}:`,
-			msg
+			`Broadcasting message to ${this.users.length} users in guide ${this.guide.id}.`
 		);
-		this.users.forEach(({ ws }) => {
-			logger.trace(`Sending message to user ${ws.userId} in guide ${ws.guideId}.`);
-			ws.send(JSON.stringify(msg));
+
+		this.users.forEach(session => {
+			logger.trace(
+				`Sending message to user ${session.userId} (session token: ${session.token}) in guide ${session.guideId}.`
+			);
+			session.ws.send(JSON.stringify(msg));
 		});
 	}
 }
