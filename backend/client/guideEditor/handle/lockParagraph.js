@@ -12,7 +12,7 @@ const WSMessage = require("../../classes/WSMessage");
  * @param {Session} session The session data.
  */
 const lockParagraph = (ws, data, userSession, session) => {
-	logger.trace(`Locking paragraph ${data.paragraphId} for user ${userSession.userId}.`);
+	logger.trace(`Locking paragraph ${data.paragraphId} for session token ${userSession.token}.`);
 
 	if (session.locks.find(lock => lock.token === userSession.token)) {
 		logger.warn(
