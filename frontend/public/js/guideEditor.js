@@ -69,7 +69,7 @@ for (const textarea of editors) {
 	textarea.addEventListener("blur", () => {
 		socket.send(
 			JSON.stringify({
-				// type: "unlockParagraph",
+				type: "unlockParagraph",
 			})
 		);
 	});
