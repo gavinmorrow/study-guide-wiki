@@ -55,7 +55,7 @@ const handleMessage = async (msg, ws, userSession, session) => {
 			break;
 
 		case "unlockParagraph":
-			await handleUnlockParagraph(ws, msg.data, userSession);
+			await handleUnlockParagraph(ws, msg.data, userSession, session);
 			break;
 
 		case "error":
