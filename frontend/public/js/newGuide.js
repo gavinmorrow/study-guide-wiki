@@ -4,9 +4,7 @@ const form = document.getElementById("create-guide-modal-form");
 form.addEventListener("submit", async event => {
 	event.preventDefault();
 
-	const validateGuideValues = (
-		await import("./methods/validateGuideValues.js")
-	).default;
+	const validateGuideValues = (await import("./methods/validateGuideValues.js")).default;
 
 	const formData = new FormData(event.target);
 	const values = Object.fromEntries(formData);

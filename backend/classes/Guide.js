@@ -1,91 +1,82 @@
-// TODO: Refactor (maybe make a private data property [object] and read from that instead of separate properties? This would make it easier to add new properties, and make encoding and decoding to/from JSON easier.)
+/**
+ * @typedef {object} PermissionData
+ * @property {string} id The id of the user.
+ * @property {import("./PermissionLevel")} permissionLevel The permission level of the user.
+ */
+
+/**
+ * @typedef {object} GuideData
+ * @property {string} id The id (UUID) of the guide.
+ * @property {string} title The title of the guide.
+ * @property {string} authorId The author of the guide's UUID.
+ * @property {import("./GuideSection")[]} sections The sections of the guide.
+ * @property {PermissionData[]} people The people who have access to the guide, and their permission level. This should *not* include the author.
+ */
 
 /**
  * A guide class. It *does not* sync with the database.
  */
 class Guide {
 	/**
+	 * All data for this guide.
+	 * @type {GuideData}
+	 */
+	#data;
+
+	/**
 	 * The id (UUID) of the guide.
 	 * @type {string}
 	 */
 	get id() {
-		return this.#id;
+		return this.#data.id;
 	}
-	#id;
 
 	/**
 	 * The title of the guide.
 	 * @type {string}
 	 */
 	get title() {
-		return this.#title;
+		return this.#data.title;
 	}
-	#title;
 
 	/**
 	 * The author of the guide's UUID.
-	 * @type {uuid}
+	 * @type {string}
 	 */
 	get authorId() {
-		return this.#authorId;
+		return this.#data.authorId;
 	}
-	#authorId;
+
+	/**
+	 * The sections of the guide.
+	 * @type {import("./GuideSection")[]}
+	 */
+	get sections() {
+		return this.#data.sections;
+	}
 
 	/**
 	 * The people who have access to the guide, and their permission level.
 	 *
 	 * This should *not* include the author.
 	 *
-	 * @type {[{ id: string, permissionLevel: PermissionLevel }]}
+	 * @type {PermissionData[]}
 	 */
 	get people() {
-		return this.#people;
+		return this.#data.people;
 	}
-	#people = [];
 
-	/**
-	 * @param {string} id The id of the guide. This is a UUID.
-	 * @param {string} title The title of the guide.
-	 * @param {uuid} authorId The author of the guide's UUID.
-	 * @param {[{ id: string, permissionLevel: PermissionLevel }]} [people=[]] The people who have access to the guide, and their permission level. This should *not* include the author. Defaults to an empty array.
-	 */
-	constructor(id, title, authorId, people = []) {
-		this.#id = id;
-		this.#title = title;
-		this.#authorId = authorId;
-		this.#people = people;
+	/** @param {GuideData} data The data to use for this guide. */
+	constructor(data) {
+		this.#data = data;
 	}
 
 	/**
 	 * Returns a JSON representation of the guide.
-	 * @returns { {
-	 * 	id: string,
-	 * 	title: string,
-	 * 	authorId: string,
-	 * 	people: [{ id: string, permissionLevel: PermissionLevel }]
-	 * } } The JSON representation of the guide.
+	 * @returns {GuideData} The JSON representation of the guide.
 	 */
 	toJSON() {
-		return {
-			id: this.id,
-			title: this.title,
-			authorId: this.authorId,
-			people: this.people,
-		};
-	}
-
-	/**
-	 * Converts an object to a guide class.
-	 * @param { {
-	 * 	id: string,
-	 * 	title: string,
-	 * 	authorId: string,
-	 * 	people: [{ id: string, permissionLevel: PermissionLevel }]
-	 * } } guide The guide object to convert.
-	 * @returns {Guide}
-	 */
-	static fromObject(guide) {
-		return new Guide(guide.id, guide.title, guide.authorId, guide.people);
+		return this.#data;
 	}
 }
 

@@ -1,8 +1,8 @@
 # Studypedia
 
-A web app to make studying easier. It helps make study guides in a wiki format. 
+A web app to make studying easier. It helps make study guides in a wiki format.
 
-It uses Docker with NodeJS and PostgreSQL containers. 
+It uses Docker with NodeJS and PostgreSQL containers.
 
 # API
 

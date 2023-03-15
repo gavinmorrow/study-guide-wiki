@@ -1,0 +1,7 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./public",
+		"target": "ES2022",
+		"checkJs": true
+	}
+}

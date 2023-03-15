@@ -1,0 +1,51 @@
+html {
+	/* To make body expand to fill screen */
+	display: grid;
+
+	height: 100%;
+}
+
+body {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 3.3rem 1fr;
+	grid-template-areas:
+		"nav"
+		"main";
+}
+
+main {
+	grid-area: main;
+
+	/* To center editor */
+	display: flex;
+	justify-content: center;
+	/* align-items: center; */
+}
+
+.guide-editor-section {
+	width: 100%;
+}
+
+.guide-editor-section > h2 {
+	margin-top: 0;
+	margin-bottom: var(--margin-small);
+}
+
+.guide-editor-paragraph {
+	width: 100%;
+	/* height: 100%; */
+
+	/* background-color: var(--color-bg-root); */
+	background-color: var(--color-bg-default);
+	border: none;
+	outline: none;
+
+	resize: none;
+
+	color: var(--color-default);
+	font-size: medium;
+
+	--max-width: 750px;
+	/* max-width: 750px; */
+}

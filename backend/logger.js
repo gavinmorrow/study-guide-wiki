@@ -1,21 +1,45 @@
 var log4js = require("log4js");
-var logger = log4js.getLogger();
 
+// Log levels: ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < MARK < OFF
 log4js.configure({
 	appenders: {
-		out: {
+		notImportant: {
 			type: "stdout",
 			layout: {
 				type: "pattern",
-				pattern: "%[[%d] [%p] [%c] [%f:%l] - %]%m",
+				pattern: "%[[%d] [%p] [%f:%l] %c - %]%m",
 			},
+		},
+		notImportantFilter: {
+			type: "logLevelFilter",
+			level: "trace",
+			maxLevel: "debug",
+			appender: "notImportant",
+		},
+		important: {
+			type: "stdout",
+			layout: {
+				type: "pattern",
+				pattern: "%[[%d] [%p] %c - %]%m",
+			},
+		},
+		importantFilter: {
+			type: "logLevelFilter",
+			level: "info",
+			appender: "important",
 		},
 	},
 	categories: {
-		default: { appenders: ["out"], level: "all", enableCallStack: true },
+		default: {
+			appenders: ["importantFilter", "notImportantFilter"],
+			level: "all",
+			enableCallStack: true,
+		},
 	},
 });
-logger.level = process.env.NODE_ENV === "production" ? "info" : "all";
-logger.debug("Logger initialized.");
+
+var logger = log4js.getLogger();
+logger.level = "all";
+logger.info("Logger initialized.");
 
 module.exports = logger;

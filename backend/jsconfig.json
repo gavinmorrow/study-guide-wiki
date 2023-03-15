@@ -1,0 +1,8 @@
+{
+	"exclude": ["client"],
+	"compilerOptions": {
+		"checkJs": true,
+		"target": "ES2022",
+		"moduleResolution": "node"
+	}
+}

@@ -1,11 +1,15 @@
 #guide-editor-header {
 	position: sticky;
 	top: var(--margin-small);
+	grid-area: nav;
 
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+
+	/* To crop background blur */
+	border-radius: var(--border-radius-large);
 
 	padding: var(--padding-default);
 
@@ -32,7 +36,9 @@
 	background-color: var(--color-bg-higher);
 	opacity: 0.75;
 
+	/* To crop background color */
 	border-radius: var(--border-radius-large);
+
 	z-index: -1;
 }
 

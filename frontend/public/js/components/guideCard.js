@@ -21,6 +21,7 @@ class GuideCard extends HTMLElement {
 
 		// Template
 		const template = document.getElementById("guide-card-template");
+		// @ts-ignore
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 	}
 
@@ -48,6 +49,7 @@ class GuideCard extends HTMLElement {
 		// Update the elements
 		const link = this.shadowRoot.getElementById("link");
 
+		// @ts-ignore
 		link.href = `/guide/${this.getAttribute("data-id")}`;
 		link.setAttribute("aria-label", `${this.title}`);
 		this.shadowRoot.getElementById("title").innerText = this.title;

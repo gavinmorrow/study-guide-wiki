@@ -1,0 +1,14 @@
+extends layouts/default
+
+block head
+	meta(name="data-guide-id", content= guide.id)
+
+block content
+	include partials/guideEditorHeader
+	main
+		for section in guide.sections
+			section(class="guide-editor-section")
+				h2= section.title
+				for paragraph in section.paragraphs
+					.textarea-grow-wrap
+						textarea(class="guide-editor-paragraph", id= paragraph.id, onInput="this.parentNode.dataset.replicatedValue = this.value")= paragraph.content

@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
 
 :root {
+	color-scheme: light;
+
 	--color-bg-root: #ffffff;
 	--color-bg-default: #eaeaea;
 	--color-bg-higher: #dadada;
@@ -52,6 +54,8 @@
 
 @media (prefers-color-scheme: dark) {
 	:root {
+		color-scheme: dark;
+
 		--color-bg-root: #0a0a1a;
 		--color-bg-default: #1a1a2a;
 		--color-bg-higher: #2a2a3a;
@@ -131,4 +135,39 @@ input:not([type="submit"]) {
 form input.error {
 	border: var(--border-emphasis);
 	border-color: var(--color-outline-error);
+}
+
+/* Auto growing textareas
+ * https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/
+ */
+.textarea-grow-wrap {
+	/* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
+	display: grid;
+}
+.textarea-grow-wrap::after {
+	/* Note the weird space! Needed to preventy jumpy behavior */
+	content: attr(data-replicated-value) " ";
+
+	/* This is how textarea text behaves */
+	white-space: pre-wrap;
+
+	/* Hidden from view, clicks, and screen readers */
+	visibility: hidden;
+}
+.textarea-grow-wrap > textarea {
+	/* You could leave this, but after a user resizes, then it ruins the auto sizing */
+	resize: none;
+
+	/* Firefox shows scrollbar on growth, you can hide like this. */
+	overflow: hidden;
+}
+.textarea-grow-wrap > textarea,
+.textarea-grow-wrap::after {
+	/* Identical styling required!! */
+	/* border: 1px solid black; */
+	/* padding: 0.5rem; */
+	font: inherit;
+
+	/* Place on top of each other */
+	grid-area: 1 / 1 / 2 / 2;
 }

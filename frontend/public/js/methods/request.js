@@ -7,13 +7,7 @@ const host = "http://localhost:8080";
  * @param {object} [headers={}] Any extra headers of the request. Defaults to {}. The Content-Type header is (by default) set to application/json.
  * @returns {Promise<Response>} The response from the server. The raw response from `fetch`.
  */
-const request = (
-	url,
-	method = "GET",
-	body = null,
-	headers = {},
-	authenticate = true
-) =>
+const request = (url, method = "GET", body = null, headers = {}, authenticate = true) =>
 	fetch(`${host}${url}`, {
 		method,
 		headers: {
