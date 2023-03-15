@@ -1,7 +1,7 @@
 const logger = require("../../../logger");
 const WSMessage = require("../../classes/WSMessage");
-const lockParagraph = (ws, data) => {
 	logger.trace("Locking paragraph", data);
+const lockParagraph = (ws, data, session) => {
 
 	if (ws.session.locks.find(lock => lock.userId === ws.userId)) {
 		logger.warn("User", ws.userId, "tried to lock a paragraph while already having a lock");

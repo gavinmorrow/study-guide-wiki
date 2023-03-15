@@ -1,5 +1,5 @@
 const logger = require("../../../logger");
-const updateSectionTitle = (ws, data) => {
+const updateSectionTitle = (ws, data, session) => {
 	logger.trace("Updating section title", data);
 
 	// TODO: update section title

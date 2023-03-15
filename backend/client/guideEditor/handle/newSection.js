@@ -1,5 +1,5 @@
 const logger = require("../../../logger");
-const newSection = (ws, data) => {
+const newSection = (ws, data, session) => {
 	logger.trace("New section", data);
 
 	// TODO: create new section

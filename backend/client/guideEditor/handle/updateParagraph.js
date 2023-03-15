@@ -1,11 +1,11 @@
 const db = require("../../../db/db");
 const logger = require("../../../logger");
 const WSMessage = require("../../classes/WSMessage");
-const updateParagraph = async (ws, data) => {
+const updateParagraph = async (ws, data, session) => {
 	logger.trace("Updating paragraph", data);
 
 	// Current paragraph
-	const paragraphId = ws.session.locks.find(lock => lock.userId === ws.userId)?.paragraphId;
+	const paragraphId = session.locks.find(lock => lock.userId === ws.userId)?.paragraphId;
 
 	if (paragraphId == null) {
 		logger.warn("User", ws.userId, "tried to update a paragraph without a lock");
