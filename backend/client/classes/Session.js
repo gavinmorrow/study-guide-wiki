@@ -1,3 +1,5 @@
+const logger = require("../../logger");
+
 class Session {
 	/**
 	 * The guide that this session is for.
@@ -25,6 +27,20 @@ class Session {
 
 	connectUser(userId) {
 		this.users.push(userId);
+
+	/**
+	 * Broadcasts a message to all users in this session.
+	 * @param {import("./WSMessage")} msg The message to broadcast.
+	 */
+	broadcast(msg) {
+		logger.trace(
+			`Broadcasting message to ${this.users.length} users in guide ${this.guide.id}:`,
+			msg
+		);
+		this.users.forEach(({ ws }) => {
+			logger.trace(`Sending message to user ${ws.userId} in guide ${ws.guideId}.`);
+			ws.send(JSON.stringify(msg));
+		});
 	}
 }
 
