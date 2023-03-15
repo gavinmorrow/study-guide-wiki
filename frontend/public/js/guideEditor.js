@@ -8,6 +8,12 @@ const handleMessage = msg => {
 			socket.send(JSON.stringify({ type: "pong" }));
 			break;
 
+		case "paragraphUpdated":
+			// Update the paragraph
+			// @ts-ignore
+			document.getElementById(msg.data.paragraphId).value = msg.data.newValue;
+			break;
+
 		case "error":
 			console.error("Error from the server:", msg);
 			break;
@@ -63,21 +69,32 @@ for (const textarea of editors) {
 	textarea.addEventListener("blur", () => {
 		socket.send(
 			JSON.stringify({
-				type: "unlockParagraph",
+				// type: "unlockParagraph",
 			})
 		);
 	});
 
-	textarea.addEventListener("input", () => {
-		socket.send(
-			JSON.stringify({
-				type: "updateParagraph",
-				data: {
-					newValue: textarea.value,
-				},
-			})
-		);
-	});
+	textarea.addEventListener(
+		"input",
+		/** @param {InputEvent} e */ e => {
+			console.log(e);
+
+			if (e.inputType === "insertLineBreak") {
+				// Create a new paragraph
+				socket.send(JSON.stringify({ type: "newParagraph" }));
+				return;
+			}
+
+			socket.send(
+				JSON.stringify({
+					type: "updateParagraph",
+					data: {
+						newValue: textarea.value,
+					},
+				})
+			);
+		}
+	);
 
 	textarea.addEventListener(
 		"beforeinput",
