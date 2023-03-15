@@ -9,7 +9,7 @@ class Session {
 
 	/**
 	 * The users in this session.
-	 * @type {string[]} The users UUID's.
+	 * @type {{id: string, ws: any}[]} The users' UUIDs and websockets.
 	 */
 	users = [];
 
@@ -25,8 +25,10 @@ class Session {
 		this.guide = guide;
 	}
 
-	connectUser(userId) {
-		this.users.push(userId);
+	connectUser(userId, ws) {
+		logger.trace(`User ${userId} connected to guide ${ws.guideId}`);
+		this.users.push({ id: userId, ws });
+	}
 
 	/**
 	 * Broadcasts a message to all users in this session.
