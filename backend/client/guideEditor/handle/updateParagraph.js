@@ -30,5 +30,12 @@ const updateParagraph = async (ws, data, session) => {
 	}
 
 	logger.debug("Paragraph", paragraphId, "updated");
+
+	// Broadcast update
+	const message = new WSMessage("paragraphUpdated", {
+		paragraphId,
+		newValue: data.newValue,
+	});
+	session.broadcast(message);
 };
 module.exports = updateParagraph;
