@@ -8,6 +8,7 @@ const logger = require("./backend/logger");
 
 // Websockets
 require("express-ws")(app);
+// @ts-ignore
 app.ws("/api/echo", (ws, req) => {
 	ws.on("message", msg => {
 		logger.trace("Message from the client", msg);
