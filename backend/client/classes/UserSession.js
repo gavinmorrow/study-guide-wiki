@@ -17,14 +17,21 @@ class UserSession {
 	userId;
 
 	/**
+	 * The guide id that this session is for.
+	 * @type {string}
+	 */
+	guideId;
+
+	/**
 	 * The user's websocket.
 	 * @type {WebSocket}
 	 */
 	ws;
 
-	constructor(token, userId, ws) {
+	constructor(token, userId, guideId, ws) {
 		this.token = token;
 		this.userId = userId;
+		this.guideId = guideId;
 		this.ws = ws;
 	}
 }
