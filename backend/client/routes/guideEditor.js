@@ -19,23 +19,23 @@ router.ws("/:id", async (ws, req) => {
 	logger.info(`User ${userId} connected to guide ${guideId} via websockets.`);
 
 	// Check if session exists
-	if (sessions[ws.guideId] == null) {
+	if (sessions[guideId] == null) {
 		// Get guide
-		let guide = await db.guides.get(ws.guideId);
+		let guide = await db.guides.get(guideId);
 		if (guide == null) {
-			ws.send(WSMessage.error("Guide not found", ws.guideId));
-			logger.debug(`Guide ${ws.guideId} not found`);
+			ws.send(WSMessage.error("Guide not found", guideId));
+			logger.debug(`Guide ${guideId} not found`);
 			ws.close();
 			return;
 		}
 
 		// Create session
-		logger.trace(`Creating new session for guide ${ws.guideId}`);
-		sessions[ws.guideId] = new Session(guide);
+		logger.trace(`Creating new session for guide ${guideId}`);
+		sessions[guideId] = new Session(guide);
 	}
 
 	// Connect to session
-	const session = sessions[ws.guideId];
+	const session = sessions[guideId];
 	const userSession = session.connectUser(ws.userId, ws);
 
 	const pingInterval = setInterval(() => {
