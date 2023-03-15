@@ -13,15 +13,15 @@ const handleMessage = require("../guideEditor/handleMessage");
  */
 const sessions = {};
 // @ts-ignore (property ws does exist on the router)
-router.ws("/:id", (ws, req) => {
+router.ws("/:id", async (ws, req) => {
 	ws.guideId = req.params.id;
 	ws.userId = req.userId;
 	logger.info(`User ${ws.userId} connected to guide ${ws.guideId} via websockets`);
 
 	// Check if session exists
-	if (sessions[req.guideId] == null) {
+	if (sessions[ws.guideId] == null) {
 		// Get guide
-		let guide = db.guides.get(ws.guideId);
+		let guide = await db.guides.get(ws.guideId);
 		if (guide == null) {
 			ws.send(WSMessage.error("Guide not found", ws.guideId));
 			logger.debug(`Guide ${ws.guideId} not found`);
@@ -30,12 +30,12 @@ router.ws("/:id", (ws, req) => {
 		}
 
 		// Create session
+		logger.trace(`Creating new session for guide ${ws.guideId}`);
 		sessions[ws.guideId] = new Session(guide);
 	}
 
 	// Connect to session
-	ws.session = sessions[ws.guideId];
-	ws.session.connectUser(ws.userId);
+	sessions[ws.guideId].connectUser(ws.userId, ws);
 
 	const pingInterval = setInterval(() => {
 		ws.send(WSMessage.ping());
@@ -51,7 +51,7 @@ router.ws("/:id", (ws, req) => {
 
 		if (msg.type == null) ws.send(WSMessage.error("Message type not specified", msg));
 
-		await handleMessage(msg, ws);
+		await handleMessage(msg, ws, sessions[ws.guideId]);
 	});
 
 	ws.on("close", () => {
