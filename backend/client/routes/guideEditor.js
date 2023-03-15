@@ -14,9 +14,9 @@ const handleMessage = require("../guideEditor/handleMessage");
 const sessions = {};
 // @ts-ignore (property ws does exist on the router)
 router.ws("/:id", async (ws, req) => {
-	ws.guideId = req.params.id;
-	ws.userId = req.userId;
-	logger.info(`User ${ws.userId} connected to guide ${ws.guideId} via websockets`);
+	const guideId = req.params.id;
+	const userId = req.userId;
+	logger.info(`User ${userId} connected to guide ${guideId} via websockets.`);
 
 	// Check if session exists
 	if (sessions[ws.guideId] == null) {
@@ -35,7 +35,8 @@ router.ws("/:id", async (ws, req) => {
 	}
 
 	// Connect to session
-	sessions[ws.guideId].connectUser(ws.userId, ws);
+	const session = sessions[ws.guideId];
+	const userSession = session.connectUser(ws.userId, ws);
 
 	const pingInterval = setInterval(() => {
 		ws.send(WSMessage.ping());
@@ -51,11 +52,11 @@ router.ws("/:id", async (ws, req) => {
 
 		if (msg.type == null) ws.send(WSMessage.error("Message type not specified", msg));
 
-		await handleMessage(msg, ws, sessions[ws.guideId]);
+		await handleMessage(msg, ws, userSession, session);
 	});
 
 	ws.on("close", () => {
-		logger.trace(`Websocket editor disconnected from guide ${ws.guideId}`);
+		logger.trace(`Websocket editor disconnected from guide ${guideId}`);
 
 		clearInterval(pingInterval);
 	});
