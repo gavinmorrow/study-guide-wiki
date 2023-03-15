@@ -1,10 +1,14 @@
 const logger = require("../../../logger");
 const WSMessage = require("../../classes/WSMessage");
-	logger.trace("Locking paragraph", data);
 const lockParagraph = (ws, data, session) => {
+	logger.trace(`Locking paragraph ${data.paragraphId} for user ${ws.userId}.`);
 
-	if (ws.session.locks.find(lock => lock.userId === ws.userId)) {
-		logger.warn("User", ws.userId, "tried to lock a paragraph while already having a lock");
+	if (session.locks.find(lock => lock.userId === ws.userId)) {
+		logger.warn(
+			"User",
+			ws.userId,
+			"tried to lock a paragraph while already having a lock. Ignoring."
+		);
 		ws.send(
 			WSMessage.error("You already have a lock on a paragraph.", {
 				type: "alreadyLocked",
@@ -14,6 +18,6 @@ const lockParagraph = (ws, data, session) => {
 		return;
 	}
 
-	ws.session.locks.push({ userId: ws.userId, paragraphId: data.paragraphId });
+	session.locks.push({ userId: ws.userId, paragraphId: data.paragraphId });
 };
 module.exports = lockParagraph;
