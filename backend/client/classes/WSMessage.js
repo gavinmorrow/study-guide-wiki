@@ -12,6 +12,8 @@
  * @property {WSMessageType} ERROR
  */
 
+const logger = require("../../logger");
+
 /**
  * @typedef {string} UpdateType
  * @enum {UpdateType}
