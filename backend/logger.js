@@ -39,6 +39,7 @@ log4js.configure({
 });
 
 var logger = log4js.getLogger();
+// @ts-ignore
 logger.level = "all";
 logger.info("Logger initialized.");
 
