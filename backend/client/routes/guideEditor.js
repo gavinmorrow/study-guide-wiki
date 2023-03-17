@@ -36,7 +36,7 @@ router.ws("/:id", async (ws, req) => {
 
 	// Connect to session
 	const session = sessions[guideId];
-	const userSession = session.connectUser(ws.userId, ws);
+	const userSession = session.connectUser(userId, guideId, ws);
 
 	const pingInterval = setInterval(() => {
 		ws.send(WSMessage.ping());
