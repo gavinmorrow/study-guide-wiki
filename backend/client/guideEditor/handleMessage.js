@@ -15,7 +15,7 @@ const WSMessage = require("../classes/WSMessage");
 const logger = require("../../logger");
 
 const handleMessage = async (msg, ws, userSession, session) => {
-	logger.trace("Message from the client:", msg);
+	// logger.trace("Message from the client:", msg);
 
 	switch (msg.type) {
 		case "pong":
@@ -23,46 +23,47 @@ const handleMessage = async (msg, ws, userSession, session) => {
 			break;
 
 		case "updateGuideTitle":
-			await handleUpdateGuideTitle(ws, msg.data, userSession);
+			await handleUpdateGuideTitle(msg.data, userSession, session);
 			break;
 
 		case "newSection":
-			await handleNewSection(ws, msg.data, userSession);
+			await handleNewSection(msg.data, userSession, session);
 			break;
 
 		case "updateSectionTitle":
-			await handleUpdateSectionTitle(ws, msg.data, userSession);
+			await handleUpdateSectionTitle(msg.data, userSession, session);
 			break;
 
 		case "deleteSection":
-			await handleDeleteSection(ws, msg.data, userSession);
+			await handleDeleteSection(msg.data, userSession, session);
 			break;
 
 		case "newParagraph":
-			await handleNewParagraph(ws, msg.data, userSession);
+			await handleNewParagraph(msg.data, userSession, session);
 			break;
 
 		case "updateParagraph":
-			await handleUpdateParagraph(ws, msg.data, userSession);
+			await handleUpdateParagraph(msg.data, userSession, session);
 			break;
 
 		case "deleteParagraph":
-			await handleDeleteParagraph(ws, msg.data, userSession);
+			await handleDeleteParagraph(msg.data, userSession, session);
 			break;
 
 		case "lockParagraph":
-			await handleLockParagraph(ws, msg.data, userSession, session);
+			await handleLockParagraph(msg.data, userSession, session);
 			break;
 
 		case "unlockParagraph":
-			await handleUnlockParagraph(ws, msg.data, userSession, session);
+			await handleUnlockParagraph(msg.data, userSession, session);
 			break;
 
 		case "error":
-			await handleError(ws, msg.data, userSession);
+			await handleError(msg.data, userSession, session);
 			break;
 
 		default:
+			logger.warn("Invalid message type received:", msg.type);
 			ws.send(WSMessage.error("Invalid message type", msg.type));
 	}
 };
