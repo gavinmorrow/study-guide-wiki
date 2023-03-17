@@ -1,18 +1,28 @@
 const db = require("../../../db/db");
 const logger = require("../../../logger");
+const Session = require("../../classes/Session");
+const UserSession = require("../../classes/UserSession");
 const WSMessage = require("../../classes/WSMessage");
-const updateParagraph = async (ws, data, session) => {
+
+/**
+ * Updates a paragraph.
+ * @param {object} data The message data.
+ * @param {string} data.newValue The new paragraph content.
+ * @param {UserSession} userSession The user's session data.
+ * @param {Session} session The session data.
+ */
+const updateParagraph = async (data, userSession, session) => {
 	logger.trace("Updating paragraph", data);
 
 	// Current paragraph
-	const paragraphId = session.locks.find(lock => lock.userId === ws.userId)?.paragraphId;
+	const paragraphId = session.locks.find(lock => lock.token === userSession.token)?.paragraphId;
 
 	if (paragraphId == null) {
-		logger.warn("User", ws.userId, "tried to update a paragraph without a lock");
-		ws.send(
+		logger.warn("Token", userSession.token, "tried to update a paragraph without a lock");
+		userSession.ws.send(
 			WSMessage.error("You don't have a lock on this paragraph.", {
 				type: "noLock",
-				paragraphId: data.paragraphId,
+				paragraphId: paragraphId,
 			})
 		);
 		return;
@@ -21,7 +31,7 @@ const updateParagraph = async (ws, data, session) => {
 	const success = await db.guides.updateParagraphContent(paragraphId, data.newValue);
 	if (!success) {
 		logger.warn("Paragraph", paragraphId, "could not be updated");
-		ws.send(
+		userSession.ws.send(
 			WSMessage.error("Paragraph could not be updated", {
 				type: "paragraphUpdateFailed",
 				paragraphId,
