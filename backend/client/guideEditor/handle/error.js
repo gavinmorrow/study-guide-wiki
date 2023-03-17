@@ -1,5 +1,5 @@
 const logger = require("../../../logger");
-const error = (ws, data, session) => {
+const error = (data, userSession, session) => {
 	logger.error("Error:", data);
 
 	// TODO: handle error
