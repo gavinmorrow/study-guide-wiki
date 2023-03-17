@@ -36,12 +36,12 @@ class Session {
 	 * @param {WebSocket} ws The user's websocket.
 	 * @returns {UserSession} The user's session data.
 	 */
-	connectUser(userId, ws) {
+	connectUser(userId, guideId, ws) {
 		// create a session token (uuid)
 		const token = crypto.randomUUID();
 
 		// create a new user session
-		const userSession = new UserSession(token, userId, ws);
+		const userSession = new UserSession(token, userId, guideId, ws);
 
 		logger.trace(
 			`User ${userSession.userId} (session token: ${userSession.token}) connected to guide ${userSession.guideId}`
@@ -60,11 +60,11 @@ class Session {
 			`Broadcasting message to ${this.users.length} users in guide ${this.guide.id}.`
 		);
 
-		this.users.forEach(session => {
+		this.users.forEach(userSession => {
 			logger.trace(
-				`Sending message to user ${session.userId} (session token: ${session.token}) in guide ${session.guideId}.`
+				`Sending message to user ${userSession.userId} (session token: ${userSession.token}) in guide ${userSession.guideId}.`
 			);
-			session.ws.send(JSON.stringify(msg));
+			userSession.ws.send(JSON.stringify(msg));
 		});
 	}
 }
