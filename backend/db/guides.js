@@ -59,6 +59,8 @@ const guides = {
 				guide = guideResult;
 			});
 
+			if (guide == null) return null;
+
 			logger.trace(`Guide with id ${id} found`);
 
 			return new Guide(guide);
