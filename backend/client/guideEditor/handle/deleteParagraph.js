@@ -1,5 +1,5 @@
 const logger = require("../../../logger");
-const deleteParagraph = (ws, data, session) => {
+const deleteParagraph = (data, userSession, session) => {
 	logger.trace("Deleting paragraph", data);
 
 	// TODO: delete paragraph from database
