@@ -69,6 +69,15 @@ router.get("/:id", async (req, res) => {
 		return res.sendStatus(404);
 	}
 
+	// Ensure that the user is allowed to view the guide.
+	// The permission level isn't important here because
+	// anyone in the list has at least read access.
+	const userHasAccess = guide.people.includes(req.userId) || guide.authorId === req.userId;
+	if (!userHasAccess) {
+		logger.debug(`User ${req.userId} does not have access to guide ${guide.id}.`);
+		return res.sendStatus(401);
+	}
+
 	// Render
 	res.render("guideEditor", {
 		title: `${guide.title} | Studypedia`,
