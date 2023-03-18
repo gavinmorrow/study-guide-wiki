@@ -13,12 +13,25 @@ const WSMessage = require("../../classes/WSMessage");
 const lockParagraph = (data, userSession, session) => {
 	logger.trace(`Locking paragraph ${data.paragraphId} for session token ${userSession.token}.`);
 
+	// Ensure user doesn't already have a lock
 	if (session.locks.find(lock => lock.token === userSession.token)) {
 		logger.warn(
 			`Session token ${userSession.token} already has a lock on a paragraph. Ignoring lock request.`
 		);
 		userSession.ws.send(
 			WSMessage.error("You already have a lock on a paragraph.", {
+				type: "multipleLocks",
+				paragraphId: data.paragraphId,
+			})
+		);
+		return;
+	}
+
+	// Ensure that the paragraph isn't already locked
+	if (session.locks.find(lock => lock.paragraphId === data.paragraphId)) {
+		logger.warn(`Paragraph ${data.paragraphId} is already locked. Ignoring lock request.`);
+		userSession.ws.send(
+			WSMessage.error("This paragraph is already locked.", {
 				type: "alreadyLocked",
 				paragraphId: data.paragraphId,
 			})
