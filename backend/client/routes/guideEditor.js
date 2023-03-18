@@ -58,6 +58,9 @@ router.ws("/:id", async (ws, req) => {
 	ws.on("close", () => {
 		logger.trace(`Websocket editor disconnected from guide ${guideId}`);
 
+		// Remove user from session
+		session.disconnectUser(userSession.token);
+
 		clearInterval(pingInterval);
 	});
 });

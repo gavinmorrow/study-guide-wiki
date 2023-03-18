@@ -52,6 +52,16 @@ class Session {
 	}
 
 	/**
+	 * Disconnects a user from this session.
+	 * @param {string} token The user's session token.
+	 */
+	disconnectUser (token) {
+		logger.trace(`Disconnecting user with session token ${token} from guide ${this.guide.id}.`);
+		this.users = this.users.filter(userSession => userSession.token !== token);
+		this.locks = this.locks.filter(lock => lock.token !== token);
+	}
+
+	/**
 	 * Broadcasts a message to all users in this session.
 	 * @param {import("./WSMessage")} msg The message to broadcast.
 	 */
