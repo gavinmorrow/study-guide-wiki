@@ -1,5 +1,6 @@
 {
 	"exclude": ["client"],
+	"include": ["**/*.js", "../node_modules"],
 	"compilerOptions": {
 		"checkJs": true,
 		"target": "ES2022",
