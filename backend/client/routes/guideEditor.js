@@ -75,8 +75,10 @@ router.get("/:id", async (req, res) => {
 	// Ensure that the user is allowed to view the guide.
 	// The permission level isn't important here because
 	// anyone in the list has at least read access.
+	// @ts-ignore
 	const userHasAccess = guide.people.includes(req.userId) || guide.authorId === req.userId;
 	if (!userHasAccess) {
+		// @ts-ignore
 		logger.debug(`User ${req.userId} does not have access to guide ${guide.id}.`);
 		return res.sendStatus(401);
 	}
