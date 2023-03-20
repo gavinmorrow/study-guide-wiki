@@ -10,6 +10,7 @@ const PermissionLevel = require("../../../classes/PermissionLevel");
  */
 const get = async (req, res) => {
 	const guideId = req.params.id;
+	// @ts-ignore
 	const userId = req.userId;
 
 	if (!guideId) {
@@ -49,10 +50,11 @@ const post = async (req, res) => {
 	 * @type { {
 	 * 	title: string,
 	 * 	authorId: string,
-	 * 	people: [import("../../classes/Guide").PermissionData[]]
+	 * 	people: import("../../../classes/Guide").PermissionData[]
 	 * } }
 	 */
 	const guideJson = req.body;
+	// @ts-ignore
 	guideJson.authorId = req.userId;
 
 	if (guideJson.title == null || guideJson.authorId == null || guideJson.people == null) {
@@ -62,6 +64,7 @@ const post = async (req, res) => {
 
 	// Map string permission levels to `PermissionLevel` values
 	try {
+		// @ts-ignore
 		guideJson.people = guideJson.people.map(({ id, permissionString }) => {
 			const permissionLevel = PermissionLevel.fromString(permissionString);
 
