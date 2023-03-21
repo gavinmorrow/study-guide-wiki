@@ -40,7 +40,7 @@ router.ws("/:id", async (ws, req) => {
 
 	const pingInterval = setInterval(() => {
 		ws.send(WSMessage.ping());
-	}, 1000 * 60 /* about 1 minute (in milliseconds) */);
+	}, 1000 * 42 /* about 42 seconds (in milliseconds) */);
 
 	ws.on("message", async msg => {
 		try {
